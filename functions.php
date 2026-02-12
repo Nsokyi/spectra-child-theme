@@ -29,6 +29,8 @@ function spectra_child_flush_rewrites() {
     create_video_project_cpt();
     create_service_taxonomy();
     create_industry_taxonomy();
+    populate_service_terms();
+    populate_industry_terms();
     flush_rewrite_rules();
 }
 
@@ -165,9 +167,8 @@ function create_industry_taxonomy() {
 }
 
 /**
- * Auto-populate Service terms
+ * Auto-populate Service terms (called on theme activation)
  */
-add_action('init', 'populate_service_terms');
 function populate_service_terms() {
     $services = array(
         'Video Production',
@@ -198,9 +199,8 @@ function populate_service_terms() {
 }
 
 /**
- * Auto-populate Industry terms
+ * Auto-populate Industry terms (called on theme activation)
  */
-add_action('init', 'populate_industry_terms');
 function populate_industry_terms() {
     $industries = array(
         'Brand',
@@ -280,40 +280,55 @@ function register_video_project_fields() {
 }
 
 /**
+ * Helper: Resolve post ID from shortcode attributes
+ */
+function resolve_video_project_id($atts) {
+    $atts = shortcode_atts(array('id' => ''), $atts);
+    $post_id = !empty($atts['id']) ? intval($atts['id']) : get_the_ID();
+    
+    if (!$post_id || get_post_type($post_id) !== 'video-project') {
+        return false;
+    }
+    
+    return $post_id;
+}
+
+/**
  * Shortcode: Display Video Project Meta (Client, Agency, Featured Badge)
  */
 add_shortcode('video_project_meta', 'render_video_project_meta');
-function render_video_project_meta() {
-    if (get_post_type() !== 'video-project') {
+function render_video_project_meta($atts) {
+    $post_id = resolve_video_project_id($atts);
+    if (!$post_id) {
         return '';
     }
     
-    $client_name = carbon_get_post_meta(get_the_ID(), 'client_name');
-    $agency = carbon_get_post_meta(get_the_ID(), 'agency');
-    $is_featured = carbon_get_post_meta(get_the_ID(), 'featured_project');
+    $client_name = carbon_get_post_meta($post_id, 'client_name');
+    $agency = carbon_get_post_meta($post_id, 'agency');
+    $is_featured = carbon_get_post_meta($post_id, 'featured_project');
     
     ob_start();
     ?>
-    <div class="video-project-meta" style="margin-bottom: var(--wp--preset--spacing--medium);">
+    <div class="video-project-meta">
         <?php if ($is_featured) : ?>
-            <div class="featured-badge has-primary-background-color has-background" style="display: inline-block; padding: var(--wp--preset--spacing--xx-small) var(--wp--preset--spacing--small); border-radius: 4px; font-weight: 600; margin-bottom: var(--wp--preset--spacing--small); color: white;">
+            <div class="featured-badge has-primary-background-color has-background">
                 ⭐ Featured Project
             </div>
         <?php endif; ?>
         
         <?php if ($client_name || $agency) : ?>
-            <div class="project-info" style="display: flex; gap: var(--wp--preset--spacing--medium); flex-wrap: wrap; margin-top: var(--wp--preset--spacing--small);">
+            <div class="project-info">
                 <?php if ($client_name) : ?>
                     <div class="client-info">
-                        <strong class="has-neutral-color has-text-color" style="display: block; font-size: var(--wp--preset--font-size--small); text-transform: uppercase; margin-bottom: var(--wp--preset--spacing--xxx-small);">Client</strong>
-                        <span class="has-heading-color has-text-color" style="font-size: var(--wp--preset--font-size--medium); font-weight: 500;"><?php echo esc_html($client_name); ?></span>
+                        <strong class="has-neutral-color has-text-color">Client</strong>
+                        <span class="has-heading-color has-text-color"><?php echo esc_html($client_name); ?></span>
                     </div>
                 <?php endif; ?>
                 
                 <?php if ($agency) : ?>
                     <div class="agency-info">
-                        <strong class="has-neutral-color has-text-color" style="display: block; font-size: var(--wp--preset--font-size--small); text-transform: uppercase; margin-bottom: var(--wp--preset--spacing--xxx-small);">Agency</strong>
-                        <span class="has-heading-color has-text-color" style="font-size: var(--wp--preset--font-size--medium); font-weight: 500;"><?php echo esc_html($agency); ?></span>
+                        <strong class="has-neutral-color has-text-color">Agency</strong>
+                        <span class="has-heading-color has-text-color"><?php echo esc_html($agency); ?></span>
                     </div>
                 <?php endif; ?>
             </div>
@@ -327,13 +342,14 @@ function render_video_project_meta() {
  * Shortcode: Display Video Embed
  */
 add_shortcode('video_project_embed', 'render_video_project_embed');
-function render_video_project_embed() {
-    if (get_post_type() !== 'video-project') {
+function render_video_project_embed($atts) {
+    $post_id = resolve_video_project_id($atts);
+    if (!$post_id) {
         return '';
     }
     
-    $video_url = carbon_get_post_meta(get_the_ID(), 'video_url');
-    $video_duration = carbon_get_post_meta(get_the_ID(), 'video_duration');
+    $video_url = carbon_get_post_meta($post_id, 'video_url');
+    $video_duration = carbon_get_post_meta($post_id, 'video_duration');
     
     if (!$video_url) {
         return '';
@@ -342,17 +358,16 @@ function render_video_project_embed() {
     ob_start();
     ?>
     <div class="video-project-embed">
-        <div class="video-container" style="position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden;">
+        <div class="video-container">
             <iframe 
                 src="<?php echo esc_url($video_url); ?>" 
                 frameborder="0" 
                 allow="autoplay; fullscreen; picture-in-picture" 
-                allowfullscreen
-                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                allowfullscreen>
             </iframe>
         </div>
         <?php if ($video_duration) : ?>
-            <p class="video-duration has-neutral-color has-text-color" style="margin-top: var(--wp--preset--spacing--xx-small); font-size: var(--wp--preset--font-size--small);">
+            <p class="video-duration has-neutral-color has-text-color">
                 Duration: <?php echo esc_html($video_duration); ?>
             </p>
         <?php endif; ?>
@@ -365,13 +380,14 @@ function render_video_project_embed() {
  * Shortcode: Display Services and Industries Taxonomies
  */
 add_shortcode('video_project_taxonomies', 'render_video_project_taxonomies');
-function render_video_project_taxonomies() {
-    if (get_post_type() !== 'video-project') {
+function render_video_project_taxonomies($atts) {
+    $post_id = resolve_video_project_id($atts);
+    if (!$post_id) {
         return '';
     }
     
-    $services = get_the_terms(get_the_ID(), 'service');
-    $industries = get_the_terms(get_the_ID(), 'industry');
+    $services = get_the_terms($post_id, 'service');
+    $industries = get_the_terms($post_id, 'industry');
     
     if (!$services && !$industries) {
         return '';
@@ -379,17 +395,16 @@ function render_video_project_taxonomies() {
     
     ob_start();
     ?>
-    <div class="video-project-taxonomies wp-block-group has-surface-background-color has-background" style="margin: var(--wp--preset--spacing--large) 0; padding: var(--wp--preset--spacing--medium); border-radius: 8px;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--wp--preset--spacing--medium);">
+    <div class="video-project-taxonomies wp-block-group has-surface-background-color has-background">
+        <div class="taxonomy-grid">
             <?php if ($services) : ?>
                 <div class="services-list">
-                    <h3 class="has-heading-color has-text-color" style="margin-top: 0; margin-bottom: var(--wp--preset--spacing--small); font-size: var(--wp--preset--font-size--large); font-weight: 600;">Services</h3>
-                    <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--wp--preset--spacing--xx-small);">
+                    <h3 class="has-heading-color has-text-color">Services</h3>
+                    <ul>
                         <?php foreach ($services as $service) : ?>
                             <li>
                                 <a href="<?php echo esc_url(get_term_link($service)); ?>" 
-                                   class="has-background-color has-background has-body-color has-text-color"
-                                   style="display: inline-block; padding: var(--wp--preset--spacing--xx-small) var(--wp--preset--spacing--small); background: var(--wp--preset--color--background); border: 1px solid var(--wp--preset--color--outline); border-radius: 20px; text-decoration: none; font-size: var(--wp--preset--font-size--small); transition: all 0.2s;">
+                                   class="taxonomy-pill has-background-color has-background has-body-color has-text-color">
                                     <?php echo esc_html($service->name); ?>
                                 </a>
                             </li>
@@ -400,13 +415,12 @@ function render_video_project_taxonomies() {
             
             <?php if ($industries) : ?>
                 <div class="industries-list">
-                    <h3 class="has-heading-color has-text-color" style="margin-top: 0; margin-bottom: var(--wp--preset--spacing--small); font-size: var(--wp--preset--font-size--large); font-weight: 600;">Industries</h3>
-                    <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--wp--preset--spacing--xx-small);">
+                    <h3 class="has-heading-color has-text-color">Industries</h3>
+                    <ul>
                         <?php foreach ($industries as $industry) : ?>
                             <li>
                                 <a href="<?php echo esc_url(get_term_link($industry)); ?>" 
-                                   class="has-background-color has-background has-body-color has-text-color"
-                                   style="display: inline-block; padding: var(--wp--preset--spacing--xx-small) var(--wp--preset--spacing--small); background: var(--wp--preset--color--background); border: 1px solid var(--wp--preset--color--outline); border-radius: 20px; text-decoration: none; font-size: var(--wp--preset--font-size--small); transition: all 0.2s;">
+                                   class="taxonomy-pill has-background-color has-background has-body-color has-text-color">
                                     <?php echo esc_html($industry->name); ?>
                                 </a>
                             </li>
@@ -424,12 +438,13 @@ function render_video_project_taxonomies() {
  * Shortcode: Display Production Credits
  */
 add_shortcode('video_project_credits', 'render_video_project_credits');
-function render_video_project_credits() {
-    if (get_post_type() !== 'video-project') {
+function render_video_project_credits($atts) {
+    $post_id = resolve_video_project_id($atts);
+    if (!$post_id) {
         return '';
     }
     
-    $credits = carbon_get_post_meta(get_the_ID(), 'credits');
+    $credits = carbon_get_post_meta($post_id, 'credits');
     
     if (!$credits || empty($credits)) {
         return '';
@@ -437,15 +452,15 @@ function render_video_project_credits() {
     
     ob_start();
     ?>
-    <div class="video-project-credits wp-block-group" style="margin: var(--wp--preset--spacing--large) 0; padding: var(--wp--preset--spacing--medium); border: 1px solid var(--wp--preset--color--outline); border-radius: 8px;">
-        <h3 class="has-heading-color has-text-color" style="margin-top: 0; margin-bottom: var(--wp--preset--spacing--small); font-size: var(--wp--preset--font-size--x-large); font-weight: 600;">Production Credits</h3>
-        <div class="credits-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: var(--wp--preset--spacing--small);">
+    <div class="video-project-credits wp-block-group">
+        <h3 class="has-heading-color has-text-color">Production Credits</h3>
+        <div class="credits-grid">
             <?php foreach ($credits as $credit) : ?>
-                <div class="credit-item has-surface-background-color has-background" style="padding: var(--wp--preset--spacing--small); border-radius: 4px;">
-                    <strong class="has-neutral-color has-text-color" style="display: block; font-size: var(--wp--preset--font-size--small); text-transform: uppercase; margin-bottom: var(--wp--preset--spacing--xxx-small);">
+                <div class="credit-item has-surface-background-color has-background">
+                    <strong class="has-neutral-color has-text-color">
                         <?php echo esc_html($credit['role']); ?>
                     </strong>
-                    <span class="has-heading-color has-text-color" style="font-size: var(--wp--preset--font-size--medium); font-weight: 500;">
+                    <span class="has-heading-color has-text-color">
                         <?php echo esc_html($credit['name']); ?>
                     </span>
                 </div>

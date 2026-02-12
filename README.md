@@ -8,6 +8,7 @@ A WordPress child theme for Spectra One, featuring a custom Video Project post t
 - **Custom Taxonomies**: Services and Industries for categorization
 - **Carbon Fields Integration**: Custom meta fields for video details
 - **Block Theme Compatible**: Works with WordPress Full Site Editing (FSE)
+- **FSE Template**: Includes `single-video-project.html` template
 
 ## Custom Fields (Carbon Fields)
 
@@ -61,14 +62,14 @@ To display content from a specific post (e.g., in archives or other templates):
 
 - WordPress 6.0+
 - Spectra One parent theme
-- Carbon Fields plugin
+- Composer (Carbon Fields is loaded via `vendor/autoload.php`)
 
 ## Installation
 
 1. Install and activate the Spectra One parent theme
-2. Install and activate the Carbon Fields plugin
-3. Upload this child theme to `/wp-content/themes/`
-4. Activate the child theme
+2. Upload this child theme to `/wp-content/themes/`
+3. Run `composer install` in the theme directory
+4. Activate the child theme (this auto-populates taxonomy terms and flushes rewrite rules)
 
 ## License
 
