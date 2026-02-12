@@ -3,6 +3,12 @@
  * Child Theme Functions
  */
 
+// Include modular components.
+require_once __DIR__ . '/inc/project-rest-api.php';
+require_once __DIR__ . '/inc/project-block.php';
+require_once __DIR__ . '/inc/project-enqueue.php';
+require_once __DIR__ . '/inc/project-grid-shortcode.php';
+
 // Enqueue parent theme styles
 function enqueue_parent_styles() {
     wp_enqueue_style('parent-style', get_template_directory_uri() . '/style.css');
