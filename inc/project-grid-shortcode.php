@@ -13,8 +13,9 @@
 add_shortcode('project_grid', 'render_project_grid_shortcode');
 
 function render_project_grid_shortcode($atts) {
+    $atts = is_array($atts) ? $atts : array();
     $atts = shortcode_atts(array(
-        'featured' => '',
+        'featured' => false,
         'per_page' => 12,
     ), $atts);
 
@@ -31,7 +32,7 @@ function render_project_grid_shortcode($atts) {
 
     ob_start();
     get_template_part('template-parts/project-grid', null, array(
-        'featured_only' => !empty($atts['featured']),
+        'featured_only' => filter_var($atts['featured'], FILTER_VALIDATE_BOOLEAN),
         'per_page'      => intval($atts['per_page']),
         'current_term'  => $current_term,
     ));

@@ -21,18 +21,21 @@ function enqueue_project_grid_assets() {
     $theme_uri = get_stylesheet_directory_uri();
     $theme_dir = get_stylesheet_directory();
 
+    $css_path = $theme_dir . '/assets/css/project-grid.css';
+    $js_path  = $theme_dir . '/assets/js/project-filter.js';
+
     wp_enqueue_style(
         'project-grid',
         $theme_uri . '/assets/css/project-grid.css',
         array(),
-        filemtime($theme_dir . '/assets/css/project-grid.css')
+        file_exists($css_path) ? filemtime($css_path) : null
     );
 
     wp_enqueue_script(
         'project-filter',
         $theme_uri . '/assets/js/project-filter.js',
         array(),
-        filemtime($theme_dir . '/assets/js/project-filter.js'),
+        file_exists($js_path) ? filemtime($js_path) : null,
         true
     );
 

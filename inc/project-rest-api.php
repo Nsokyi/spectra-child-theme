@@ -166,6 +166,8 @@ function format_project_for_rest($post_id) {
  * Invalidate project filter transients when content changes.
  */
 add_action('save_post_video-project', 'invalidate_project_filter_cache');
+add_action('delete_post', 'invalidate_project_filter_cache_on_delete');
+add_action('wp_trash_post', 'invalidate_project_filter_cache_on_delete');
 add_action('edited_service', 'invalidate_project_filter_cache');
 add_action('edited_industry', 'invalidate_project_filter_cache');
 add_action('created_service', 'invalidate_project_filter_cache');
@@ -178,4 +180,10 @@ function invalidate_project_filter_cache() {
     $wpdb->query(
         "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_project_filter_%' OR option_name LIKE '_transient_timeout_project_filter_%'"
     );
+}
+
+function invalidate_project_filter_cache_on_delete($post_id) {
+    if (get_post_type($post_id) === 'video-project') {
+        invalidate_project_filter_cache();
+    }
 }

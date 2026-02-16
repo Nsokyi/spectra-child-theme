@@ -34,13 +34,19 @@ if ($featured_only) {
 }
 
 if ($current_term) {
-    $query_args['tax_query'] = array(
-        array(
-            'taxonomy' => $current_term['taxonomy'],
-            'field'    => 'slug',
-            'terms'    => $current_term['slug'],
-        ),
-    );
+    $allowed_taxonomies = array('service', 'industry');
+    $taxonomy = isset($current_term['taxonomy']) ? sanitize_key($current_term['taxonomy']) : '';
+    $slug = isset($current_term['slug']) ? sanitize_title($current_term['slug']) : '';
+
+    if (in_array($taxonomy, $allowed_taxonomies, true) && !empty($slug)) {
+        $query_args['tax_query'] = array(
+            array(
+                'taxonomy' => $taxonomy,
+                'field'    => 'slug',
+                'terms'    => $slug,
+            ),
+        );
+    }
 }
 
 $projects = new WP_Query($query_args);

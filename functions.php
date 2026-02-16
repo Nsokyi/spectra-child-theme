@@ -289,6 +289,7 @@ function register_video_project_fields() {
  * Helper: Resolve post ID from shortcode attributes
  */
 function resolve_video_project_id($atts) {
+    $atts = is_array($atts) ? $atts : array();
     $atts = shortcode_atts(array('id' => ''), $atts);
     $post_id = !empty($atts['id']) ? intval($atts['id']) : get_the_ID();
     
@@ -462,12 +463,17 @@ function render_video_project_credits($atts) {
         <h3 class="has-heading-color has-text-color">Production Credits</h3>
         <div class="credits-grid">
             <?php foreach ($credits as $credit) : ?>
+                <?php
+                $role = isset($credit['role']) ? $credit['role'] : '';
+                $name = isset($credit['name']) ? $credit['name'] : '';
+                if (empty($role) && empty($name)) continue;
+                ?>
                 <div class="credit-item has-surface-background-color has-background">
                     <strong class="has-neutral-color has-text-color">
-                        <?php echo esc_html($credit['role']); ?>
+                        <?php echo esc_html($role); ?>
                     </strong>
                     <span class="has-heading-color has-text-color">
-                        <?php echo esc_html($credit['name']); ?>
+                        <?php echo esc_html($name); ?>
                     </span>
                 </div>
             <?php endforeach; ?>

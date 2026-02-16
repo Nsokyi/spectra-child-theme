@@ -8,7 +8,7 @@
  */
 
 $featured_only = !empty($attributes['showFeaturedOnly']);
-$per_page      = !empty($attributes['postsPerPage']) ? intval($attributes['postsPerPage']) : 12;
+$per_page      = !empty($attributes['postsPerPage']) ? max(1, min(100, intval($attributes['postsPerPage']))) : 12;
 
 $wrapper_attributes = get_block_wrapper_attributes(array(
     'class' => 'wp-block-spectra-child-project-grid',

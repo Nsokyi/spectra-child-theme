@@ -23,7 +23,8 @@
 	align-items: center;
 	justify-content: center;
 	min-height: 44px;
-	padding: var(--wp--preset--spacing--xx-small) var(--wp--preset--spacing--small);
+	padding: var(--wp--preset--spacing--xx-small)
+		var(--wp--preset--spacing--small);
 	border: 1px solid var(--wp--preset--color--outline);
 	border-radius: var(--wp--custom--border-radius--full, 999px);
 	background: var(--wp--preset--color--background);
@@ -32,7 +33,10 @@
 	font-size: var(--wp--preset--font-size--small);
 	font-weight: var(--wp--custom--font-weight--medium, 500);
 	cursor: pointer;
-	transition: background 0.2s, color 0.2s, border-color 0.2s;
+	transition:
+		background 0.2s,
+		color 0.2s,
+		border-color 0.2s;
 	white-space: nowrap;
 }
 
@@ -68,7 +72,9 @@
 	border-radius: var(--wp--custom--border-radius--small, 8px);
 	overflow: hidden;
 	background: var(--wp--preset--color--surface);
-	transition: transform 0.2s ease, box-shadow 0.2s ease;
+	transition:
+		transform 0.2s ease,
+		box-shadow 0.2s ease;
 }
 
 .project-item:hover {
@@ -124,12 +130,17 @@
 .project-grid__empty {
 	grid-column: 1 / -1;
 	text-align: center;
-	padding: var(--wp--preset--spacing--x-large) var(--wp--preset--spacing--medium);
+	padding: var(--wp--preset--spacing--x-large)
+		var(--wp--preset--spacing--medium);
 	color: var(--wp--preset--color--neutral);
 }
 
 /* ── Skeleton Loading ── */
-.project-grid__loading {
+.project-grid__loading[hidden] {
+	display: none;
+}
+
+.project-grid__loading:not([hidden]) {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: var(--wp--preset--spacing--medium);
@@ -137,7 +148,12 @@
 
 .project-item--skeleton .project-item__image {
 	aspect-ratio: 16 / 9;
-	background: linear-gradient(90deg, var(--wp--preset--color--surface) 25%, var(--wp--preset--color--outline) 50%, var(--wp--preset--color--surface) 75%);
+	background: linear-gradient(
+		90deg,
+		var(--wp--preset--color--surface) 25%,
+		var(--wp--preset--color--outline) 50%,
+		var(--wp--preset--color--surface) 75%
+	);
 	background-size: 200% 100%;
 	animation: skeleton-shimmer 1.5s infinite;
 }
@@ -163,8 +179,12 @@
 }
 
 @keyframes skeleton-shimmer {
-	0%   { background-position: 200% 0; }
-	100% { background-position: -200% 0; }
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
+	}
 }
 
 /* ── Pagination ── */
@@ -178,7 +198,8 @@
 	align-items: center;
 	justify-content: center;
 	min-height: 44px;
-	padding: var(--wp--preset--spacing--xx-small) var(--wp--preset--spacing--medium);
+	padding: var(--wp--preset--spacing--xx-small)
+		var(--wp--preset--spacing--medium);
 	border: 1px solid var(--wp--preset--color--primary);
 	border-radius: var(--wp--custom--border-radius--full, 999px);
 	background: transparent;
@@ -187,7 +208,9 @@
 	font-size: var(--wp--preset--font-size--small);
 	font-weight: var(--wp--custom--font-weight--medium, 500);
 	cursor: pointer;
-	transition: background 0.2s, color 0.2s;
+	transition:
+		background 0.2s,
+		color 0.2s;
 }
 
 .project-grid__load-more:hover {
