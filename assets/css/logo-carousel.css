@@ -1,0 +1,75 @@
+/**
+ * Logo Carousel — CSS-only infinite scroll
+ */
+
+.wp-block-spectra-child-logo-carousel {
+	--carousel-speed: 30s;
+	--logo-height: 50px;
+	overflow: hidden;
+	position: relative;
+}
+
+.logo-carousel__track {
+	display: flex;
+	width: max-content;
+	animation: logo-scroll var(--carousel-speed) linear infinite;
+}
+
+.logo-carousel__set {
+	display: flex;
+	align-items: center;
+	gap: var(--wp--preset--spacing--large, 3rem);
+	padding-inline: calc(var(--wp--preset--spacing--large, 3rem) / 2);
+}
+
+.logo-carousel__item {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	text-decoration: none;
+}
+
+.logo-carousel__item img {
+	display: block;
+	height: var(--logo-height);
+	width: auto;
+	max-width: 160px;
+	object-fit: contain;
+	filter: grayscale(100%);
+	opacity: 0.6;
+	transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.logo-carousel__item:hover img {
+	filter: grayscale(0%);
+	opacity: 1;
+}
+
+@keyframes logo-scroll {
+	0% {
+		transform: translateX(0);
+	}
+	100% {
+		transform: translateX(-50%);
+	}
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+	.logo-carousel__track {
+		animation: none;
+		flex-wrap: wrap;
+		width: 100%;
+		justify-content: center;
+	}
+
+	.logo-carousel__set:nth-child(2) {
+		display: none;
+	}
+
+	.logo-carousel__item img {
+		filter: grayscale(0%);
+		opacity: 1;
+	}
+}
