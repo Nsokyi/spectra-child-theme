@@ -1,0 +1,25 @@
+{
+    "apiVersion": 3,
+    "name": "spectra-child/project-grid",
+    "title": "Project Grid",
+    "description": "Filterable grid of video projects with taxonomy filters.",
+    "category": "media",
+    "icon": "grid-view",
+    "keywords": ["project", "video", "portfolio", "grid", "filter"],
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"]
+    },
+    "attributes": {
+        "showFeaturedOnly": {
+            "type": "boolean",
+            "default": false
+        },
+        "postsPerPage": {
+            "type": "number",
+            "default": 12
+        }
+    },
+    "editorScript": "file:./editor.js",
+    "render": "file:./render.php"
+}
