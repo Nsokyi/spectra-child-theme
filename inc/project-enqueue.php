@@ -14,6 +14,14 @@ function enqueue_project_grid_assets() {
         || is_tax('industry')
         || is_post_type_archive('video-project');
 
+    // Also detect [project_grid] shortcode in current post/page content.
+    if (!$should_load) {
+        $post = get_queried_object();
+        if ($post instanceof WP_Post && has_shortcode($post->post_content, 'project_grid')) {
+            $should_load = true;
+        }
+    }
+
     if (!$should_load) {
         return;
     }
