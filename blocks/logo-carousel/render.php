@@ -15,18 +15,23 @@ if (empty($logos)) {
     return;
 }
 
+// Repeat logos enough times so the track is always wider than the viewport.
+// We need at least 2 full copies; with few logos we need more.
+$logo_count = count($logos);
+$repeats    = max(2, ceil(12 / $logo_count)) * 2;
+
 $wrapper_attributes = get_block_wrapper_attributes(array(
     'class' => 'wp-block-spectra-child-logo-carousel',
     'role'  => 'region',
     'aria-label' => __('Client Logos', 'spectra-child'),
-    'style' => '--carousel-speed: ' . esc_attr($speed) . 's; --logo-height: ' . esc_attr($logo_height) . 'px;',
+    'style' => '--carousel-speed: ' . esc_attr($speed) . 's; --logo-height: ' . esc_attr($logo_height) . 'px; --carousel-items: ' . esc_attr($repeats / 2) . ';',
 ));
 ?>
 
 <div <?php echo $wrapper_attributes; ?>>
     <div class="logo-carousel__track">
-        <?php for ($set = 0; $set < 2; $set++) : ?>
-            <div class="logo-carousel__set" aria-hidden="<?php echo $set > 0 ? 'true' : 'false'; ?>">
+        <?php for ($r = 0; $r < $repeats; $r++) : ?>
+            <div class="logo-carousel__set" <?php echo $r >= ($repeats / 2) ? 'aria-hidden="true"' : ''; ?>>
                 <?php foreach ($logos as $logo) :
                     if (empty($logo['url'])) continue;
                     $alt  = !empty($logo['alt']) ? $logo['alt'] : '';
