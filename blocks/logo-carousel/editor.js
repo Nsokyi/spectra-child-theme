@@ -8,6 +8,23 @@
 	var TextControl = components.TextControl;
 
 	blocks.registerBlockType("spectra-child/logo-carousel", {
+		attributes: {
+			logos: {
+				type: "array",
+				default: [],
+				items: {
+					type: "object",
+				},
+			},
+			speed: {
+				type: "number",
+				default: 30,
+			},
+			logoHeight: {
+				type: "number",
+				default: 50,
+			},
+		},
 		edit: function (props) {
 			var blockProps = blockEditor.useBlockProps();
 			var logos = props.attributes.logos || [];
@@ -35,7 +52,8 @@
 			}
 
 			function onSelectImages(media) {
-				var newLogos = media.map(function (img) {
+				var mediaArray = Array.isArray(media) ? media : [media];
+				var newLogos = mediaArray.map(function (img) {
 					return {
 						id: img.id,
 						url: img.url,
@@ -73,7 +91,7 @@
 							},
 							min: 20,
 							max: 200,
-						})
+						}),
 					),
 					el(
 						PanelBody,
@@ -90,8 +108,8 @@
 										placeholder: "https://",
 									});
 								})
-							: el("p", null, "Add logos first.")
-					)
+							: el("p", null, "Add logos first."),
+					),
 				),
 				el(
 					"div",
@@ -110,7 +128,7 @@
 									fontStyle: "italic",
 								},
 							},
-							"For best results, use SVG logos. Add or remove logos below."
+							"For best results, use SVG logos. Add or remove logos below.",
 						),
 						logos.length > 0
 							? el(
@@ -165,9 +183,9 @@
 													borderRadius: "50%",
 												},
 												label: "Remove logo",
-											})
+											}),
 										);
-									})
+									}),
 								)
 							: null,
 						el(MediaUpload, {
@@ -181,12 +199,12 @@
 										onClick: obj.open,
 										variant: "secondary",
 									},
-									logos.length > 0 ? "Add More Logos" : "Add Logos"
+									logos.length > 0 ? "Add More Logos" : "Add Logos",
 								);
 							},
-						})
-					)
-				)
+						}),
+					),
+				),
 			);
 		},
 	});
@@ -194,5 +212,5 @@
 	window.wp.blocks,
 	window.wp.element,
 	window.wp.blockEditor,
-	window.wp.components
+	window.wp.components,
 );

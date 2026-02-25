@@ -7,5 +7,5 @@ return array(
         'wp-components',
         'wp-server-side-render',
     ),
-    'version' => filemtime(__DIR__ . '/editor.js'),
+    'version' => file_exists(__DIR__ . '/editor.js') ? filemtime(__DIR__ . '/editor.js') : '0.0.0',
 );

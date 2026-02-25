@@ -7,6 +7,16 @@
 	var ServerSideRender = serverSideRender;
 
 	blocks.registerBlockType("spectra-child/project-grid", {
+		attributes: {
+			showFeaturedOnly: {
+				type: "boolean",
+				default: false,
+			},
+			postsPerPage: {
+				type: "number",
+				default: 12,
+			},
+		},
 		edit: function (props) {
 			var blockProps = blockEditor.useBlockProps();
 			return el(

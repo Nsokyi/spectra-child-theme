@@ -39,11 +39,13 @@ $wrapper_attributes = get_block_wrapper_attributes(array(
                 ?>
                     <?php if ($link) : ?>
                         <a href="<?php echo esc_url($link); ?>" class="logo-carousel__item" target="_blank" rel="noopener noreferrer">
-                            <img src="<?php echo esc_url($logo['url']); ?>" alt="<?php echo esc_attr($alt); ?>" loading="lazy">
+                            <img src="<?php echo esc_url($logo['url']); ?>" alt="<?php echo esc_attr($alt); ?>"
+                                 height="<?php echo esc_attr($logo_height); ?>" loading="lazy">
                         </a>
                     <?php else : ?>
                         <span class="logo-carousel__item">
-                            <img src="<?php echo esc_url($logo['url']); ?>" alt="<?php echo esc_attr($alt); ?>" loading="lazy">
+                            <img src="<?php echo esc_url($logo['url']); ?>" alt="<?php echo esc_attr($alt); ?>"
+                                 height="<?php echo esc_attr($logo_height); ?>" loading="lazy">
                         </span>
                     <?php endif; ?>
                 <?php endforeach; ?>

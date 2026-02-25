@@ -29,10 +29,14 @@ function enqueue_logo_carousel_assets() {
     $theme_dir = get_stylesheet_directory();
     $css_path  = $theme_dir . '/assets/css/logo-carousel.css';
 
+    if (!file_exists($css_path)) {
+        return;
+    }
+
     wp_enqueue_style(
         'logo-carousel',
         $theme_uri . '/assets/css/logo-carousel.css',
         array(),
-        file_exists($css_path) ? filemtime($css_path) : null
+        filemtime($css_path)
     );
 }
