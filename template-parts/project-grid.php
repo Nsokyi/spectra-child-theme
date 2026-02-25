@@ -59,15 +59,15 @@ $active_industry = $current_term && $current_term['taxonomy'] === 'industry' ? $
      data-featured="<?php echo $featured_only ? '1' : ''; ?>"
      data-per-page="<?php echo esc_attr($per_page); ?>">
 
-    <?php if (!is_wp_error($services) && !empty($services)) : ?>
-        <div class="project-filters" data-taxonomy="service" role="group" aria-label="<?php esc_attr_e('Filter by service', 'spectra-child'); ?>">
-            <button class="project-filters__btn<?php echo empty($active_service) ? ' is-active' : ''; ?>"
+    <?php if (!is_wp_error($industries) && !empty($industries)) : ?>
+        <div class="project-filters project-filters--primary" data-taxonomy="industry" role="group" aria-label="<?php esc_attr_e('Filter by industry', 'spectra-child'); ?>">
+            <button class="project-filters__btn<?php echo empty($active_industry) ? ' is-active' : ''; ?>"
                     data-slug=""
                     type="button">
-                <?php esc_html_e('All Services', 'spectra-child'); ?>
+                <?php esc_html_e('All Projects', 'spectra-child'); ?>
             </button>
-            <?php foreach ($services as $term) : ?>
-                <button class="project-filters__btn<?php echo $active_service === $term->slug ? ' is-active' : ''; ?>"
+            <?php foreach ($industries as $term) : ?>
+                <button class="project-filters__btn<?php echo $active_industry === $term->slug ? ' is-active' : ''; ?>"
                         data-slug="<?php echo esc_attr($term->slug); ?>"
                         type="button">
                     <?php echo esc_html($term->name); ?>
@@ -76,15 +76,15 @@ $active_industry = $current_term && $current_term['taxonomy'] === 'industry' ? $
         </div>
     <?php endif; ?>
 
-    <?php if (!is_wp_error($industries) && !empty($industries)) : ?>
-        <div class="project-filters" data-taxonomy="industry" role="group" aria-label="<?php esc_attr_e('Filter by industry', 'spectra-child'); ?>">
-            <button class="project-filters__btn<?php echo empty($active_industry) ? ' is-active' : ''; ?>"
+    <?php if (!is_wp_error($services) && !empty($services)) : ?>
+        <div class="project-filters project-filters--secondary<?php echo !empty($active_industry) ? ' is-visible' : ''; ?>" data-taxonomy="service" role="group" aria-label="<?php esc_attr_e('Filter by service', 'spectra-child'); ?>">
+            <button class="project-filters__btn<?php echo empty($active_service) ? ' is-active' : ''; ?>"
                     data-slug=""
                     type="button">
-                <?php esc_html_e('All Industries', 'spectra-child'); ?>
+                <?php esc_html_e('All Services', 'spectra-child'); ?>
             </button>
-            <?php foreach ($industries as $term) : ?>
-                <button class="project-filters__btn<?php echo $active_industry === $term->slug ? ' is-active' : ''; ?>"
+            <?php foreach ($services as $term) : ?>
+                <button class="project-filters__btn<?php echo $active_service === $term->slug ? ' is-active' : ''; ?>"
                         data-slug="<?php echo esc_attr($term->slug); ?>"
                         type="button">
                     <?php echo esc_html($term->name); ?>

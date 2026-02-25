@@ -19,6 +19,8 @@
 	var perPage = parseInt(wrap.dataset.perPage, 10) || 12;
 	var debounceId = null;
 
+	var secondaryFilter = wrap.querySelector(".project-filters--secondary");
+
 	var state = {
 		service: [],
 		industry: [],
@@ -33,8 +35,24 @@
 		if (s) state.service = s.split(",");
 		if (i) state.industry = i.split(",");
 
-		// Sync button active states with URL.
+		// Also check for pre-selected term from taxonomy archive context.
+		if (
+			projectFilterData.currentTerm &&
+			projectFilterData.currentTerm.taxonomy === "industry" &&
+			!state.industry.length
+		) {
+			state.industry = [projectFilterData.currentTerm.slug];
+		}
+		if (
+			projectFilterData.currentTerm &&
+			projectFilterData.currentTerm.taxonomy === "service" &&
+			!state.service.length
+		) {
+			state.service = [projectFilterData.currentTerm.slug];
+		}
+
 		syncButtons();
+		syncSecondaryVisibility();
 	}
 
 	function syncButtons() {
@@ -53,25 +71,64 @@
 		});
 	}
 
-	// Bind filter button clicks.
-	wrap.querySelectorAll(".project-filters").forEach(function (group) {
-		var taxonomy = group.dataset.taxonomy;
+	function syncSecondaryVisibility() {
+		if (!secondaryFilter) return;
+		if (state.industry.length > 0) {
+			secondaryFilter.classList.add("is-visible");
+		} else {
+			secondaryFilter.classList.remove("is-visible");
+		}
+	}
 
-		group.addEventListener("click", function (e) {
+	// Bind primary filter (industry) clicks — single-select.
+	var primaryFilter = wrap.querySelector(".project-filters--primary");
+	if (primaryFilter) {
+		primaryFilter.addEventListener("click", function (e) {
 			var btn = e.target.closest(".project-filters__btn");
 			if (!btn) return;
 
 			var slug = btn.dataset.slug;
 
 			if (slug === "") {
-				// "All" button — clear this taxonomy's selections.
-				state[taxonomy] = [];
+				// "All Projects" — clear industry and service selections.
+				state.industry = [];
+				state.service = [];
 			} else {
-				var idx = state[taxonomy].indexOf(slug);
-				if (idx !== -1) {
-					state[taxonomy].splice(idx, 1);
+				// Single-select: clicking the same industry deselects it.
+				if (state.industry.length === 1 && state.industry[0] === slug) {
+					state.industry = [];
+					state.service = [];
 				} else {
-					state[taxonomy].push(slug);
+					state.industry = [slug];
+					state.service = [];
+				}
+			}
+
+			state.paged = 1;
+			syncButtons();
+			syncSecondaryVisibility();
+			updateURL();
+			debounceFetch();
+		});
+	}
+
+	// Bind secondary filter (service) clicks — single-select.
+	if (secondaryFilter) {
+		secondaryFilter.addEventListener("click", function (e) {
+			var btn = e.target.closest(".project-filters__btn");
+			if (!btn) return;
+
+			var slug = btn.dataset.slug;
+
+			if (slug === "") {
+				// "All Services" — clear service selection.
+				state.service = [];
+			} else {
+				// Single-select: clicking the same service deselects it.
+				if (state.service.length === 1 && state.service[0] === slug) {
+					state.service = [];
+				} else {
+					state.service = [slug];
 				}
 			}
 
@@ -80,7 +137,7 @@
 			updateURL();
 			debounceFetch();
 		});
-	});
+	}
 
 	// Load more button.
 	if (loadMore) {
