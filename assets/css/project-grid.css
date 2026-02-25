@@ -60,6 +60,7 @@
 
 .project-filters--secondary.is-visible {
 	display: flex;
+	margin-bottom: var(--wp--preset--spacing--small);
 }
 
 /* ── Project Grid ── */

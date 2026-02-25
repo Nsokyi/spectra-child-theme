@@ -19,6 +19,8 @@
 	var perPage = parseInt(wrap.dataset.perPage, 10) || 12;
 	var debounceId = null;
 
+	if (typeof projectFilterData === "undefined") return;
+
 	var secondaryFilter = wrap.querySelector(".project-filters--secondary");
 
 	var state = {
