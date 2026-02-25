@@ -1,0 +1,32 @@
+{
+	"apiVersion": 3,
+	"name": "spectra-child/logo-carousel",
+	"title": "Logo Carousel",
+	"description": "An infinite-scrolling client logo carousel. For best results, use SVG logos.",
+	"category": "media",
+	"icon": "slides",
+	"keywords": ["logo", "carousel", "client", "brand", "slider"],
+	"supports": {
+		"html": false,
+		"align": ["wide", "full"]
+	},
+	"attributes": {
+		"logos": {
+			"type": "array",
+			"default": [],
+			"items": {
+				"type": "object"
+			}
+		},
+		"speed": {
+			"type": "number",
+			"default": 30
+		},
+		"logoHeight": {
+			"type": "number",
+			"default": 50
+		}
+	},
+	"editorScript": "file:./editor.js",
+	"render": "file:./render.php"
+}
