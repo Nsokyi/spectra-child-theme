@@ -51,6 +51,18 @@
 	color: var(--wp--preset--color--background);
 }
 
+/* ── Secondary Filter (hidden by default, revealed on industry selection) ── */
+.project-filters--secondary {
+	display: none;
+	padding-top: var(--wp--preset--spacing--xx-small);
+	border-top: 1px solid var(--wp--preset--color--outline);
+}
+
+.project-filters--secondary.is-visible {
+	display: flex;
+	margin-bottom: var(--wp--preset--spacing--small);
+}
+
 /* ── Project Grid ── */
 .project-grid {
 	display: grid;
