@@ -99,10 +99,6 @@ $active_industry = $current_term && $current_term['taxonomy'] === 'industry' ? $
                 <?php
                 $post_id       = get_the_ID();
                 $thumbnail_url = get_the_post_thumbnail_url($post_id, 'medium_large');
-                $custom_thumb  = carbon_get_post_meta($post_id, 'custom_thumbnail');
-                if (!empty($custom_thumb)) {
-                    $thumbnail_url = $custom_thumb;
-                }
                 $client = carbon_get_post_meta($post_id, 'client_name');
                 ?>
                 <a href="<?php the_permalink(); ?>" class="project-item">

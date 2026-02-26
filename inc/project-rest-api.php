@@ -137,11 +137,6 @@ function format_project_for_rest($post_id) {
     $thumbnail_id  = get_post_thumbnail_id($post_id);
     $thumbnail_url = $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'medium_large') : '';
 
-    $custom_thumb = carbon_get_post_meta($post_id, 'custom_thumbnail');
-    if (!empty($custom_thumb)) {
-        $thumbnail_url = $custom_thumb;
-    }
-
     $services   = get_the_terms($post_id, 'service');
     $industries = get_the_terms($post_id, 'industry');
 

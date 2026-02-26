@@ -61,6 +61,18 @@ function video_project_enqueue_block_styles() {
     if (is_singular('video-project')) {
         // Ensure global styles are loaded
         wp_enqueue_style('global-styles');
+
+        $theme_uri = get_stylesheet_directory_uri();
+        $css_path  = get_stylesheet_directory() . '/assets/css/project-testimonial.css';
+
+        if (file_exists($css_path)) {
+            wp_enqueue_style(
+                'project-testimonial',
+                $theme_uri . '/assets/css/project-testimonial.css',
+                array(),
+                filemtime($css_path)
+            );
+        }
     }
 }
 
@@ -245,11 +257,6 @@ function register_video_project_fields() {
                 ->set_attribute('placeholder', '2:30')
                 ->set_help_text(__('Format: MM:SS or H:MM:SS'))
                 ->set_width(30),
-            
-            Field::make('image', 'custom_thumbnail', __('Custom Thumbnail'))
-                ->set_help_text(__('Optional: Leave blank to use the Featured Image'))
-                ->set_value_type('url')
-                ->set_width(70),
         ))
         
         // === PROJECT INFO TAB ===
@@ -283,6 +290,36 @@ function register_video_project_fields() {
                 ->set_header_template('<%- role %>: <%- name %>')
                 ->set_layout('tabbed-horizontal')
                 ->set_collapsed(true),
+        ))
+        
+        // === CLIENT TESTIMONIAL TAB ===
+        ->add_tab(__('Client Testimonial'), array(
+            Field::make('select', 'testimonial_rating', __('Star Rating'))
+                ->set_options(array(
+                    ''  => __('— Select rating —'),
+                    '1' => '★ (1 star)',
+                    '2' => '★★ (2 stars)',
+                    '3' => '★★★ (3 stars)',
+                    '4' => '★★★★ (4 stars)',
+                    '5' => '★★★★★ (5 stars)',
+                ))
+                ->set_help_text(__('Required for testimonial to display'))
+                ->set_width(30),
+            
+            Field::make('textarea', 'testimonial_text', __('Testimonial'))
+                ->set_attribute('placeholder', __('What the client said about the project…'))
+                ->set_help_text(__('Required for testimonial to display'))
+                ->set_rows(4),
+            
+            Field::make('text', 'testimonial_author', __('Author Name'))
+                ->set_attribute('placeholder', __('e.g., Jane Smith, Marketing Director'))
+                ->set_help_text(__('Optional: Name and title of the person giving the testimonial'))
+                ->set_width(50),
+            
+            Field::make('image', 'testimonial_photo', __('Author Photo'))
+                ->set_help_text(__('Optional: Small portrait of the testimonial author'))
+                ->set_value_type('url')
+                ->set_width(50),
         ));
 }
 
@@ -479,6 +516,68 @@ function render_video_project_credits($atts) {
                 </div>
             <?php endforeach; ?>
         </div>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+
+/**
+ * Shortcode: Display Client Testimonial
+ *
+ * Requires both testimonial_rating and testimonial_text to render.
+ * Author name and photo are optional.
+ */
+add_shortcode('video_project_testimonial', 'render_video_project_testimonial');
+function render_video_project_testimonial($atts) {
+    $post_id = resolve_video_project_id($atts);
+    if (!$post_id) {
+        return '';
+    }
+
+    $rating = carbon_get_post_meta($post_id, 'testimonial_rating');
+    $text   = carbon_get_post_meta($post_id, 'testimonial_text');
+
+    if (!$rating || !$text) {
+        return '';
+    }
+
+    $rating = intval($rating);
+    $author = carbon_get_post_meta($post_id, 'testimonial_author');
+    $photo  = carbon_get_post_meta($post_id, 'testimonial_photo');
+
+    $star_svg = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+    $empty_star_svg = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+
+    ob_start();
+    ?>
+    <div class="project-testimonial wp-block-group">
+        <div class="project-testimonial__stars" role="img" aria-label="<?php echo esc_attr(sprintf(__('%d out of 5 stars', 'spectra-child'), $rating)); ?>">
+            <?php for ($i = 1; $i <= 5; $i++) : ?>
+                <span class="project-testimonial__star<?php echo $i <= $rating ? ' is-filled' : ''; ?>">
+                    <?php echo $i <= $rating ? $star_svg : $empty_star_svg; ?>
+                </span>
+            <?php endfor; ?>
+        </div>
+
+        <blockquote class="project-testimonial__quote">
+            <p class="has-body-color has-text-color"><?php echo esc_html($text); ?></p>
+        </blockquote>
+
+        <?php if ($author || $photo) : ?>
+            <div class="project-testimonial__author">
+                <?php if ($photo) : ?>
+                    <img class="project-testimonial__photo"
+                         src="<?php echo esc_url($photo); ?>"
+                         alt="<?php echo esc_attr($author ?: __('Client photo', 'spectra-child')); ?>"
+                         width="48"
+                         height="48"
+                         loading="lazy">
+                <?php endif; ?>
+                <?php if ($author) : ?>
+                    <span class="project-testimonial__name has-heading-color has-text-color"><?php echo esc_html($author); ?></span>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     </div>
     <?php
     return ob_get_clean();

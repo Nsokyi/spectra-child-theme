@@ -1,0 +1,67 @@
+/**
+ * Project Testimonial — Client quote with star rating
+ */
+
+.project-testimonial {
+	padding: var(--wp--preset--spacing--medium);
+	background: var(--wp--preset--color--surface);
+	border-radius: var(--wp--custom--border-radius--small, 8px);
+	margin-top: var(--wp--preset--spacing--medium);
+}
+
+/* ── Star Rating ── */
+.project-testimonial__stars {
+	display: flex;
+	gap: 2px;
+	margin-bottom: var(--wp--preset--spacing--small);
+}
+
+.project-testimonial__star {
+	display: inline-flex;
+	color: var(--wp--preset--color--outline);
+}
+
+.project-testimonial__star.is-filled {
+	color: var(--wp--preset--color--primary);
+}
+
+/* ── Quote ── */
+.project-testimonial__quote {
+	margin: 0 0 var(--wp--preset--spacing--small);
+	padding: 0;
+	border: none;
+	font-style: italic;
+	font-size: var(--wp--preset--font-size--medium);
+	line-height: var(--wp--custom--line-height--medium, 1.6);
+}
+
+.project-testimonial__quote p {
+	margin: 0;
+}
+
+/* ── Author ── */
+.project-testimonial__author {
+	display: flex;
+	align-items: center;
+	gap: var(--wp--preset--spacing--xx-small);
+}
+
+.project-testimonial__photo {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	object-fit: cover;
+	flex-shrink: 0;
+}
+
+.project-testimonial__name {
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: var(--wp--custom--font-weight--semi-bold, 600);
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+	.project-testimonial__star svg {
+		transition: none;
+	}
+}
