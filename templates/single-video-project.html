@@ -2,30 +2,54 @@
 
 <!-- wp:group {"tagName":"main","layout":{"type":"constrained"}} -->
 <main class="wp-block-group">
+	<!-- wp:post-title {"level":1} /-->
+
 	<!-- wp:shortcode -->
 	[video_project_embed]
 	<!-- /wp:shortcode -->
 
-	<!-- wp:group {"layout":{"type":"constrained","contentSize":"800px"}} -->
+	<!-- wp:group {"className":"project-description-layout","layout":{"type":"constrained","contentSize":"1200px"}} -->
+	<div class="wp-block-group project-description-layout">
+		<!-- wp:columns -->
+		<div class="wp-block-columns">
+			<!-- wp:column {"width":"65%","className":"project-description-col"} -->
+			<div
+				class="wp-block-column project-description-col"
+				style="flex-basis: 65%">
+				<!-- wp:post-content /-->
+
+				<!-- wp:shortcode -->
+				[video_project_credits]
+				<!-- /wp:shortcode -->
+			</div>
+			<!-- /wp:column -->
+
+			<!-- wp:column {"width":"35%","className":"project-meta-col"} -->
+			<div
+				class="wp-block-column project-meta-col"
+				style="flex-basis: 35%">
+				<!-- wp:shortcode -->
+				[video_project_meta]
+				<!-- /wp:shortcode -->
+			</div>
+			<!-- /wp:column -->
+		</div>
+		<!-- /wp:columns -->
+	</div>
+	<!-- /wp:group -->
+
+	<!-- wp:group {"layout":{"type":"constrained","contentSize":"1200px"}} -->
 	<div class="wp-block-group">
-		<!-- wp:post-title {"level":1} /-->
-
 		<!-- wp:shortcode -->
-		[video_project_meta]
-		<!-- /wp:shortcode -->
-
-		<!-- wp:post-content /-->
-
-		<!-- wp:shortcode -->
-		[video_project_taxonomies]
-		<!-- /wp:shortcode -->
-
-		<!-- wp:shortcode -->
-		[video_project_credits]
+		[video_project_stills]
 		<!-- /wp:shortcode -->
 
 		<!-- wp:shortcode -->
 		[video_project_testimonial]
+		<!-- /wp:shortcode -->
+
+		<!-- wp:shortcode -->
+		[video_project_similar]
 		<!-- /wp:shortcode -->
 	</div>
 	<!-- /wp:group -->
