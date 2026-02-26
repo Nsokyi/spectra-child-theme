@@ -63,12 +63,12 @@ function video_project_enqueue_block_styles() {
         wp_enqueue_style('global-styles');
 
         $theme_uri = get_stylesheet_directory_uri();
-        $css_path  = get_stylesheet_directory() . '/assets/css/project-testimonial.css';
+        $css_path  = get_stylesheet_directory() . '/assets/css/single-project.css';
 
         if (file_exists($css_path)) {
             wp_enqueue_style(
-                'project-testimonial',
-                $theme_uri . '/assets/css/project-testimonial.css',
+                'single-project',
+                $theme_uri . '/assets/css/single-project.css',
                 array(),
                 filemtime($css_path)
             );
@@ -292,6 +292,13 @@ function register_video_project_fields() {
                 ->set_collapsed(true),
         ))
         
+        // === PRODUCTION STILLS TAB ===
+        ->add_tab(__('Production Stills'), array(
+            Field::make('media_gallery', 'production_stills', __('Stills Gallery'))
+                ->set_type(array('image'))
+                ->set_help_text(__('Upload still images from the video project. These will display in a grid on the front-end.')),
+        ))
+        
         // === CLIENT TESTIMONIAL TAB ===
         ->add_tab(__('Client Testimonial'), array(
             Field::make('select', 'testimonial_rating', __('Star Rating'))
@@ -348,37 +355,68 @@ function render_video_project_meta($atts) {
         return '';
     }
     
-    $client_name = carbon_get_post_meta($post_id, 'client_name');
-    $agency = carbon_get_post_meta($post_id, 'agency');
-    $is_featured = carbon_get_post_meta($post_id, 'featured_project');
+    $client_name    = carbon_get_post_meta($post_id, 'client_name');
+    $agency         = carbon_get_post_meta($post_id, 'agency');
+    $video_duration = carbon_get_post_meta($post_id, 'video_duration');
+    $is_featured    = carbon_get_post_meta($post_id, 'featured_project');
+    $services       = get_the_terms($post_id, 'service');
+    $industries     = get_the_terms($post_id, 'industry');
     
     ob_start();
     ?>
-    <div class="video-project-meta">
+    <aside class="video-project-meta">
         <?php if ($is_featured) : ?>
             <div class="featured-badge has-primary-background-color has-background">
                 ⭐ Featured Project
             </div>
         <?php endif; ?>
         
-        <?php if ($client_name || $agency) : ?>
-            <div class="project-info">
-                <?php if ($client_name) : ?>
-                    <div class="client-info">
-                        <strong class="has-neutral-color has-text-color">Client</strong>
-                        <span class="has-heading-color has-text-color"><?php echo esc_html($client_name); ?></span>
-                    </div>
-                <?php endif; ?>
-                
-                <?php if ($agency) : ?>
-                    <div class="agency-info">
-                        <strong class="has-neutral-color has-text-color">Agency</strong>
-                        <span class="has-heading-color has-text-color"><?php echo esc_html($agency); ?></span>
-                    </div>
-                <?php endif; ?>
-            </div>
-        <?php endif; ?>
-    </div>
+        <dl class="project-meta__list">
+            <?php if ($client_name) : ?>
+                <div class="project-meta__item">
+                    <dt class="has-neutral-color has-text-color">Client</dt>
+                    <dd class="has-heading-color has-text-color"><?php echo esc_html($client_name); ?></dd>
+                </div>
+            <?php endif; ?>
+            
+            <?php if ($agency) : ?>
+                <div class="project-meta__item">
+                    <dt class="has-neutral-color has-text-color">Agency</dt>
+                    <dd class="has-heading-color has-text-color"><?php echo esc_html($agency); ?></dd>
+                </div>
+            <?php endif; ?>
+            
+            <?php if ($video_duration) : ?>
+                <div class="project-meta__item">
+                    <dt class="has-neutral-color has-text-color">Duration</dt>
+                    <dd class="has-heading-color has-text-color"><?php echo esc_html($video_duration); ?></dd>
+                </div>
+            <?php endif; ?>
+            
+            <?php if ($services && !is_wp_error($services)) : ?>
+                <div class="project-meta__item">
+                    <dt class="has-neutral-color has-text-color">Services</dt>
+                    <dd class="has-heading-color has-text-color">
+                        <?php echo esc_html(implode(', ', wp_list_pluck($services, 'name'))); ?>
+                    </dd>
+                </div>
+            <?php endif; ?>
+            
+            <?php if ($industries && !is_wp_error($industries)) : ?>
+                <div class="project-meta__item">
+                    <dt class="has-neutral-color has-text-color">Industry</dt>
+                    <dd class="has-heading-color has-text-color">
+                        <?php echo esc_html(implode(', ', wp_list_pluck($industries, 'name'))); ?>
+                    </dd>
+                </div>
+            <?php endif; ?>
+        </dl>
+
+        <a class="project-meta__cta wp-block-button__link has-primary-background-color has-background"
+           href="<?php echo esc_url(home_url('/contact-us/')); ?>">
+            <?php esc_html_e('Start Your Project', 'spectra-child'); ?>
+        </a>
+    </aside>
     <?php
     return ob_get_clean();
 }
@@ -580,5 +618,121 @@ function render_video_project_testimonial($atts) {
         <?php endif; ?>
     </div>
     <?php
+    return ob_get_clean();
+}
+
+/**
+ * Shortcode: Display Production Stills Gallery
+ */
+add_shortcode('video_project_stills', 'render_video_project_stills');
+function render_video_project_stills($atts) {
+    $post_id = resolve_video_project_id($atts);
+    if (!$post_id) {
+        return '';
+    }
+
+    $stills = carbon_get_post_meta($post_id, 'production_stills');
+
+    if (!$stills || empty($stills)) {
+        return '';
+    }
+
+    ob_start();
+    ?>
+    <div class="project-stills wp-block-group">
+        <h2 class="has-heading-color has-text-color">Production Stills</h2>
+        <div class="project-stills__grid">
+            <?php foreach ($stills as $image_id) : ?>
+                <?php
+                $img_url = wp_get_attachment_image_url($image_id, 'large');
+                $img_alt = get_post_meta($image_id, '_wp_attachment_image_alt', true);
+                $img_full = wp_get_attachment_image_url($image_id, 'full');
+                if (!$img_url) continue;
+                ?>
+                <a class="project-stills__item" href="<?php echo esc_url($img_full); ?>" target="_blank" rel="noopener">
+                    <img src="<?php echo esc_url($img_url); ?>"
+                         alt="<?php echo esc_attr($img_alt ?: __('Production still', 'spectra-child')); ?>"
+                         width="600"
+                         height="400"
+                         loading="lazy">
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+
+/**
+ * Shortcode: Display Similar Projects
+ *
+ * Queries posts sharing the same service AND/OR industry taxonomies.
+ */
+add_shortcode('video_project_similar', 'render_video_project_similar');
+function render_video_project_similar($atts) {
+    $post_id = resolve_video_project_id($atts);
+    if (!$post_id) {
+        return '';
+    }
+
+    $services   = wp_get_post_terms($post_id, 'service', array('fields' => 'ids'));
+    $industries = wp_get_post_terms($post_id, 'industry', array('fields' => 'ids'));
+
+    if (empty($services) && empty($industries)) {
+        return '';
+    }
+
+    $tax_query = array('relation' => 'OR');
+
+    if (!empty($services)) {
+        $tax_query[] = array(
+            'taxonomy' => 'service',
+            'field'    => 'term_id',
+            'terms'    => $services,
+        );
+    }
+
+    if (!empty($industries)) {
+        $tax_query[] = array(
+            'taxonomy' => 'industry',
+            'field'    => 'term_id',
+            'terms'    => $industries,
+        );
+    }
+
+    $similar = new WP_Query(array(
+        'post_type'      => 'video-project',
+        'posts_per_page' => 4,
+        'post__not_in'   => array($post_id),
+        'tax_query'      => $tax_query,
+        'orderby'        => 'rand',
+    ));
+
+    if (!$similar->have_posts()) {
+        return '';
+    }
+
+    ob_start();
+    ?>
+    <div class="project-similar wp-block-group">
+        <h2 class="has-heading-color has-text-color">Similar Projects</h2>
+        <div class="project-similar__grid">
+            <?php while ($similar->have_posts()) : $similar->the_post(); ?>
+                <a class="project-similar__item" href="<?php the_permalink(); ?>">
+                    <?php if (has_post_thumbnail()) : ?>
+                        <div class="project-similar__thumb">
+                            <?php the_post_thumbnail('medium_large'); ?>
+                        </div>
+                    <?php endif; ?>
+                    <h3 class="project-similar__title has-heading-color has-text-color"><?php the_title(); ?></h3>
+                    <span class="project-similar__client has-neutral-color has-text-color">
+                        <?php echo esc_html(carbon_get_post_meta(get_the_ID(), 'client_name')); ?>
+                    </span>
+                </a>
+            <?php endwhile; ?>
+        </div>
+    </div>
+    <?php
+    wp_reset_postdata();
     return ob_get_clean();
 }
