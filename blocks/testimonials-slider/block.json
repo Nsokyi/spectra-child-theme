@@ -1,0 +1,32 @@
+{
+	"apiVersion": 3,
+	"name": "spectra-child/testimonials-slider",
+	"title": "Testimonials Slider",
+	"description": "A horizontal testimonial slider with client quotes, star ratings, photos, and navigation arrows.",
+	"category": "media",
+	"icon": "format-quote",
+	"keywords": ["testimonial", "slider", "review", "quote", "stars", "carousel"],
+	"supports": {
+		"html": false,
+		"align": ["wide", "full"]
+	},
+	"attributes": {
+		"testimonials": {
+			"type": "array",
+			"default": [],
+			"items": {
+				"type": "object"
+			}
+		},
+		"autoSlide": {
+			"type": "boolean",
+			"default": false
+		},
+		"autoSlideSpeed": {
+			"type": "number",
+			"default": 5
+		}
+	},
+	"editorScript": "file:./editor.js",
+	"render": "file:./render.php"
+}
