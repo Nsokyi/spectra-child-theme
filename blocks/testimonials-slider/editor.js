@@ -238,12 +238,14 @@
 			var autoSlide = props.attributes.autoSlide;
 			var autoSlideSpeed = props.attributes.autoSlideSpeed || 5;
 
-			function updateTestimonial(index, key, value) {
+			function updateTestimonial(index, keyOrObj, value) {
+				var changes = typeof keyOrObj === "string" ? {} : keyOrObj;
+				if (typeof keyOrObj === "string") changes[keyOrObj] = value;
 				var updated = testimonials.map(function (item, i) {
 					if (i === index) {
 						var copy = {};
 						for (var k in item) copy[k] = item[k];
-						copy[key] = value;
+						for (var c in changes) copy[c] = changes[c];
 						return copy;
 					}
 					return item;
@@ -559,8 +561,10 @@
 														{ style: styles.photoButtons },
 														el(MediaUpload, {
 															onSelect: function (media) {
-																updateTestimonial(index, "photoId", media.id);
-																updateTestimonial(index, "photoUrl", media.url);
+																updateTestimonial(index, {
+																	photoId: media.id,
+																	photoUrl: media.url,
+																});
 															},
 															allowedTypes: ["image"],
 															value: item.photoId || 0,
@@ -586,8 +590,10 @@
 																		variant: "tertiary",
 																		size: "small",
 																		onClick: function () {
-																			updateTestimonial(index, "photoId", 0);
-																			updateTestimonial(index, "photoUrl", "");
+																			updateTestimonial(index, {
+																				photoId: 0,
+																				photoUrl: "",
+																			});
 																		},
 																	},
 																	"Remove",
