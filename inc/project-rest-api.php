@@ -12,12 +12,12 @@
  *   - per_page (posts per page, default 12)
  */
 
-add_action('rest_api_init', 'register_project_filter_endpoint');
+add_action('rest_api_init', 'spectra_child_register_project_filter_endpoint');
 
-function register_project_filter_endpoint() {
+function spectra_child_register_project_filter_endpoint() {
     register_rest_route('project/v1', '/filter', array(
         'methods'             => WP_REST_Server::READABLE,
-        'callback'            => 'handle_project_filter_request',
+        'callback'            => 'spectra_child_handle_project_filter_request',
         'permission_callback' => '__return_true',
         'args'                => array(
             'service' => array(
@@ -49,12 +49,12 @@ function register_project_filter_endpoint() {
     ));
 }
 
-function handle_project_filter_request($request) {
+function spectra_child_handle_project_filter_request($request) {
     $service_slugs  = $request->get_param('service');
     $industry_slugs = $request->get_param('industry');
     $featured       = $request->get_param('featured');
     $paged          = $request->get_param('paged');
-    $per_page       = min($request->get_param('per_page'), 48);
+    $per_page       = max(1, min($request->get_param('per_page'), 48));
 
     $cache_key = 'project_filter_' . md5(wp_json_encode($request->get_params()));
     $cached    = get_transient($cache_key);
@@ -104,7 +104,7 @@ function handle_project_filter_request($request) {
     if ($featured === '1') {
         $query_args['meta_query'] = array(
             array(
-                'key'     => '_featured_project',
+                'key'     => 'featured_project',
                 'value'   => 'yes',
                 'compare' => '=',
             ),
@@ -115,7 +115,7 @@ function handle_project_filter_request($request) {
 
     $projects = array();
     foreach ($query->posts as $post_id) {
-        $projects[] = format_project_for_rest($post_id);
+        $projects[] = spectra_child_format_project_for_rest($post_id);
     }
 
     $response = array(
@@ -133,7 +133,7 @@ function handle_project_filter_request($request) {
 /**
  * Format a single video project post for the REST response.
  */
-function format_project_for_rest($post_id) {
+function spectra_child_format_project_for_rest($post_id) {
     $thumbnail_id  = get_post_thumbnail_id($post_id);
     $thumbnail_url = $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'medium_large') : '';
 
@@ -160,25 +160,25 @@ function format_project_for_rest($post_id) {
 /**
  * Invalidate project filter transients when content changes.
  */
-add_action('save_post_video-project', 'invalidate_project_filter_cache');
-add_action('delete_post', 'invalidate_project_filter_cache_on_delete');
-add_action('wp_trash_post', 'invalidate_project_filter_cache_on_delete');
-add_action('edited_service', 'invalidate_project_filter_cache');
-add_action('edited_industry', 'invalidate_project_filter_cache');
-add_action('created_service', 'invalidate_project_filter_cache');
-add_action('created_industry', 'invalidate_project_filter_cache');
-add_action('delete_service', 'invalidate_project_filter_cache');
-add_action('delete_industry', 'invalidate_project_filter_cache');
+add_action('save_post_video-project', 'spectra_child_invalidate_project_filter_cache');
+add_action('delete_post', 'spectra_child_invalidate_project_filter_cache_on_delete');
+add_action('wp_trash_post', 'spectra_child_invalidate_project_filter_cache_on_delete');
+add_action('edited_service', 'spectra_child_invalidate_project_filter_cache');
+add_action('edited_industry', 'spectra_child_invalidate_project_filter_cache');
+add_action('created_service', 'spectra_child_invalidate_project_filter_cache');
+add_action('created_industry', 'spectra_child_invalidate_project_filter_cache');
+add_action('delete_service', 'spectra_child_invalidate_project_filter_cache');
+add_action('delete_industry', 'spectra_child_invalidate_project_filter_cache');
 
-function invalidate_project_filter_cache() {
+function spectra_child_invalidate_project_filter_cache() {
     global $wpdb;
     $wpdb->query(
         "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_project_filter_%' OR option_name LIKE '_transient_timeout_project_filter_%'"
     );
 }
 
-function invalidate_project_filter_cache_on_delete($post_id) {
+function spectra_child_invalidate_project_filter_cache_on_delete($post_id) {
     if (get_post_type($post_id) === 'video-project') {
-        invalidate_project_filter_cache();
+        spectra_child_invalidate_project_filter_cache();
     }
 }

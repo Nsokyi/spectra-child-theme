@@ -6,9 +6,9 @@
  * or on taxonomy archive pages for service/industry.
  */
 
-add_action('wp_enqueue_scripts', 'enqueue_project_grid_assets');
+add_action('wp_enqueue_scripts', 'spectra_child_enqueue_project_grid_assets');
 
-function enqueue_project_grid_assets() {
+function spectra_child_enqueue_project_grid_assets() {
     $should_load = has_block('spectra-child/project-grid')
         || is_tax('service')
         || is_tax('industry')

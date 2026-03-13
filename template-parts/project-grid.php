@@ -26,7 +26,7 @@ $query_args = array(
 if ($featured_only) {
     $query_args['meta_query'] = array(
         array(
-            'key'     => '_featured_project',
+            'key'     => 'featured_project',
             'value'   => 'yes',
             'compare' => '=',
         ),

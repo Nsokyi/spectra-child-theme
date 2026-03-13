@@ -185,6 +185,7 @@
 			headers: { "X-WP-Nonce": projectFilterData.nonce },
 		})
 			.then(function (res) {
+				if (!res.ok) throw new Error("HTTP " + res.status);
 				return res.json();
 			})
 			.then(function (data) {

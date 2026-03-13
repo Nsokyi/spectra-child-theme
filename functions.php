@@ -10,11 +10,17 @@ require_once __DIR__ . '/inc/project-enqueue.php';
 require_once __DIR__ . '/inc/project-grid-shortcode.php';
 require_once __DIR__ . '/inc/logo-carousel-block.php';
 
-// Enqueue parent theme styles
-function enqueue_parent_styles() {
+// Enqueue parent and child theme styles
+function spectra_child_enqueue_parent_styles() {
     wp_enqueue_style('parent-style', get_template_directory_uri() . '/style.css');
+    wp_enqueue_style(
+        'spectra-child-style',
+        get_stylesheet_directory_uri() . '/style.css',
+        array('parent-style'),
+        filemtime(get_stylesheet_directory() . '/style.css')
+    );
 }
-add_action('wp_enqueue_scripts', 'enqueue_parent_styles');
+add_action('wp_enqueue_scripts', 'spectra_child_enqueue_parent_styles');
 
 /**
  * Initialize Carbon Fields
@@ -33,19 +39,19 @@ function crb_load_carbon_fields() {
  */
 add_action('after_switch_theme', 'spectra_child_flush_rewrites');
 function spectra_child_flush_rewrites() {
-    create_video_project_cpt();
-    create_service_taxonomy();
-    create_industry_taxonomy();
-    populate_service_terms();
-    populate_industry_terms();
+    spectra_child_create_video_project_cpt();
+    spectra_child_create_service_taxonomy();
+    spectra_child_create_industry_taxonomy();
+    spectra_child_populate_service_terms();
+    spectra_child_populate_industry_terms();
     flush_rewrite_rules();
 }
 
 /**
  * Debug: Add body class to verify post type
  */
-add_filter('body_class', 'video_project_body_class');
-function video_project_body_class($classes) {
+add_filter('body_class', 'spectra_child_body_class');
+function spectra_child_body_class($classes) {
     if (is_singular('video-project')) {
         $classes[] = 'single-video-project';
         $classes[] = 'wp-embed-responsive';
@@ -56,31 +62,18 @@ function video_project_body_class($classes) {
 /**
  * Ensure block theme compatibility for video-project CPT
  */
-add_action('wp_enqueue_scripts', 'video_project_enqueue_block_styles', 20);
-function video_project_enqueue_block_styles() {
+add_action('wp_enqueue_scripts', 'spectra_child_enqueue_block_styles', 20);
+function spectra_child_enqueue_block_styles() {
     if (is_singular('video-project')) {
-        // Ensure global styles are loaded
         wp_enqueue_style('global-styles');
-
-        $theme_uri = get_stylesheet_directory_uri();
-        $css_path  = get_stylesheet_directory() . '/assets/css/single-project.css';
-
-        if (file_exists($css_path)) {
-            wp_enqueue_style(
-                'single-project',
-                $theme_uri . '/assets/css/single-project.css',
-                array(),
-                filemtime($css_path)
-            );
-        }
     }
 }
 
 /**
  * Register Custom Post Type: Video Projects
  */
-add_action('init', 'create_video_project_cpt');
-function create_video_project_cpt() {
+add_action('init', 'spectra_child_create_video_project_cpt');
+function spectra_child_create_video_project_cpt() {
     $labels = array(
         'name'                  => 'Video Projects',
         'singular_name'         => 'Video Project',
@@ -122,8 +115,8 @@ function create_video_project_cpt() {
 /**
  * Register Taxonomy: Services
  */
-add_action('init', 'create_service_taxonomy');
-function create_service_taxonomy() {
+add_action('init', 'spectra_child_create_service_taxonomy');
+function spectra_child_create_service_taxonomy() {
     $labels = array(
         'name'                       => 'Services',
         'singular_name'              => 'Service',
@@ -155,8 +148,8 @@ function create_service_taxonomy() {
 /**
  * Register Taxonomy: Industries
  */
-add_action('init', 'create_industry_taxonomy');
-function create_industry_taxonomy() {
+add_action('init', 'spectra_child_create_industry_taxonomy');
+function spectra_child_create_industry_taxonomy() {
     $labels = array(
         'name'                       => 'Industries',
         'singular_name'              => 'Industry',
@@ -188,7 +181,7 @@ function create_industry_taxonomy() {
 /**
  * Auto-populate Service terms (called on theme activation)
  */
-function populate_service_terms() {
+function spectra_child_populate_service_terms() {
     $services = array(
         'Video Production',
         'Promotional Videos',
@@ -220,7 +213,7 @@ function populate_service_terms() {
 /**
  * Auto-populate Industry terms (called on theme activation)
  */
-function populate_industry_terms() {
+function spectra_child_populate_industry_terms() {
     $industries = array(
         'Brand',
         'Product',
@@ -240,8 +233,8 @@ function populate_industry_terms() {
 /**
  * Register Custom Fields with Carbon Fields
  */
-add_action('carbon_fields_register_fields', 'register_video_project_fields');
-function register_video_project_fields() {
+add_action('carbon_fields_register_fields', 'spectra_child_register_video_project_fields');
+function spectra_child_register_video_project_fields() {
     Container::make('post_meta', __('Video Project Details'))
         ->where('post_type', '=', 'video-project')
         
@@ -333,7 +326,7 @@ function register_video_project_fields() {
 /**
  * Helper: Resolve post ID from shortcode attributes
  */
-function resolve_video_project_id($atts) {
+function spectra_child_resolve_video_project_id($atts) {
     $atts = is_array($atts) ? $atts : array();
     $atts = shortcode_atts(array('id' => ''), $atts);
     $post_id = !empty($atts['id']) ? intval($atts['id']) : get_the_ID();
@@ -348,9 +341,9 @@ function resolve_video_project_id($atts) {
 /**
  * Shortcode: Display Video Project Meta (Client, Agency, Featured Badge)
  */
-add_shortcode('video_project_meta', 'render_video_project_meta');
-function render_video_project_meta($atts) {
-    $post_id = resolve_video_project_id($atts);
+add_shortcode('video_project_meta', 'spectra_child_render_video_project_meta');
+function spectra_child_render_video_project_meta($atts) {
+    $post_id = spectra_child_resolve_video_project_id($atts);
     if (!$post_id) {
         return '';
     }
@@ -424,9 +417,9 @@ function render_video_project_meta($atts) {
 /**
  * Shortcode: Display Video Embed
  */
-add_shortcode('video_project_embed', 'render_video_project_embed');
-function render_video_project_embed($atts) {
-    $post_id = resolve_video_project_id($atts);
+add_shortcode('video_project_embed', 'spectra_child_render_video_project_embed');
+function spectra_child_render_video_project_embed($atts) {
+    $post_id = spectra_child_resolve_video_project_id($atts);
     if (!$post_id) {
         return '';
     }
@@ -462,15 +455,18 @@ function render_video_project_embed($atts) {
 /**
  * Shortcode: Display Services and Industries Taxonomies
  */
-add_shortcode('video_project_taxonomies', 'render_video_project_taxonomies');
-function render_video_project_taxonomies($atts) {
-    $post_id = resolve_video_project_id($atts);
+add_shortcode('video_project_taxonomies', 'spectra_child_render_video_project_taxonomies');
+function spectra_child_render_video_project_taxonomies($atts) {
+    $post_id = spectra_child_resolve_video_project_id($atts);
     if (!$post_id) {
         return '';
     }
     
     $services = get_the_terms($post_id, 'service');
     $industries = get_the_terms($post_id, 'industry');
+
+    if (is_wp_error($services)) $services = false;
+    if (is_wp_error($industries)) $industries = false;
     
     if (!$services && !$industries) {
         return '';
@@ -520,9 +516,9 @@ function render_video_project_taxonomies($atts) {
 /**
  * Shortcode: Display Production Credits
  */
-add_shortcode('video_project_credits', 'render_video_project_credits');
-function render_video_project_credits($atts) {
-    $post_id = resolve_video_project_id($atts);
+add_shortcode('video_project_credits', 'spectra_child_render_video_project_credits');
+function spectra_child_render_video_project_credits($atts) {
+    $post_id = spectra_child_resolve_video_project_id($atts);
     if (!$post_id) {
         return '';
     }
@@ -565,9 +561,9 @@ function render_video_project_credits($atts) {
  * Requires both testimonial_rating and testimonial_text to render.
  * Author name and photo are optional.
  */
-add_shortcode('video_project_testimonial', 'render_video_project_testimonial');
-function render_video_project_testimonial($atts) {
-    $post_id = resolve_video_project_id($atts);
+add_shortcode('video_project_testimonial', 'spectra_child_render_video_project_testimonial');
+function spectra_child_render_video_project_testimonial($atts) {
+    $post_id = spectra_child_resolve_video_project_id($atts);
     if (!$post_id) {
         return '';
     }
@@ -624,9 +620,9 @@ function render_video_project_testimonial($atts) {
 /**
  * Shortcode: Display Production Stills Gallery
  */
-add_shortcode('video_project_stills', 'render_video_project_stills');
-function render_video_project_stills($atts) {
-    $post_id = resolve_video_project_id($atts);
+add_shortcode('video_project_stills', 'spectra_child_render_video_project_stills');
+function spectra_child_render_video_project_stills($atts) {
+    $post_id = spectra_child_resolve_video_project_id($atts);
     if (!$post_id) {
         return '';
     }
@@ -668,9 +664,9 @@ function render_video_project_stills($atts) {
  *
  * Queries posts sharing the same service AND/OR industry taxonomies.
  */
-add_shortcode('video_project_similar', 'render_video_project_similar');
-function render_video_project_similar($atts) {
-    $post_id = resolve_video_project_id($atts);
+add_shortcode('video_project_similar', 'spectra_child_render_video_project_similar');
+function spectra_child_render_video_project_similar($atts) {
+    $post_id = spectra_child_resolve_video_project_id($atts);
     if (!$post_id) {
         return '';
     }

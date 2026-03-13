@@ -3,15 +3,15 @@
  * Register the Logo Carousel Gutenberg block and conditionally enqueue assets.
  */
 
-add_action('init', 'register_logo_carousel_block');
+add_action('init', 'spectra_child_register_logo_carousel_block');
 
-function register_logo_carousel_block() {
+function spectra_child_register_logo_carousel_block() {
     register_block_type(get_stylesheet_directory() . '/blocks/logo-carousel');
 }
 
-add_action('wp_enqueue_scripts', 'enqueue_logo_carousel_assets');
+add_action('wp_enqueue_scripts', 'spectra_child_enqueue_logo_carousel_assets');
 
-function enqueue_logo_carousel_assets() {
+function spectra_child_enqueue_logo_carousel_assets() {
     $should_load = has_block('spectra-child/logo-carousel');
 
     if (!$should_load) {

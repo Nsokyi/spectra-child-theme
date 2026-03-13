@@ -10,9 +10,9 @@
  *   - per_page (int)   Posts per page. Default: 12.
  */
 
-add_shortcode('project_grid', 'render_project_grid_shortcode');
+add_shortcode('project_grid', 'spectra_child_render_project_grid_shortcode');
 
-function render_project_grid_shortcode($atts) {
+function spectra_child_render_project_grid_shortcode($atts) {
     $atts = is_array($atts) ? $atts : array();
     $atts = shortcode_atts(array(
         'featured' => false,
