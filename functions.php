@@ -274,6 +274,38 @@ function spectra_child_create_testimonial_cpt() {
 }
 
 /**
+ * Register Taxonomy: Testimonial Groups
+ */
+add_action('init', 'spectra_child_create_testimonial_group_taxonomy');
+function spectra_child_create_testimonial_group_taxonomy() {
+    $labels = array(
+        'name'                       => 'Groups',
+        'singular_name'              => 'Group',
+        'menu_name'                  => 'Groups',
+        'all_items'                  => 'All Groups',
+        'edit_item'                  => 'Edit Group',
+        'view_item'                  => 'View Group',
+        'update_item'                => 'Update Group',
+        'add_new_item'               => 'Add New Group',
+        'new_item_name'              => 'New Group Name',
+        'search_items'               => 'Search Groups',
+    );
+
+    $args = array(
+        'labels'                     => $labels,
+        'hierarchical'               => true,
+        'public'                     => false,
+        'show_ui'                    => true,
+        'show_admin_column'          => true,
+        'show_in_nav_menus'          => false,
+        'show_tagcloud'              => false,
+        'show_in_rest'               => true,
+    );
+
+    register_taxonomy('testimonial_group', array('testimonial'), $args);
+}
+
+/**
  * Register Custom Fields with Carbon Fields
  */
 add_action('carbon_fields_register_fields', 'spectra_child_register_video_project_fields');

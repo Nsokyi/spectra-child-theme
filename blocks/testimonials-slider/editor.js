@@ -5,6 +5,7 @@
 	var InspectorControls = blockEditor.InspectorControls;
 	var PanelBody = components.PanelBody;
 	var RangeControl = components.RangeControl;
+	var SelectControl = components.SelectControl;
 	var ToggleControl = components.ToggleControl;
 
 	var styles = {
@@ -60,6 +61,10 @@
 
 	blocks.registerBlockType("spectra-child/testimonials-slider", {
 		attributes: {
+			testimonialGroup: {
+				type: "string",
+				default: "",
+			},
 			autoSlide: {
 				type: "boolean",
 				default: false,
@@ -71,8 +76,13 @@
 		},
 		edit: function (props) {
 			var blockProps = blockEditor.useBlockProps();
+			var testimonialGroup = props.attributes.testimonialGroup || "";
 			var autoSlide = props.attributes.autoSlide;
 			var autoSlideSpeed = props.attributes.autoSlideSpeed || 5;
+
+			var groupsState = useState([]);
+			var groups = groupsState[0];
+			var setGroups = groupsState[1];
 
 			var countState = useState(null);
 			var count = countState[0];
@@ -80,17 +90,40 @@
 
 			useEffect(function () {
 				wp.apiFetch({
-					path: "/wp/v2/testimonial?per_page=1&status=publish",
-					parse: false,
+					path: "/wp/v2/testimonial_group?per_page=100",
 				})
-					.then(function (response) {
-						var total = response.headers.get("X-WP-Total");
-						setCount(total ? parseInt(total, 10) : 0);
+					.then(function (terms) {
+						setGroups(
+							terms.map(function (t) {
+								return {
+									label: t.name + " (" + t.count + ")",
+									value: String(t.id),
+								};
+							}),
+						);
 					})
 					.catch(function () {
-						setCount(0);
+						setGroups([]);
 					});
 			}, []);
+
+			useEffect(
+				function () {
+					var path = "/wp/v2/testimonial?per_page=1&status=publish";
+					if (testimonialGroup) {
+						path += "&testimonial_group=" + testimonialGroup;
+					}
+					wp.apiFetch({ path: path, parse: false })
+						.then(function (response) {
+							var total = response.headers.get("X-WP-Total");
+							setCount(total ? parseInt(total, 10) : 0);
+						})
+						.catch(function () {
+							setCount(0);
+						});
+				},
+				[testimonialGroup],
+			);
 
 			var countText =
 				count === null
@@ -113,6 +146,21 @@
 				el(
 					InspectorControls,
 					null,
+					el(
+						PanelBody,
+						{ title: "Testimonial Source", initialOpen: true },
+						el(SelectControl, {
+							label: "Group",
+							value: testimonialGroup,
+							options: [{ label: "All Testimonials", value: "" }].concat(
+								groups,
+							),
+							onChange: function (val) {
+								props.setAttributes({ testimonialGroup: val });
+							},
+							help: "Choose a group to display specific testimonials, or show all.",
+						}),
+					),
 					el(
 						PanelBody,
 						{ title: "Slider Behaviour", initialOpen: true },
@@ -165,7 +213,9 @@
 						el(
 							"p",
 							{ style: styles.description },
-							"Displays all published testimonials from the Testimonials post type.",
+							testimonialGroup
+								? "Displaying testimonials from the selected group."
+								: "Displays all published testimonials.",
 						),
 						el("span", { style: badgeStyle }, countText),
 						el(

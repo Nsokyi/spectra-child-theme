@@ -11,6 +11,10 @@
 		"align": ["wide", "full"]
 	},
 	"attributes": {
+		"testimonialGroup": {
+			"type": "string",
+			"default": ""
+		},
 		"autoSlide": {
 			"type": "boolean",
 			"default": false

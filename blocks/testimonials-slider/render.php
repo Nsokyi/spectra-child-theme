@@ -12,14 +12,27 @@
 
 $auto_slide = !empty($attributes['autoSlide']);
 $auto_speed = !empty($attributes['autoSlideSpeed']) ? max(2, min(15, intval($attributes['autoSlideSpeed']))) : 5;
+$group_id   = !empty($attributes['testimonialGroup']) ? intval($attributes['testimonialGroup']) : 0;
 
-$testimonial_query = new WP_Query(array(
+$query_args = array(
     'post_type'      => 'testimonial',
     'post_status'    => 'publish',
     'posts_per_page' => -1,
     'orderby'        => 'date',
     'order'          => 'DESC',
-));
+);
+
+if ($group_id) {
+    $query_args['tax_query'] = array(
+        array(
+            'taxonomy' => 'testimonial_group',
+            'field'    => 'term_id',
+            'terms'    => $group_id,
+        ),
+    );
+}
+
+$testimonial_query = new WP_Query($query_args);
 
 if (!$testimonial_query->have_posts()) {
     wp_reset_postdata();
@@ -53,6 +66,9 @@ $wrapper_attributes = get_block_wrapper_attributes(array(
             $photo    = carbon_get_post_meta($post_id, 'testimonial_client_photo');
 
             if (!$quote) continue;
+            if (!$name) {
+                $name = __('Anonymous', 'spectra-child');
+            }
 
             $stars = $stars ? max(1, min(5, intval($stars))) : 5;
             $subtitle_parts = array_filter(array($job, $company));
