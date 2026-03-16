@@ -232,9 +232,52 @@ function spectra_child_populate_industry_terms() {
 }
 
 /**
+ * Register Custom Post Type: Testimonials
+ */
+add_action('init', 'spectra_child_create_testimonial_cpt');
+function spectra_child_create_testimonial_cpt() {
+    $labels = array(
+        'name'                  => 'Testimonials',
+        'singular_name'         => 'Testimonial',
+        'menu_name'             => 'Testimonials',
+        'name_admin_bar'        => 'Testimonial',
+        'all_items'             => 'All Testimonials',
+        'add_new_item'          => 'Add New Testimonial',
+        'add_new'               => 'Add New',
+        'new_item'              => 'New Testimonial',
+        'edit_item'             => 'Edit Testimonial',
+        'update_item'           => 'Update Testimonial',
+        'view_item'             => 'View Testimonial',
+        'view_items'            => 'View Testimonials',
+        'search_items'          => 'Search Testimonials',
+    );
+
+    $args = array(
+        'label'                 => 'Testimonial',
+        'labels'                => $labels,
+        'supports'              => array('title'),
+        'public'                => false,
+        'show_ui'               => true,
+        'show_in_menu'          => true,
+        'menu_position'         => 25,
+        'menu_icon'             => 'dashicons-format-quote',
+        'show_in_admin_bar'     => false,
+        'show_in_nav_menus'     => false,
+        'can_export'            => true,
+        'has_archive'           => false,
+        'exclude_from_search'   => true,
+        'publicly_queryable'    => false,
+        'show_in_rest'          => true,
+    );
+
+    register_post_type('testimonial', $args);
+}
+
+/**
  * Register Custom Fields with Carbon Fields
  */
 add_action('carbon_fields_register_fields', 'spectra_child_register_video_project_fields');
+add_action('carbon_fields_register_fields', 'spectra_child_register_testimonial_fields');
 function spectra_child_register_video_project_fields() {
     Container::make('post_meta', __('Video Project Details'))
         ->where('post_type', '=', 'video-project')
@@ -319,6 +362,50 @@ function spectra_child_register_video_project_fields() {
             
             Field::make('image', 'testimonial_photo', __('Author Photo'))
                 ->set_help_text(__('Optional: Small portrait of the testimonial author'))
+                ->set_value_type('url')
+                ->set_width(50),
+        ));
+}
+
+/**
+ * Register Custom Fields for Testimonials CPT
+ */
+function spectra_child_register_testimonial_fields() {
+    Container::make('post_meta', __('Testimonial Details'))
+        ->where('post_type', '=', 'testimonial')
+        ->add_fields(array(
+            Field::make('textarea', 'testimonial_quote', __('Client Quote'))
+                ->set_attribute('placeholder', __('What the client said…'))
+                ->set_required(true)
+                ->set_rows(4),
+
+            Field::make('select', 'testimonial_rating', __('Star Rating'))
+                ->set_options(array(
+                    ''  => __('— Select rating —'),
+                    '1' => '★ (1 star)',
+                    '2' => '★★ (2 stars)',
+                    '3' => '★★★ (3 stars)',
+                    '4' => '★★★★ (4 stars)',
+                    '5' => '★★★★★ (5 stars)',
+                ))
+                ->set_required(true)
+                ->set_width(30),
+
+            Field::make('text', 'testimonial_client_name', __('Client Name'))
+                ->set_attribute('placeholder', __('e.g., Jane Smith'))
+                ->set_required(true)
+                ->set_width(50),
+
+            Field::make('text', 'testimonial_job_title', __('Job Title'))
+                ->set_attribute('placeholder', __('e.g., Marketing Director'))
+                ->set_width(50),
+
+            Field::make('text', 'testimonial_company', __('Company Name'))
+                ->set_attribute('placeholder', __('e.g., Mercedes-Benz'))
+                ->set_width(50),
+
+            Field::make('image', 'testimonial_client_photo', __('Client Photo'))
+                ->set_help_text(__('Small portrait of the testimonial author'))
                 ->set_value_type('url')
                 ->set_width(50),
         ));
