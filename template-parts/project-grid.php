@@ -58,7 +58,7 @@ $active_industry = $current_term && $current_term['taxonomy'] === 'industry' ? $
 <div class="project-filters-wrap"
      data-featured="<?php echo $featured_only ? '1' : ''; ?>"
      data-per-page="<?php echo esc_attr($per_page); ?>"
-     <?php if ($current_term) : ?>
+     <?php if ($current_term && isset($current_term['taxonomy'], $current_term['slug'])) : ?>
      data-current-taxonomy="<?php echo esc_attr($current_term['taxonomy']); ?>"
      data-current-slug="<?php echo esc_attr($current_term['slug']); ?>"
      <?php endif; ?>>
