@@ -37,7 +37,7 @@
 		if (s) state.service = s.split(",");
 		if (i) state.industry = i.split(",");
 
-		// Also check for pre-selected term from taxonomy archive context.
+		// Check for pre-selected term from taxonomy archive context (set via wp_localize_script).
 		if (
 			projectFilterData.currentTerm &&
 			projectFilterData.currentTerm.taxonomy === "industry" &&
@@ -51,6 +51,18 @@
 			!state.service.length
 		) {
 			state.service = [projectFilterData.currentTerm.slug];
+		}
+
+		// Also check DOM data attributes — set by shortcode on regular pages.
+		var domTaxonomy = wrap.dataset.currentTaxonomy || "";
+		var domSlug = wrap.dataset.currentSlug || "";
+		if (domTaxonomy && domSlug) {
+			if (domTaxonomy === "industry" && !state.industry.length) {
+				state.industry = [domSlug];
+			}
+			if (domTaxonomy === "service" && !state.service.length) {
+				state.service = [domSlug];
+			}
 		}
 
 		syncButtons();
@@ -75,7 +87,7 @@
 
 	function syncSecondaryVisibility() {
 		if (!secondaryFilter) return;
-		if (state.industry.length > 0) {
+		if (state.industry.length > 0 || state.service.length > 0) {
 			secondaryFilter.classList.add("is-visible");
 		} else {
 			secondaryFilter.classList.remove("is-visible");

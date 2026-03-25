@@ -57,7 +57,11 @@ $active_industry = $current_term && $current_term['taxonomy'] === 'industry' ? $
 
 <div class="project-filters-wrap"
      data-featured="<?php echo $featured_only ? '1' : ''; ?>"
-     data-per-page="<?php echo esc_attr($per_page); ?>">
+     data-per-page="<?php echo esc_attr($per_page); ?>"
+     <?php if ($current_term) : ?>
+     data-current-taxonomy="<?php echo esc_attr($current_term['taxonomy']); ?>"
+     data-current-slug="<?php echo esc_attr($current_term['slug']); ?>"
+     <?php endif; ?>>
 
     <?php if (!is_wp_error($industries) && !empty($industries)) : ?>
         <div class="project-filters project-filters--primary" data-taxonomy="industry" role="group" aria-label="<?php esc_attr_e('Filter by industry', 'spectra-child'); ?>">
@@ -77,7 +81,7 @@ $active_industry = $current_term && $current_term['taxonomy'] === 'industry' ? $
     <?php endif; ?>
 
     <?php if (!is_wp_error($services) && !empty($services)) : ?>
-        <div class="project-filters project-filters--secondary<?php echo !empty($active_industry) ? ' is-visible' : ''; ?>" data-taxonomy="service" role="group" aria-label="<?php esc_attr_e('Filter by service', 'spectra-child'); ?>">
+        <div class="project-filters project-filters--secondary<?php echo (!empty($active_industry) || !empty($active_service)) ? ' is-visible' : ''; ?>" data-taxonomy="service" role="group" aria-label="<?php esc_attr_e('Filter by service', 'spectra-child'); ?>">
             <button class="project-filters__btn<?php echo empty($active_service) ? ' is-active' : ''; ?>"
                     data-slug=""
                     type="button">
