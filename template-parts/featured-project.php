@@ -33,11 +33,6 @@ $service_label = (!is_wp_error($services) && !empty($services)) ? $services[0]->
 		<?php if ($excerpt) : ?>
 			<p class="featured-project__excerpt"><?php echo esc_html($excerpt); ?></p>
 		<?php endif; ?>
-		<a href="<?php echo esc_url($permalink); ?>" class="featured-project__link">
-			<?php esc_html_e('View case study', 'spectra-child'); ?>
-			<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-				<path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-			</svg>
-		</a>
+		<a href="<?php echo esc_url($permalink); ?>" class="featured-project__link"><?php esc_html_e('View case study', 'spectra-child'); ?><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 	</div>
 </div>
