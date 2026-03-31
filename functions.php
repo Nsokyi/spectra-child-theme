@@ -8,6 +8,7 @@ require_once __DIR__ . '/inc/project-rest-api.php';
 require_once __DIR__ . '/inc/project-block.php';
 require_once __DIR__ . '/inc/project-enqueue.php';
 require_once __DIR__ . '/inc/project-grid-shortcode.php';
+require_once __DIR__ . '/inc/featured-project-shortcode.php';
 require_once __DIR__ . '/inc/logo-carousel-block.php';
 require_once __DIR__ . '/inc/testimonials-slider-block.php';
 

@@ -62,7 +62,7 @@ VIDEO HERO - HOMEPAGE STYLES
 	left: 50%;
 	/* Always covers container regardless of aspect ratio */
 	width: 100vw;
-	height: 56.25vw; /* 16:9 */
+	height: 56.25vw; /* Roughly 16:9 */
 	min-height: 100%;
 	min-width: 177.78vh; /* 16:9 inverted */
 	transform: translate(-50%, -50%);
@@ -88,7 +88,7 @@ VIDEO HERO - HOMEPAGE STYLES
 		27deg,
 		rgba(33, 2, 24, 0.7) 0%,
 		rgba(0, 0, 0, 0.4) 60%,
-		rgba(0, 0, 0, 0.15) 100%
+		rgba(0, 0, 0, 0.15) 100% /* Dark red overlay */
 	);
 }
 
@@ -109,12 +109,12 @@ VIDEO HERO - HOMEPAGE STYLES
 
 /* ── Heading ── */
 .hero__heading {
-	font-size: clamp(2.5rem, 8vw, 7rem);
+	font-size: clamp(2.5rem, 8vw, 4rem);
 	font-weight: 800;
 	line-height: 1;
 	letter-spacing: -0.03em;
-	color: #ffffff;
-	text-transform: uppercase;
+	color: #f0f0f0;
+	/* text-transform: uppercase; */
 }
 
 /* ── Subtext ── */
@@ -122,7 +122,7 @@ VIDEO HERO - HOMEPAGE STYLES
 	font-size: clamp(0.9rem, 1.5vw, 1.05rem);
 	line-height: 1.65;
 	color: rgba(255, 255, 255, 0.7);
-	max-width: 42ch;
+	max-width: 52ch;
 }
 
 /* ── CTA button ── */
@@ -362,7 +362,7 @@ VIDEO PROJECT STYLES
 }
 
 .project-testimonial__star.is-filled {
-	color: #f5a623;
+	color: #f5a523;
 }
 
 .project-testimonial__quote {
@@ -427,4 +427,97 @@ VIDEO PROJECT STYLES
 
 .project-similar__client {
 	font-size: var(--wp--preset--font-size--small);
+}
+
+/* 
+===================================================================================================
+TRUST STRIP STYLES
+===================================================================================================
+*/
+
+/* The Trust Strip Container */
+.trust-strip {
+	/* Increased max-width to allow everything to breathe on one line */
+	max-width: 1600px;
+	margin: 0 auto !important;
+	/* Fluid gap: Scales from 1rem on small screens to 10rem (approx 160px) on large screens */
+	gap: clamp(1rem, 10vw, 10rem) !important;
+}
+
+/* Individual Box Styling */
+.trust-item {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	position: relative;
+	/* Sufficient padding to keep text away from the divider */
+	padding-right: clamp(1rem, 4vw, 4rem) !important;
+}
+
+/* Vertical Divider - On the RIGHT of EVERY item */
+.trust-item::after {
+	content: "";
+	position: absolute;
+	right: 0;
+	top: 10%;
+	height: 80%;
+	width: 4px;
+	background-color: #f0f0f0;
+}
+
+/* Fluid Large Lettering */
+.trust-heading h2 {
+	/* font-size: clamp(1.8rem, 5vw, 7rem); */
+	font-size: clamp(1.8rem, 0.7368rem + 2.7vw, 7rem) !important;
+	font-weight: 900;
+	color: #f0f0f0;
+	margin: 0;
+	line-height: 1.1;
+	letter-spacing: -0.02em;
+	white-space: nowrap;
+}
+
+/* Subtext Label Styling */
+.trust-label {
+	font-size: 0.875rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	margin-top: 1rem;
+	opacity: 0.8;
+
+	white-space: nowrap;
+}
+
+/* Mobile Adjustments (Stacked Layout) */
+@media (max-width: 1100px) {
+	.trust-strip {
+		flex-direction: column !important;
+		align-items: flex-start !important;
+		gap: 3rem !important;
+	}
+
+	.trust-item {
+		width: 100%;
+		/* Maintain right padding on mobile to keep the line visible */
+		padding-right: 2rem;
+		padding-left: 0;
+		/* Limit width so the divider isn't miles away from the text on tablets */
+		max-width: max-content;
+	}
+
+	/* The divider is now kept visible on tablet/mobile */
+	.trust-item::after {
+		display: block;
+	}
+
+	.trust-heading h2,
+	.trust-label {
+		/* Allow wrapping on actual mobile devices to prevent horizontal scroll */
+		white-space: normal;
+	}
+
+	.trust-heading h2 {
+		font-size: clamp(2.5rem, 10vw, 4.5rem) !important;
+	}
 }

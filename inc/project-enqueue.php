@@ -14,10 +14,13 @@ function spectra_child_enqueue_project_grid_assets() {
         || is_tax('industry')
         || is_post_type_archive('video-project');
 
-    // Also detect [project_grid] shortcode in current post/page content.
+    // Also detect [project_grid] or [project_featured] shortcode in current post/page content.
     if (!$should_load) {
         $post = get_queried_object();
-        if ($post instanceof WP_Post && has_shortcode($post->post_content, 'project_grid')) {
+        if ($post instanceof WP_Post && (
+            has_shortcode($post->post_content, 'project_grid') ||
+            has_shortcode($post->post_content, 'project_featured')
+        )) {
             $should_load = true;
         }
     }
