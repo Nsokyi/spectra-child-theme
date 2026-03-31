@@ -18,23 +18,7 @@ $service_label = (!is_wp_error($services) && !empty($services)) ? $services[0]->
 ?>
 
 <div class="featured-project">
-	<a href="<?php echo esc_url($permalink); ?>" class="featured-project__media" aria-label="<?php echo esc_attr($title); ?>" tabindex="-1">
-		<?php if ($thumbnail_url) : ?>
-			<img src="<?php echo esc_url($thumbnail_url); ?>"
-			     alt="<?php echo esc_attr($title); ?>"
-			     loading="eager"
-			     width="960"
-			     height="540">
-		<?php else : ?>
-			<div class="featured-project__placeholder"></div>
-		<?php endif; ?>
-		<div class="featured-project__play" aria-hidden="true">
-			<svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<circle cx="26" cy="26" r="26" fill="white" fill-opacity="0.9"/>
-				<path d="M22 18L36 26L22 34V18Z" fill="currentColor"/>
-			</svg>
-		</div>
-	</a>
+	<?php if ($thumbnail_url) : ?><a href="<?php echo esc_url($permalink); ?>" class="featured-project__media" aria-label="<?php echo esc_attr($title); ?>" tabindex="-1"><img src="<?php echo esc_url($thumbnail_url); ?>" alt="<?php echo esc_attr($title); ?>" loading="eager" width="960" height="540"></a><?php else : ?><div class="featured-project__media featured-project__media--placeholder"></div><?php endif; ?>
 
 	<div class="featured-project__content">
 		<div class="featured-project__meta">
