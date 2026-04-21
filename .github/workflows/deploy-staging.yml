@@ -1,0 +1,35 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Deploy theme to DreamHost staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ${{ secrets.STAGING_USER }}
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          port: 22
+          script: |
+            THEME_DIR="/home/noahbreen/stagingdev.org/vprod/wp-content/themes/spectra-child"
+
+            # Navigate to theme directory
+            cd "$THEME_DIR" || exit 1
+
+            # Pull latest changes from main
+            git fetch origin main
+            git reset --hard origin/main
+
+            # Install PHP dependencies (Carbon Fields)
+            php ~/composer.phar install --no-dev --optimize-autoloader --no-interaction 2>&1
+
+            echo "✅ Deploy complete: $(git log --oneline -1)"
