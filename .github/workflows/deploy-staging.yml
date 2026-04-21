@@ -9,27 +9,21 @@ jobs:
     name: Deploy theme to DreamHost staging
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Trigger deploy webhook
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            -H "Authorization: Bearer ${{ secrets.DEPLOY_WEBHOOK_SECRET }}" \
+            "${{ secrets.DEPLOY_WEBHOOK_URL }}")
 
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.STAGING_HOST }}
-          username: ${{ secrets.STAGING_USER }}
-          key: ${{ secrets.STAGING_SSH_KEY }}
-          port: 22
-          script: |
-            THEME_DIR="/home/noahbreen/stagingdev.org/vprod/wp-content/themes/spectra-child"
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
 
-            # Navigate to theme directory
-            cd "$THEME_DIR" || exit 1
+          echo "HTTP Status: $HTTP_CODE"
+          echo "Response: $BODY"
 
-            # Pull latest changes from main
-            git fetch origin main
-            git reset --hard origin/main
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "❌ Deploy failed"
+            exit 1
+          fi
 
-            # Install PHP dependencies (Carbon Fields)
-            php ~/composer.phar install --no-dev --optimize-autoloader --no-interaction 2>&1
-
-            echo "✅ Deploy complete: $(git log --oneline -1)"
+          echo "✅ Deploy complete"
