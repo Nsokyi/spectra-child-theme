@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VPE Website — Development Plan</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.7;
+    color: #1a1a2e;
+    background: #f8f9fa;
+    padding: 2rem 1rem;
+  }
+
+  /* ── Layout ── */
+  .container { max-width: 900px; margin: 0 auto; }
+
+  /* ── Typography ── */
+  h1 { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.25rem; color: #0d0d0d; }
+  h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-top: 3rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e2e5e9; color: #0d0d0d; }
+  h3 { font-size: 1.125rem; font-weight: 600; margin-top: 1.75rem; margin-bottom: 0.5rem; color: #1a1a2e; }
+  h4 { font-size: 0.95rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.35rem; color: #374151; }
+  p { margin-bottom: 0.75rem; color: #374151; }
+  strong { color: #1a1a2e; }
+  a { color: #2563eb; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Header ── */
+  .doc-header { margin-bottom: 2.5rem; }
+  .doc-header .subtitle { font-size: 1rem; color: #6b7280; margin-bottom: 0.5rem; }
+  .doc-header .meta { font-size: 0.8rem; color: #9ca3af; display: flex; gap: 1.5rem; margin-top: 0.75rem; }
+
+  /* ── TOC ── */
+  .toc { background: #fff; border: 1px solid #e2e5e9; border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 2.5rem; }
+  .toc h2 { margin-top: 0; border: none; padding: 0; font-size: 1rem; margin-bottom: 0.75rem; }
+  .toc ol { padding-left: 1.25rem; }
+  .toc li { margin-bottom: 0.3rem; font-size: 0.9rem; }
+  .toc a { color: #374151; }
+  .toc a:hover { color: #2563eb; }
+
+  /* ── Cards ── */
+  .card { background: #fff; border: 1px solid #e2e5e9; border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+  .card h4 { margin-top: 0; }
+
+  /* ── Tables ── */
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.875rem; }
+  th, td { text-align: left; padding: 0.6rem 0.75rem; border-bottom: 1px solid #e2e5e9; }
+  th { font-weight: 600; color: #1a1a2e; background: #f3f4f6; }
+  tr:last-child td { border-bottom: none; }
+
+  /* ── Code ── */
+  code { font-family: "SF Mono", "Fira Code", Consolas, monospace; font-size: 0.825rem; background: #f1f3f5; padding: 0.15em 0.4em; border-radius: 4px; color: #c7254e; }
+  pre { background: #1e1e2e; color: #cdd6f4; padding: 1rem 1.25rem; border-radius: 8px; overflow-x: auto; font-size: 0.8rem; line-height: 1.6; margin: 0.75rem 0 1rem; }
+  pre code { background: none; color: inherit; padding: 0; }
+
+  /* ── Checklists ── */
+  .checklist { list-style: none; padding: 0; }
+  .checklist li { position: relative; padding: 0.35rem 0 0.35rem 1.75rem; font-size: 0.9rem; }
+  .checklist li::before { content: "☐"; position: absolute; left: 0; top: 0.35rem; font-size: 1rem; color: #9ca3af; }
+  .checklist li.done::before { content: "☑"; color: #10b981; }
+
+  /* ── Tags ── */
+  .tag { display: inline-block; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.15em 0.5em; border-radius: 4px; margin-right: 0.25rem; }
+  .tag--done { background: #d1fae5; color: #065f46; }
+  .tag--wip { background: #fef3c7; color: #92400e; }
+  .tag--todo { background: #e0e7ff; color: #3730a3; }
+  .tag--risk { background: #fee2e2; color: #991b1b; }
+
+  /* ── Phase blocks ── */
+  .phase { border-left: 3px solid #2563eb; padding-left: 1.25rem; margin: 1.5rem 0; }
+  .phase--staging { border-color: #8b5cf6; }
+  .phase--components { border-color: #10b981; }
+  .phase--pages { border-color: #f59e0b; }
+  .phase--content { border-color: #ef4444; }
+  .phase--launch { border-color: #0d0d0d; }
+
+  /* ── Diagram ── */
+  .diagram { background: #fff; border: 1px solid #e2e5e9; border-radius: 8px; padding: 1.5rem; margin: 1rem 0; font-family: "SF Mono", "Fira Code", Consolas, monospace; font-size: 0.78rem; line-height: 1.8; white-space: pre; overflow-x: auto; color: #374151; }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    h1 { font-size: 1.75rem; }
+    h2 { font-size: 1.25rem; }
+    .doc-header .meta { flex-direction: column; gap: 0.25rem; }
+  }
+
+  /* ── Print ── */
+  @media print {
+    body { background: #fff; padding: 0; font-size: 11pt; }
+    .toc, .card { break-inside: avoid; }
+    h2 { break-after: avoid; }
+    pre { white-space: pre-wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- HEADER -->
+<!-- ════════════════════════════════════════════════════ -->
+<header class="doc-header">
+  <h1>VPE Website — Development Plan</h1>
+  <p class="subtitle">From local dev to staged, production-ready WordPress site</p>
+  <div class="meta">
+    <span>Version 1.0</span>
+    <span>April 2026</span>
+    <span>Spectra One Child Theme</span>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- TABLE OF CONTENTS -->
+<!-- ════════════════════════════════════════════════════ -->
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#audit">Current State Audit</a></li>
+    <li><a href="#staging">Staging Environment Setup</a></li>
+    <li><a href="#components">Component Standardisation Strategy</a></li>
+    <li><a href="#templates">Page Structure &amp; Template Hierarchy</a></li>
+    <li><a href="#pages">Page-by-Page Breakdown</a></li>
+    <li><a href="#order">Development Order &amp; Priorities</a></li>
+    <li><a href="#risks">Risks &amp; Gaps</a></li>
+    <li><a href="#qa">QA &amp; Launch Checklist</a></li>
+  </ol>
+</nav>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 1. CURRENT STATE AUDIT -->
+<!-- ════════════════════════════════════════════════════ -->
+<section id="audit">
+  <h2>1. Current State Audit</h2>
+  <p>Summary of what exists in the codebase at this point.</p>
+
+  <h3>Theme Stack</h3>
+  <table>
+    <tr><th>Layer</th><th>Detail</th></tr>
+    <tr><td>Parent theme</td><td>Spectra One (FSE / block theme)</td></tr>
+    <tr><td>Child theme</td><td><code>spectra-child</code> — Git-versioned on GitHub</td></tr>
+    <tr><td>PHP dependency</td><td>Carbon Fields 3.6 (via Composer)</td></tr>
+    <tr><td>Local env</td><td>Local by Flywheel (<code>spectra.local</code>)</td></tr>
+    <tr><td>Repo</td><td><code>Nsokyi/spectra-child-theme</code> on GitHub (main branch)</td></tr>
+  </table>
+
+  <h3>Custom Post Types</h3>
+  <table>
+    <tr><th>CPT</th><th>Slug</th><th>Public</th><th>Taxonomies</th></tr>
+    <tr>
+      <td><strong>Video Projects</strong></td>
+      <td><code>video-project</code></td>
+      <td>Yes (archive + single)</td>
+      <td><code>service</code> (18 terms), <code>industry</code> (6 terms)</td>
+    </tr>
+    <tr>
+      <td><strong>Testimonials</strong></td>
+      <td><code>testimonial</code></td>
+      <td>No (admin-only, data source)</td>
+      <td><code>testimonial_group</code></td>
+    </tr>
+  </table>
+
+  <h3>Custom Blocks (Gutenberg)</h3>
+  <table>
+    <tr><th>Block</th><th>Renders from</th><th>CSS</th><th>JS</th></tr>
+    <tr>
+      <td><code>spectra-child/testimonials-slider</code></td>
+      <td>Testimonial CPT via WP_Query</td>
+      <td><code>testimonials-slider.css</code></td>
+      <td><code>testimonials-slider.js</code></td>
+    </tr>
+    <tr>
+      <td><code>spectra-child/project-grid</code></td>
+      <td>Video Project CPT via WP_Query + REST API</td>
+      <td><code>project-grid.css</code></td>
+      <td><code>project-filter.js</code></td>
+    </tr>
+    <tr>
+      <td><code>spectra-child/logo-carousel</code></td>
+      <td>Block attributes (logo array)</td>
+      <td><code>logo-carousel.css</code></td>
+      <td>CSS-only animation</td>
+    </tr>
+  </table>
+
+  <h3>Shortcodes</h3>
+  <table>
+    <tr><th>Shortcode</th><th>Purpose</th><th>Context</th></tr>
+    <tr><td><code>[project_grid]</code></td><td>Filterable project grid with service/industry params</td><td>Archive, service pages</td></tr>
+    <tr><td><code>[project_featured]</code></td><td>Featured project hero (two-column)</td><td>Archive page</td></tr>
+    <tr><td><code>[video_project_embed]</code></td><td>Video iframe player</td><td>Single project</td></tr>
+    <tr><td><code>[video_project_meta]</code></td><td>Client, agency, duration sidebar</td><td>Single project</td></tr>
+    <tr><td><code>[video_project_credits]</code></td><td>Production credits grid</td><td>Single project</td></tr>
+    <tr><td><code>[video_project_stills]</code></td><td>Production stills gallery</td><td>Single project</td></tr>
+    <tr><td><code>[video_project_testimonial]</code></td><td>Per-project client testimonial</td><td>Single project</td></tr>
+    <tr><td><code>[video_project_similar]</code></td><td>Related projects (shared taxonomy)</td><td>Single project</td></tr>
+  </table>
+
+  <h3>FSE Templates</h3>
+  <table>
+    <tr><th>File</th><th>Used for</th></tr>
+    <tr><td><code>single-video-project.html</code></td><td>Individual project case study</td></tr>
+    <tr><td><code>archive-video-project.html</code></td><td>Main projects portfolio page</td></tr>
+    <tr><td><code>taxonomy-service.html</code></td><td>Service-specific project archive</td></tr>
+    <tr><td><code>taxonomy-industry.html</code></td><td>Industry-specific project archive</td></tr>
+  </table>
+
+  <h3>Component Pattern (inferred from Testimonials Slider)</h3>
+  <p>Every custom block follows the same architecture:</p>
+  <div class="diagram">blocks/[name]/
+├── block.json     ← Registration, attributes, keywords
+├── editor.js      ← Gutenberg sidebar controls + placeholder preview
+├── render.php     ← Server-side WP_Query + HTML output
+└── (no view.js)   ← Front-end JS lives in assets/js/ and is conditionally enqueued
+
+inc/[name]-block.php   ← wp_register_block_type() call
+assets/css/[name].css  ← Standalone stylesheet, enqueued by block or conditionally
+assets/js/[name].js    ← Front-end interactivity (slider, filter, etc.)</div>
+  <p>Key observations:</p>
+  <ul>
+    <li>Data comes from CPTs via <code>WP_Query</code> — never stored in block attributes (except config like speed, group ID).</li>
+    <li>Carbon Fields stores structured metadata; taxonomy terms handle categorisation.</li>
+    <li>CSS uses theme.json design tokens: <code>var(--wp--preset--*)</code> for colours, spacing, font sizes.</li>
+    <li>Blocks are conditionally enqueued (see <code>project-enqueue.php</code> pattern).</li>
+    <li>All front-end HTML is server-rendered PHP — no React hydration on the front-end.</li>
+  </ul>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 2. STAGING ENVIRONMENT SETUP -->
+<!-- ════════════════════════════════════════════════════ -->
+<section id="staging">
+  <h2>2. Staging Environment Setup</h2>
+
+  <div class="phase phase--staging">
+    <h3>Recommended Hosting: Flywheel or Cloudways</h3>
+    <p>Both offer one-click WordPress staging with SSL. Flywheel pairs naturally with Local by Flywheel for push/pull. Cloudways is more flexible if you want DigitalOcean/Vultr under the hood.</p>
+
+    <h4>Option A — Flywheel (Simplest)</h4>
+    <ul class="checklist">
+      <li>Create a Flywheel account and new site (e.g. <code>vpe-staging.flywheelsites.com</code>)</li>
+      <li>In Local, right-click the site → <strong>Push to Flywheel</strong> (uploads files + DB)</li>
+      <li>Enable free SSL on the Flywheel dashboard</li>
+      <li>Password-protect the staging URL via Flywheel's built-in option</li>
+    </ul>
+
+    <h4>Option B — Cloudways / Generic Host</h4>
+    <ul class="checklist">
+      <li>Provision a server + WordPress application</li>
+      <li>Install Spectra One parent theme + activate child theme</li>
+      <li>Run <code>composer install</code> in the child theme directory</li>
+      <li>Import the Local database via WP Migrate or phpMyAdmin</li>
+      <li>Search-replace <code>spectra.local</code> → staging URL in the DB</li>
+      <li>Enable SSL (Let's Encrypt / Cloudflare)</li>
+    </ul>
+
+    <h3>Git-Based Deployment Workflow</h3>
+    <p>The theme is already versioned on GitHub. Set up a deploy pipeline so every push to <code>main</code> auto-deploys to staging:</p>
+
+    <h4>Lightweight: GitHub + Deploy Hook</h4>
+    <pre><code># On the staging server, create a deploy script:
+# /home/deploy/deploy-theme.sh
+
+cd /var/www/html/wp-content/themes/spectra-child
+git pull origin main
+composer install --no-dev --optimize-autoloader</code></pre>
+    <p>Trigger this via a GitHub Actions workflow or a webhook on push to <code>main</code>.</p>
+
+    <h4>GitHub Actions Example</h4>
+    <pre><code># .github/workflows/deploy-staging.yml
+name: Deploy to Staging
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ${{ secrets.STAGING_USER }}
+          key: ${{ secrets.STAGING_KEY }}
+          script: |
+            cd /path/to/themes/spectra-child
+            git pull origin main
+            composer install --no-dev --optimize-autoloader</code></pre>
+
+    <h3>Branching Strategy</h3>
+    <table>
+      <tr><th>Branch</th><th>Purpose</th></tr>
+      <tr><td><code>main</code></td><td>Stable code → auto-deploys to staging</td></tr>
+      <tr><td><code>feature/*</code></td><td>New components/pages (merge into main via PR)</td></tr>
+      <tr><td><code>hotfix/*</code></td><td>Urgent fixes, merge directly to main</td></tr>
+    </table>
+    <p>When staging is approved by the client, tag a release (e.g. <code>v1.0.0</code>) and deploy that tag to production.</p>
+
+    <h3>Database &amp; Content Sync</h3>
+    <ul class="checklist">
+      <li>Install <strong>WP Migrate</strong> (free) or <strong>UpdraftPlus</strong> for DB push/pull between Local ↔ Staging</li>
+      <li>Keep media uploads in sync — use Flywheel push or rsync for <code>wp-content/uploads/</code></li>
+      <li>Add <code>wp-content/uploads/</code> to <code>.gitignore</code> — never version media files</li>
+      <li>Document any manual WP Admin steps (e.g., FSE template edits, menu configs) in a <code>SETUP.md</code></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 3. COMPONENT STANDARDISATION -->
+<!-- ════════════════════════════════════════════════════ -->
+<section id="components">
+  <h2>3. Component Standardisation Strategy</h2>
+
+  <div class="phase phase--components">
+    <h3>Established Pattern</h3>
+    <p>The codebase already follows a consistent architecture. Codify it as the standard for all future components:</p>
+
+    <div class="card">
+      <h4>Block Component Anatomy</h4>
+      <table>
+        <tr><th>File</th><th>Responsibility</th></tr>
+        <tr><td><code>blocks/[name]/block.json</code></td><td>Registration: name, attributes (config only — no content data), keywords, editor script, render path</td></tr>
+        <tr><td><code>blocks/[name]/editor.js</code></td><td>Gutenberg placeholder UI + sidebar controls (InspectorControls). Fetches live count from REST for preview.</td></tr>
+        <tr><td><code>blocks/[name]/render.php</code></td><td>Server-side WP_Query, Carbon Fields reads, full HTML output. All data fetched at render time.</td></tr>
+        <tr><td><code>inc/[name]-block.php</code></td><td><code>wp_register_block_type()</code> call, conditional enqueue logic if needed.</td></tr>
+        <tr><td><code>assets/css/[name].css</code></td><td>Component-scoped styles using BEM naming and <code>var(--wp--preset--*)</code> tokens.</td></tr>
+        <tr><td><code>assets/js/[name].js</code></td><td>Front-end interactivity (sliders, filters). Vanilla JS — no jQuery, no React.</td></tr>
+      </table>
+    </div>
+
+    <h3>Naming Conventions</h3>
+    <table>
+      <tr><th>Type</th><th>Convention</th><th>Example</th></tr>
+      <tr><td>Block name</td><td><code>spectra-child/[kebab-case]</code></td><td><code>spectra-child/testimonials-slider</code></td></tr>
+      <tr><td>CSS class</td><td>BEM: <code>.[block]__[element]--[modifier]</code></td><td><code>.testimonials-slider__card</code></td></tr>
+      <tr><td>PHP function</td><td><code>spectra_child_[action]_[subject]</code></td><td><code>spectra_child_render_video_project_meta</code></td></tr>
+      <tr><td>Shortcode</td><td><code>[noun_noun]</code> (snake_case)</td><td><code>[project_featured]</code></td></tr>
+      <tr><td>Carbon field key</td><td><code>snake_case</code></td><td><code>testimonial_client_name</code></td></tr>
+      <tr><td>Template file</td><td>Hyphenated, prefixed by type</td><td><code>template-parts/featured-project.php</code></td></tr>
+    </table>
+
+    <h3>CSS Architecture</h3>
+    <ul>
+      <li><strong>Global styles</strong>: <code>style.css</code> — hero, trust strip, page-level layout</li>
+      <li><strong>Component styles</strong>: <code>assets/css/[name].css</code> — scoped to one block, conditionally loaded</li>
+      <li><strong>Design tokens</strong>: Always use <code>var(--wp--preset--color--*)</code>, <code>var(--wp--preset--spacing--*)</code>, <code>var(--wp--preset--font-size--*)</code> instead of hard-coded values</li>
+      <li><strong>Accessibility</strong>: Every interactive element needs <code>:focus-visible</code> styles. Use <code>prefers-reduced-motion</code> media query for transitions.</li>
+    </ul>
+
+    <h3>Components Still Needed</h3>
+    <table>
+      <tr><th>Component</th><th>Type</th><th>Data Source</th><th>Priority</th></tr>
+      <tr><td>Video Hero (homepage)</td><td>FSE template / <code>style.css</code></td><td>Editor content</td><td><span class="tag tag--wip">WIP</span></td></tr>
+      <tr><td>Trust Strip (stats bar)</td><td><code>style.css</code></td><td>Editor content</td><td><span class="tag tag--wip">WIP</span></td></tr>
+      <tr><td>Service Cards Grid</td><td>New block or shortcode</td><td>Service taxonomy terms</td><td><span class="tag tag--todo">TODO</span></td></tr>
+      <tr><td>Team / About Section</td><td>Editor content or custom block</td><td>Editor or CPT</td><td><span class="tag tag--todo">TODO</span></td></tr>
+      <tr><td>Contact Form</td><td>Plugin block (e.g., WPForms Lite)</td><td>Plugin</td><td><span class="tag tag--todo">TODO</span></td></tr>
+      <tr><td>FAQ Accordion</td><td>Spectra parent block or custom</td><td>Editor content</td><td><span class="tag tag--todo">TODO</span></td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 4. PAGE STRUCTURE & TEMPLATE HIERARCHY -->
+<!-- ════════════════════════════════════════════════════ -->
+<section id="templates">
+  <h2>4. Page Structure &amp; Template Hierarchy</h2>
+
+  <h3>WordPress Template Resolution</h3>
+  <div class="diagram">Request                      Template resolved
+──────────────────────────   ──────────────────────────────────
+/                            Front Page (FSE Editor)
+/projects/                   templates/archive-video-project.html
+/projects/my-video/          templates/single-video-project.html
+/service/video-production/   templates/taxonomy-service.html
+/industry/corporate/         templates/taxonomy-industry.html
+/about/                      Page template (FSE Editor)
+/services/                   Page template (FSE Editor)
+/services/photography/       Page template (FSE Editor) + [project_grid service="photography"]
+/contact/                    Page template (FSE Editor)</div>
+
+  <h3>FSE Template Parts</h3>
+  <table>
+    <tr><th>Part</th><th>File</th><th>Status</th></tr>
+    <tr><td>Header</td><td><code>parts/header.html</code></td><td><span class="tag tag--wip">WIP</span> — currently a stub, edit in Site Editor</td></tr>
+    <tr><td>Footer</td><td><code>parts/footer.html</code></td><td><span class="tag tag--wip">WIP</span> — currently a stub, edit in Site Editor</td></tr>
+  </table>
+  <p>Both are managed in <strong>Appearance → Editor → Template Parts</strong>. These are shared across all templates. Build them out with Spectra blocks for navigation, logo, social links, and copyright.</p>
+
+  <h3>Recommended Page Map</h3>
+  <table>
+    <tr><th>Page</th><th>URL</th><th>Type</th><th>Key Components</th></tr>
+    <tr><td>Home</td><td><code>/</code></td><td>Front Page</td><td>Video Hero, Trust Strip, Featured Projects, Testimonials Slider, Logo Carousel, CTA</td></tr>
+    <tr><td>Projects (Archive)</td><td><code>/projects/</code></td><td>CPT Archive</td><td>[project_featured], [project_grid]</td></tr>
+    <tr><td>Single Project</td><td><code>/projects/[slug]/</code></td><td>CPT Single</td><td>Video embed, meta sidebar, credits, stills, testimonial, similar projects</td></tr>
+    <tr><td>Services</td><td><code>/services/</code></td><td>WP Page</td><td>Service cards grid, overview text, CTA</td></tr>
+    <tr><td>Service Sub-page</td><td><code>/services/photography/</code></td><td>WP Page</td><td>[project_grid service="photography"], service description, testimonials slider</td></tr>
+    <tr><td>About</td><td><code>/about/</code></td><td>WP Page</td><td>Team section, company story, values, logo carousel</td></tr>
+    <tr><td>Contact</td><td><code>/contact/</code></td><td>WP Page</td><td>Contact form, map/address, CTA</td></tr>
+  </table>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 5. PAGE-BY-PAGE BREAKDOWN -->
+<!-- ════════════════════════════════════════════════════ -->
+<section id="pages">
+  <h2>5. Page-by-Page Content &amp; Functionality Breakdown</h2>
+
+  <div class="phase phase--pages">
+
+    <h3>Homepage</h3>
+    <div class="card">
+      <h4>Sections (top to bottom)</h4>
+      <table>
+        <tr><th>#</th><th>Section</th><th>Implementation</th><th>Status</th></tr>
+        <tr><td>1</td><td>Video Hero</td><td>Custom HTML in <code>style.css</code> + Spectra Container. Vimeo background embed, heading, subtext, CTA button.</td><td><span class="tag tag--wip">WIP</span></td></tr>
+        <tr><td>2</td><td>Trust Strip</td><td>Spectra Row + custom CSS (<code>.trust-strip</code>). Stat numbers with labels and dividers.</td><td><span class="tag tag--wip">WIP</span></td></tr>
+        <tr><td>3</td><td>Featured Projects</td><td><code>[project_featured]</code> or manually curated Spectra blocks showing 2–3 key projects.</td><td><span class="tag tag--todo">TODO</span></td></tr>
+        <tr><td>4</td><td>Services Overview</td><td>Service cards linking to <code>/services/[slug]</code>. Could be a new block or Spectra grid.</td><td><span class="tag tag--todo">TODO</span></td></tr>
+        <tr><td>5</td><td>Testimonials</td><td><code>spectra-child/testimonials-slider</code> block (already built).</td><td><span class="tag tag--done">Done</span></td></tr>
+        <tr><td>6</td><td>Logo Carousel</td><td><code>spectra-child/logo-carousel</code> block (already built).</td><td><span class="tag tag--done">Done</span></td></tr>
+        <tr><td>7</td><td>CTA Banner</td><td>Spectra Container with heading + button linking to <code>/contact/</code>.</td><td><span class="tag tag--todo">TODO</span></td></tr>
+      </table>
+    </div>
+
+    <h3>Projects Archive</h3>
+    <div class="card">
+      <h4>Sections</h4>
+      <table>
+        <tr><th>#</th><th>Section</th><th>Implementation</th><th>Status</th></tr>
+        <tr><td>1</td><td>Page Title</td><td>FSE <code>&lt;h1&gt;</code> in template</td><td><span class="tag tag--done">Done</span></td></tr>
+        <tr><td>2</td><td>Featured Project Hero</td><td><code>[project_featured]</code> shortcode — two-column layout with image, service label, title, excerpt, CTA</td><td><span class="tag tag--done">Done</span></td></tr>
+        <tr><td>3</td><td>Filterable Project Grid</td><td><code>[project_grid]</code> shortcode — industry/service filter buttons, REST API fetch, load more</td><td><span class="tag tag--done">Done</span></td></tr>
+      </table>
+      <p><strong>Note:</strong> The archive template in the Site Editor needs updating to include <code>[project_featured]</code> above <code>[project_grid]</code> if not done already.</p>
+    </div>
+
+    <h3>Single Project (Case Study)</h3>
+    <div class="card">
+      <h4>Sections</h4>
+      <table>
+        <tr><th>#</th><th>Section</th><th>Shortcode</th><th>Status</th></tr>
+        <tr><td>1</td><td>Title</td><td>FSE <code>wp:post-title</code></td><td><span class="tag tag--done">Done</span></td></tr>
+        <tr><td>2</td><td>Video Player</td><td><code>[video_project_embed]</code></td><td><span class="tag tag--done">Done</span></td></tr>
+        <tr><td>3</td><td>Description (65%)</td><td><code>wp:post-content</code></td><td><span class="tag tag--done">Done</span></td></tr>
+        <tr><td>4</td><td>Meta Sidebar (35%)</td><td><code>[video_project_meta]</code></td><td><span class="tag tag--done">Done</span></td></tr>
+        <tr><td>5</td><td>Production Credits</td><td><code>[video_project_credits]</code></td><td><span class="tag tag--done">Done</span></td></tr>
+        <tr><td>6</td><td>Production Stills</td><td><code>[video_project_stills]</code></td><td><span class="tag tag--done">Done</span></td></tr>
+        <tr><td>7</td><td>Client Testimonial</td><td><code>[video_project_testimonial]</code></td><td><span class="tag tag--done">Done</span></td></tr>
+        <tr><td>8</td><td>Similar Projects</td><td><code>[video_project_similar]</code></td><td><span class="tag tag--done">Done</span></td></tr>
+      </table>
+    </div>
+
+    <h3>Services Page</h3>
+    <div class="card">
+      <h4>Main Hub: <code>/services/</code></h4>
+      <p>Overview page linking to individual service sub-pages. Use Spectra grid blocks with cards for each service (icon/image, title, short description, link).</p>
+      <h4>Sub-pages: <code>/services/photography/</code>, <code>/services/video-editing/</code>, etc.</h4>
+      <p>Each sub-page uses <code>[project_grid service="photography"]</code> to show filtered projects. Add a service description and optionally a testimonials slider filtered by a matching testimonial group.</p>
+    </div>
+
+    <h3>About Page</h3>
+    <div class="card">
+      <p>Built entirely with Spectra blocks in the editor. Typical sections: company story, team members, values/approach, logo carousel. No custom code needed unless a team member CPT is warranted later.</p>
+    </div>
+
+    <h3>Contact Page</h3>
+    <div class="card">
+      <p>Spectra Container with a contact form plugin (WPForms Lite, Gravity Forms, or Fluent Forms). Add company address, phone, email, and optional embedded map. Include a CTA-style heading above the form.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 6. DEVELOPMENT ORDER & PRIORITIES -->
+<!-- ════════════════════════════════════════════════════ -->
+<section id="order">
+  <h2>6. Development Order &amp; Priorities</h2>
+
+  <h3>Phase 1 — Foundation &amp; Staging (Week 1)</h3>
+  <div class="phase phase--staging">
+    <ul class="checklist">
+      <li>Set up staging environment (Flywheel push or manual server)</li>
+      <li>Configure Git deploy (GitHub Actions or webhook)</li>
+      <li>Push current Local DB + uploads to staging</li>
+      <li>Verify staging site loads correctly with SSL</li>
+      <li>Password-protect staging (htpasswd or Flywheel setting)</li>
+      <li>Set up WP Migrate or equivalent for ongoing DB sync</li>
+    </ul>
+  </div>
+
+  <h3>Phase 2 — Global Chrome (Week 1–2)</h3>
+  <div class="phase phase--components">
+    <ul class="checklist">
+      <li>Build out Header template part (logo, primary nav, mobile menu)</li>
+      <li>Build out Footer template part (nav columns, social links, copyright)</li>
+      <li>Finalise <code>theme.json</code> colour palette, typography, and spacing scales</li>
+      <li>Confirm global styles render consistently across all page types</li>
+    </ul>
+  </div>
+
+  <h3>Phase 3 — Homepage (Week 2–3)</h3>
+  <div class="phase phase--pages">
+    <ul class="checklist">
+      <li>Finalise Video Hero section (responsive, performance-optimised video)</li>
+      <li>Finalise Trust Strip (stat counters)</li>
+      <li>Add featured projects showcase section</li>
+      <li>Add services overview section (card grid linking to sub-pages)</li>
+      <li>Place Testimonials Slider block</li>
+      <li>Place Logo Carousel block</li>
+      <li>Add bottom CTA banner</li>
+    </ul>
+  </div>
+
+  <h3>Phase 4 — Project Pages (Week 3)</h3>
+  <div class="phase phase--pages">
+    <ul class="checklist">
+      <li>Review and polish <code>single-video-project.html</code> template styling</li>
+      <li>Review and polish <code>archive-video-project.html</code> (featured hero + grid)</li>
+      <li>Review taxonomy archive templates (service, industry)</li>
+      <li>Create 3–5 real project entries with full content (video, stills, credits, testimonial)</li>
+      <li>Test filterable grid with real data across industries and services</li>
+    </ul>
+  </div>
+
+  <h3>Phase 5 — Secondary Pages (Week 4)</h3>
+  <div class="phase phase--content">
+    <ul class="checklist">
+      <li>Build Services hub page</li>
+      <li>Build 4–6 service sub-pages with <code>[project_grid service="..."]</code></li>
+      <li>Build About page</li>
+      <li>Build Contact page (install form plugin, configure email delivery)</li>
+      <li>Set up main navigation menu (header + footer)</li>
+    </ul>
+  </div>
+
+  <h3>Phase 6 — Polish &amp; Launch Prep (Week 5)</h3>
+  <div class="phase phase--launch">
+    <ul class="checklist">
+      <li>Full responsive audit (mobile, tablet, desktop)</li>
+      <li>Accessibility audit (keyboard nav, screen reader, colour contrast)</li>
+      <li>Performance audit (Lighthouse, image optimisation, lazy loading)</li>
+      <li>SEO setup (Yoast/RankMath, meta titles, Open Graph images)</li>
+      <li>Install security plugin (Wordfence or Sucuri)</li>
+      <li>Configure backups (UpdraftPlus → cloud storage)</li>
+      <li>Client review on staging</li>
+      <li>Final content entry and proofreading</li>
+      <li>DNS switch to production</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 7. RISKS & GAPS -->
+<!-- ════════════════════════════════════════════════════ -->
+<section id="risks">
+  <h2>7. Risks &amp; Gaps</h2>
+
+  <div class="card">
+    <h4><span class="tag tag--risk">Risk</span> wpautop HTML Mangling</h4>
+    <p>WordPress's <code>wpautop</code> filter inserts <code>&lt;p&gt;</code> and <code>&lt;br&gt;</code> tags inside shortcode output rendered through the FSE Shortcode block. This has already caused duplicate elements and broken layouts in the featured project hero. <strong>Mitigation:</strong> keep all HTML inside <code>&lt;a&gt;</code> tags on a single output line. Consider building a small utility function that strips wpautop artifacts from shortcode returns.</p>
+  </div>
+
+  <div class="card">
+    <h4><span class="tag tag--risk">Risk</span> theme.json Not Extended</h4>
+    <p>The current <code>theme.json</code> only registers custom templates. It does not define the colour palette, typography, or spacing scales — these are inherited from Spectra One. If the parent theme updates and changes defaults, child theme styling could break. <strong>Mitigation:</strong> extend <code>theme.json</code> with explicit <code>settings.color.palette</code>, <code>settings.typography</code>, and <code>settings.spacing</code> blocks to lock in the VPE design system.</p>
+  </div>
+
+  <div class="card">
+    <h4><span class="tag tag--risk">Risk</span> Carbon Fields Dependency</h4>
+    <p>Carbon Fields is loaded via Composer's <code>vendor/autoload.php</code> directly in the theme. If the <code>vendor/</code> directory is missing on deploy (it's gitignored), the site will fatal error. <strong>Mitigation:</strong> ensure every deploy script runs <code>composer install --no-dev</code>. Add a safety check in <code>functions.php</code>: <code>if (!file_exists(__DIR__ . '/vendor/autoload.php')) return;</code></p>
+  </div>
+
+  <div class="card">
+    <h4><span class="tag tag--risk">Risk</span> No Automated Testing</h4>
+    <p>There are no unit tests or integration tests. Shortcode output, REST API responses, and block rendering are tested manually. <strong>Mitigation:</strong> at minimum, add a health-check endpoint or WP-CLI script that verifies CPTs exist, taxonomy terms are populated, and Carbon Fields is loaded. Consider adding PHPUnit tests for shortcode functions before launch.</p>
+  </div>
+
+  <div class="card">
+    <h4><span class="tag tag--risk">Risk</span> Large functions.php</h4>
+    <p>At 855 lines, <code>functions.php</code> handles CPT registration, taxonomy registration, Carbon Fields setup, and 8+ shortcodes. This is manageable now but will become harder to maintain. <strong>Mitigation:</strong> extract shortcode registrations into <code>inc/video-project-shortcodes.php</code> and CPT/taxonomy registration into <code>inc/post-types.php</code>. Follow the same modular pattern already used for <code>inc/project-rest-api.php</code>.</p>
+  </div>
+
+  <div class="card">
+    <h4><span class="tag tag--risk">Risk</span> No Content Staging Strategy</h4>
+    <p>FSE template edits, menu configurations, and widget/block content live in the database — not in Git. If the staging DB diverges from local, template changes can be lost during sync. <strong>Mitigation:</strong> designate staging as the source of truth for content. Only push theme code via Git. Pull DB from staging to local when needed, never overwrite staging DB from local without coordination.</p>
+  </div>
+
+  <div class="card">
+    <h4><span class="tag tag--risk">Gap</span> Missing SEO &amp; Analytics</h4>
+    <p>No SEO plugin, sitemap, or analytics tracking is configured. <strong>Action:</strong> install Yoast SEO or RankMath during Phase 6. Add Google Analytics / GA4 via a lightweight plugin or <code>theme.json</code> custom HTML block in the header template part.</p>
+  </div>
+
+  <div class="card">
+    <h4><span class="tag tag--risk">Gap</span> Missing Performance Optimisation</h4>
+    <p>No caching plugin, no image optimisation pipeline. Vimeo hero video could cause LCP issues on slow connections. <strong>Action:</strong> install a caching plugin (WP Super Cache or LiteSpeed Cache), add image optimisation (ShortPixel or Imagify), and add a poster image to the hero video for fast LCP.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 8. QA & LAUNCH CHECKLIST -->
+<!-- ════════════════════════════════════════════════════ -->
+<section id="qa">
+  <h2>8. QA &amp; Launch Checklist</h2>
+
+  <h3>Pre-Launch (Staging)</h3>
+  <ul class="checklist">
+    <li>All pages render without PHP warnings or errors</li>
+    <li>Responsive: tested at 375px, 768px, 1024px, 1440px</li>
+    <li>Keyboard navigation works on all interactive elements</li>
+    <li>Screen reader tested (VoiceOver / NVDA) on key pages</li>
+    <li>Colour contrast passes WCAG AA (4.5:1 for body text)</li>
+    <li>All links point to correct destinations (no broken links)</li>
+    <li>Contact form sends emails correctly</li>
+    <li>Video embeds load and play on mobile + desktop</li>
+    <li>Project filter works across all taxonomy combinations</li>
+    <li>Testimonials slider navigates correctly with 1, 2, and 5+ cards</li>
+    <li>Logo carousel renders with correct logo heights</li>
+    <li>Lighthouse score: Performance ≥ 80, Accessibility ≥ 90, SEO ≥ 90</li>
+    <li>Open Graph / social preview images set for key pages</li>
+    <li>404 page is styled and helpful</li>
+    <li>XML sitemap is generated and submitted to Google Search Console</li>
+  </ul>
+
+  <h3>Launch Day</h3>
+  <ul class="checklist">
+    <li>DNS updated to point to production server</li>
+    <li>SSL certificate verified on production</li>
+    <li>Search-replace staging URL → production URL in DB</li>
+    <li>Remove staging password protection on production</li>
+    <li>Flush all caches (object, page, CDN)</li>
+    <li>Verify all pages on production URL</li>
+    <li>Submit production sitemap to Google Search Console</li>
+    <li>Set up uptime monitoring (UptimeRobot or similar)</li>
+    <li>Tag Git release: <code>git tag v1.0.0 &amp;&amp; git push --tags</code></li>
+  </ul>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ════════════════════════════════════════════════════ -->
+<footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #e2e5e9; color: #9ca3af; font-size: 0.8rem;">
+  <p>VPE Development Plan — generated from codebase analysis of <code>spectra-child</code> theme. This document is standalone and independent of the WordPress installation.</p>
+</footer>
+
+</div>
+</body>
+</html>

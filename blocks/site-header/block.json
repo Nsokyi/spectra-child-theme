@@ -1,0 +1,26 @@
+{
+	"apiVersion": 3,
+	"name": "spectra-child/site-header",
+	"title": "Site Header",
+	"description": "Custom site header with logo, desktop navigation with dropdown, mobile drawer, and CTA button.",
+	"category": "theme",
+	"icon": "menu",
+	"keywords": ["header", "navigation", "menu", "nav"],
+	"supports": {
+		"html": false,
+		"multiple": false,
+		"align": ["full"]
+	},
+	"attributes": {
+		"ctaText": {
+			"type": "string",
+			"default": "Get A Quote"
+		},
+		"ctaUrl": {
+			"type": "string",
+			"default": "/contact/"
+		}
+	},
+	"editorScript": "file:./editor.js",
+	"render": "file:./render.php"
+}
