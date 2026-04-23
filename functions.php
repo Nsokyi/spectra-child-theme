@@ -854,3 +854,11 @@ function spectra_child_render_video_project_similar($atts) {
     wp_reset_postdata();
     return ob_get_clean();
 }
+
+/**
+ * [year] shortcode — outputs the current four-digit year.
+ * Usage in footer: © [year] Video Production Edinburgh
+ */
+add_shortcode('year', function () {
+    return date('Y');
+});
