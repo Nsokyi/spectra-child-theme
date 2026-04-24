@@ -347,11 +347,22 @@ jobs:
 
     <h3>CSS Architecture</h3>
     <ul>
-      <li><strong>Global styles</strong>: <code>style.css</code> — hero, trust strip, page-level layout</li>
+      <li><strong>Global styles</strong>: <code>style.css</code> — hero, trust strip, page-level layout, button system</li>
       <li><strong>Component styles</strong>: <code>assets/css/[name].css</code> — scoped to one block, conditionally loaded</li>
       <li><strong>Design tokens</strong>: Always use <code>var(--wp--preset--color--*)</code>, <code>var(--wp--preset--spacing--*)</code>, <code>var(--wp--preset--font-size--*)</code> instead of hard-coded values</li>
       <li><strong>Accessibility</strong>: Every interactive element needs <code>:focus-visible</code> styles. Use <code>prefers-reduced-motion</code> media query for transitions.</li>
     </ul>
+
+    <h3>VPE Button System</h3>
+    <p>All buttons use the Spectra Button block with a CSS class applied via the block's <strong>Additional CSS Class</strong> field. Each variant includes a slide-wipe hover effect and a circle icon.</p>
+    <table>
+      <tr><th>Variant</th><th>CSS Class(es)</th><th>Background</th><th>Text</th></tr>
+      <tr><td>Primary</td><td><code>vpe-custom-btn</code></td><td><code>#b64a4a</code> (VPE Red)</td><td>White</td></tr>
+      <tr><td>Secondary</td><td><code>vpe-custom-btn vpe-custom-btn--secondary</code></td><td><code>#121313</code> (Near Black)</td><td>White</td></tr>
+      <tr><td>Tertiary</td><td><code>vpe-custom-btn vpe-custom-btn--tertiary</code></td><td><code>#58595B</code> (Steel)</td><td>White</td></tr>
+      <tr><td>Quaternary</td><td><code>vpe-custom-btn vpe-custom-btn--quaternary</code></td><td><code>#FCFDFD</code> (Warm White)</td><td>Dark</td></tr>
+    </table>
+    <p><strong>Usage:</strong> Add a Spectra Buttons block → open the block settings → paste the class(es) into the <em>Additional CSS Class</em> field. The base <code>vpe-custom-btn</code> class is always required; modifier classes are added alongside it.</p>
 
     <h3>Components Still Needed</h3>
     <table>
