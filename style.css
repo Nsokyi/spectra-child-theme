@@ -521,3 +521,277 @@ TRUST STRIP STYLES
 		font-size: clamp(2.5rem, 10vw, 4.5rem) !important;
 	}
 }
+
+/* ── VPE Button System ─────────────────────────────────────── */
+:root {
+    --vpe-red:       #b64a4a;
+    --vpe-red-hover: #9e3f3f;
+    --btn-height:    48px;
+    --btn-padding:   0 24px;
+    --btn-radius:    8px;
+    --btn-gap:       12px;
+}
+
+/* 1. Base button */
+.vpe-custom-btn a.uagb-buttons-repeater {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: var(--btn-gap);
+    height: var(--btn-height);
+    padding: var(--btn-padding) !important;
+    border-radius: var(--btn-radius) !important;
+    background: var(--vpe-red) !important;
+    color: #fff !important;
+    border: 1.5px solid var(--vpe-red) !important;
+    text-decoration: none;
+    position: relative !important;
+    z-index: 1;
+    overflow: hidden !important;
+    transition: transform 0.1s ease !important;
+}
+
+/* 2. Kill Spectra's default hover styles */
+.vpe-custom-btn a.uagb-buttons-repeater:hover {
+    background: var(--vpe-red) !important;
+    color: #fff !important;
+    box-shadow: none !important;
+}
+
+/* 3. Slide wipe */
+.vpe-custom-btn a.uagb-buttons-repeater::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--vpe-red-hover);
+    z-index: -1;
+    transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.vpe-custom-btn a.uagb-buttons-repeater:hover::before {
+    transform: translateX(0);
+}
+
+/* 4. Active state */
+.vpe-custom-btn a.uagb-buttons-repeater:active {
+    transform: scale(0.98);
+}
+
+/* 5. Circle icon */
+.vpe-custom-btn a.uagb-buttons-repeater::after {
+    content: "";
+    width: 12px;
+    height: 12px;
+    border: 1.5px solid white;
+    border-radius: 50%;
+    margin-left: 4px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    transition: filter 0.3s ease;
+}
+
+/* 6. Circle glow on hover */
+.vpe-custom-btn a.uagb-buttons-repeater:hover::after {
+    filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 8px rgba(255,255,255,0.6));
+}
+
+/* 7. Keep button text above the wipe layer */
+.vpe-custom-btn .uagb-button__link {
+    position: relative;
+    z-index: 2;
+    background: transparent !important;
+}
+
+/* ── Secondary ─────────────────────────────────────────────── */
+.vpe-custom-btn--secondary a.uagb-buttons-repeater {
+    background: #121313 !important;
+    border-color: #121313 !important;
+}
+.vpe-custom-btn--secondary a.uagb-buttons-repeater:hover {
+    background: #121313 !important;
+}
+.vpe-custom-btn--secondary a.uagb-buttons-repeater::before {
+    background: #3F4041;
+}
+
+/* ── Tertiary ───────────────────────────────────────────────── */
+.vpe-custom-btn--tertiary a.uagb-buttons-repeater {
+    background: #58595B !important;
+    border-color: #58595B !important;
+}
+.vpe-custom-btn--tertiary a.uagb-buttons-repeater:hover {
+    background: #58595B !important;
+}
+.vpe-custom-btn--tertiary a.uagb-buttons-repeater::before {
+    background: #808080;
+}
+
+/* ── Quaternary ─────────────────────────────────────────────── */
+.vpe-custom-btn--quaternary a.uagb-buttons-repeater {
+    background: #FCFDFD !important;
+    border-color: #FCFDFD !important;
+    color: #121313 !important;
+}
+.vpe-custom-btn--quaternary a.uagb-buttons-repeater:hover {
+    background: #FCFDFD !important;
+    color: #121313 !important;
+}
+.vpe-custom-btn--quaternary a.uagb-buttons-repeater::before {
+    background: #EFEFEF;
+}
+
+/* Quaternary circle and glow are dark instead of white */
+.vpe-custom-btn--quaternary a.uagb-buttons-repeater::after {
+    border-color: #121313;
+}
+.vpe-custom-btn--quaternary a.uagb-buttons-repeater:hover::after {
+    filter: drop-shadow(0 0 4px rgba(0,0,0,0.4)) drop-shadow(0 0 8px rgba(0,0,0,0.2));
+}
+
+/* ── Team Section ──────────────────────────────────────────── */
+.my-team-card.uagb-team__image-position-above img {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    object-fit: cover;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.my-team-card {
+    height: auto !important;
+    border-radius: 8px;
+    border: solid 1px #e9e9e9;
+    overflow: hidden;
+}
+
+.my-team-card .uagb-team__image-wrap {
+    overflow: hidden;
+}
+
+.my-team-card img {
+    filter: grayscale(100%);
+    transition: filter 0.6s ease, transform 0.6s ease !important;
+}
+
+.my-team-card:hover img {
+    filter: grayscale(0%);
+    transform: scale(1.04);
+}
+
+/* ── Footer ────────────────────────────────────────────────── */
+.footer {
+    overflow: hidden !important;
+}
+.footer-base-links p a {
+    font-size: var(--wp--preset--font-size--x-small) !important;
+}
+
+/* ── Footer Noah's Logo ────────────────────────────────────── */
+.noahsportfolio-link-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.noahsportfolio-combined-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--wp--preset--color--custom-steel);
+}
+
+.noahsportfolio-text {
+    font-size: var(--wp--preset--font-size--x-small);
+    color: var(--wp--preset--color--custom-steel);
+    transition: color 0.3s ease;
+}
+
+.noahsportfolio-logo-container {
+    position: relative;
+    display: inline-block;
+}
+
+.noahsportfolio-logo {
+    width: 16px;
+    height: auto;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    display: block;
+    filter: brightness(0) saturate(100%) invert(87%) sepia(2%) saturate(986%) hue-rotate(94deg) brightness(119%) contrast(93%);
+}
+
+.noahsportfolio-combined-link:hover .noahsportfolio-logo {
+    transform: scale(1.5);
+    filter: brightness(0) saturate(100%) invert(85%) sepia(48%) saturate(6215%) hue-rotate(8deg) brightness(108%) contrast(108%);
+}
+
+.noahsportfolio-combined-link:hover .noahsportfolio-text {
+    color: #fbb900;
+}
+
+/* Tooltip styles */
+[data-tooltip] {
+    position: relative;
+}
+
+[data-tooltip]:after,
+[data-tooltip]:before {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    transition: transform 200ms ease, opacity 200ms;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 99;
+    pointer-events: none;
+}
+
+[data-tooltip]:before {
+    content: attr(data-tooltip);
+    background: #002839;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 5px;
+    white-space: nowrap;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+[data-tooltip]:after {
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    content: '';
+}
+
+[data-tooltip][data-position="right"]:before {
+    top: 50%;
+    left: 100%;
+    margin-left: 10px;
+    transform: translateY(-50%) translateX(0px);
+}
+
+[data-tooltip][data-position="right"]:after {
+    border-right-color: #002839;
+    border-left: none;
+    top: calc(50% - 6px);
+    left: calc(100% + 4px);
+    transform: translateX(0px);
+}
+
+.noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]:after,
+.noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]:before {
+    visibility: visible;
+    opacity: 0.85;
+    transform: translateY(-50%) translateX(10px);
+}
+
+.noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]:after {
+    transform: translateX(10px);
+}
