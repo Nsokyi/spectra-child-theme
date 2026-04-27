@@ -1,6 +1,34 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/theme.json",
 	"version": 2,
+	"settings": {
+		"color": {
+			"palette": [
+				{ "slug": "primary", "color": "#6431F6", "name": "Primary" },
+				{ "slug": "secondary", "color": "#7345F7", "name": "Secondary" },
+				{ "slug": "heading", "color": "#1F2937", "name": "Heading" },
+				{ "slug": "body", "color": "#4B5563", "name": "Body" },
+				{ "slug": "background", "color": "#FFFFFF", "name": "Background" },
+				{ "slug": "tertiary", "color": "#F6EBFE", "name": "Tertiary" },
+				{ "slug": "quaternary", "color": "#FFFBEB", "name": "Quaternary" },
+				{ "slug": "surface", "color": "#F8FAFC", "name": "Surface" },
+				{ "slug": "foreground", "color": "#6431F7", "name": "Foreground" },
+				{ "slug": "outline", "color": "#E6E9EF", "name": "Outline" },
+				{ "slug": "neutral", "color": "#6E7787", "name": "Neutral" },
+				{ "slug": "transparent", "color": "transparent", "name": "Transparent" },
+				{ "slug": "currentColor", "color": "currentColor", "name": "Current Color" },
+				{ "slug": "inherit", "color": "inherit", "name": "Inherit" },
+				{ "slug": "custom-vpe-red", "color": "#b64a4a", "name": "VPE Red" },
+				{ "slug": "custom-vpe-red-hover", "color": "#9e3f3f", "name": "VPE Red Hover" },
+				{ "slug": "custom-vpe-charcoal", "color": "#121313", "name": "VPE Charcoal" },
+				{ "slug": "custom-vpe-charcoal-hover", "color": "#3F4041", "name": "VPE Charcoal Hover" },
+				{ "slug": "custom-vpe-steel", "color": "#58595B", "name": "VPE Steel" },
+				{ "slug": "custom-vpe-steel-hover", "color": "#808080", "name": "VPE Steel Hover" },
+				{ "slug": "custom-vpe-warm-white", "color": "#FCFDFD", "name": "VPE Warm White" },
+				{ "slug": "custom-vpe-light-grey", "color": "#EFEFEF", "name": "VPE Light Grey" }
+			]
+		}
+	},
 	"customTemplates": [
 		{
 			"name": "single-video-project",

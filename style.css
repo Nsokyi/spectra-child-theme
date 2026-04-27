@@ -118,7 +118,7 @@ VIDEO HERO - HOMEPAGE STYLES
 }
 
 /* ── Subtext ── */
-.hero__sub {
+.hero__sub { 
 	font-size: clamp(0.9rem, 1.5vw, 1.05rem);
 	line-height: 1.65;
 	color: rgba(255, 255, 255, 0.7);
@@ -524,8 +524,8 @@ TRUST STRIP STYLES
 
 /* ── VPE Button System ─────────────────────────────────────── */
 :root {
-    --vpe-red:       #b64a4a;
-    --vpe-red-hover: #9e3f3f;
+    --vpe-red:       var(--wp--preset--color--custom-vpe-red);
+    --vpe-red-hover: var(--wp--preset--color--custom-vpe-red-hover);
     --btn-height:    48px;
     --btn-padding:   0 24px;
     --btn-radius:    8px;
@@ -606,45 +606,45 @@ TRUST STRIP STYLES
 
 /* ── Secondary ─────────────────────────────────────────────── */
 .vpe-custom-btn--secondary a.uagb-buttons-repeater {
-    background: #121313 !important;
-    border-color: #121313 !important;
+    background: var(--wp--preset--color--custom-vpe-charcoal) !important;
+    border-color: var(--wp--preset--color--custom-vpe-charcoal) !important;
 }
 .vpe-custom-btn--secondary a.uagb-buttons-repeater:hover {
-    background: #121313 !important;
+    background: var(--wp--preset--color--custom-vpe-charcoal) !important;
 }
 .vpe-custom-btn--secondary a.uagb-buttons-repeater::before {
-    background: #3F4041;
+    background: var(--wp--preset--color--custom-vpe-charcoal-hover);
 }
 
 /* ── Tertiary ───────────────────────────────────────────────── */
 .vpe-custom-btn--tertiary a.uagb-buttons-repeater {
-    background: #58595B !important;
-    border-color: #58595B !important;
+    background: var(--wp--preset--color--custom-vpe-steel) !important;
+    border-color: var(--wp--preset--color--custom-vpe-steel) !important;
 }
 .vpe-custom-btn--tertiary a.uagb-buttons-repeater:hover {
-    background: #58595B !important;
+    background: var(--wp--preset--color--custom-vpe-steel) !important;
 }
 .vpe-custom-btn--tertiary a.uagb-buttons-repeater::before {
-    background: #808080;
+    background: var(--wp--preset--color--custom-vpe-steel-hover);
 }
 
 /* ── Quaternary ─────────────────────────────────────────────── */
 .vpe-custom-btn--quaternary a.uagb-buttons-repeater {
-    background: #FCFDFD !important;
-    border-color: #FCFDFD !important;
-    color: #121313 !important;
+    background: var(--wp--preset--color--custom-vpe-warm-white) !important;
+    border-color: var(--wp--preset--color--custom-vpe-warm-white) !important;
+    color: var(--wp--preset--color--custom-vpe-charcoal) !important;
 }
 .vpe-custom-btn--quaternary a.uagb-buttons-repeater:hover {
-    background: #FCFDFD !important;
-    color: #121313 !important;
+    background: var(--wp--preset--color--custom-vpe-warm-white) !important;
+    color: var(--wp--preset--color--custom-vpe-charcoal) !important;
 }
 .vpe-custom-btn--quaternary a.uagb-buttons-repeater::before {
-    background: #EFEFEF;
+    background: var(--wp--preset--color--custom-vpe-light-grey);
 }
 
 /* Quaternary circle and glow are dark instead of white */
 .vpe-custom-btn--quaternary a.uagb-buttons-repeater::after {
-    border-color: #121313;
+    border-color: var(--wp--preset--color--custom-vpe-charcoal);
 }
 .vpe-custom-btn--quaternary a.uagb-buttons-repeater:hover::after {
     filter: drop-shadow(0 0 4px rgba(0,0,0,0.4)) drop-shadow(0 0 8px rgba(0,0,0,0.2));
