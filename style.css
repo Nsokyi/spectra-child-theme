@@ -524,12 +524,18 @@ TRUST STRIP STYLES
 
 /* ── VPE Button System ─────────────────────────────────────── */
 :root {
-    --vpe-red:       var(--wp--preset--color--custom-vpe-red);
-    --vpe-red-hover: var(--wp--preset--color--custom-vpe-red-hover);
-    --btn-height:    48px;
-    --btn-padding:   0 24px;
-    --btn-radius:    8px;
-    --btn-gap:       12px;
+    --vpe-red:            var(--wp--preset--color--custom-vpe-red, #b64a4a);
+    --vpe-red-hover:      var(--wp--preset--color--custom-vpe-red-hover, #9e3f3f);
+    --vpe-charcoal:       var(--wp--preset--color--custom-vpe-charcoal, #121313);
+    --vpe-charcoal-hover: var(--wp--preset--color--custom-vpe-charcoal-hover, #3F4041);
+    --vpe-steel:          var(--wp--preset--color--custom-vpe-steel, #58595B);
+    --vpe-steel-hover:    var(--wp--preset--color--custom-vpe-steel-hover, #808080);
+    --vpe-warm-white:     var(--wp--preset--color--custom-vpe-warm-white, #FCFDFD);
+    --vpe-light-grey:     var(--wp--preset--color--custom-vpe-light-grey, #EFEFEF);
+    --btn-height:         48px;
+    --btn-padding:        0 24px;
+    --btn-radius:         8px;
+    --btn-gap:            12px;
 }
 
 /* 1. Base button */
@@ -606,45 +612,45 @@ TRUST STRIP STYLES
 
 /* ── Secondary ─────────────────────────────────────────────── */
 .vpe-custom-btn--secondary a.uagb-buttons-repeater {
-    background: var(--wp--preset--color--custom-vpe-charcoal) !important;
-    border-color: var(--wp--preset--color--custom-vpe-charcoal) !important;
+    background: var(--vpe-charcoal) !important;
+    border-color: var(--vpe-charcoal) !important;
 }
 .vpe-custom-btn--secondary a.uagb-buttons-repeater:hover {
-    background: var(--wp--preset--color--custom-vpe-charcoal) !important;
+    background: var(--vpe-charcoal) !important;
 }
 .vpe-custom-btn--secondary a.uagb-buttons-repeater::before {
-    background: var(--wp--preset--color--custom-vpe-charcoal-hover);
+    background: var(--vpe-charcoal-hover);
 }
 
 /* ── Tertiary ───────────────────────────────────────────────── */
 .vpe-custom-btn--tertiary a.uagb-buttons-repeater {
-    background: var(--wp--preset--color--custom-vpe-steel) !important;
-    border-color: var(--wp--preset--color--custom-vpe-steel) !important;
+    background: var(--vpe-steel) !important;
+    border-color: var(--vpe-steel) !important;
 }
 .vpe-custom-btn--tertiary a.uagb-buttons-repeater:hover {
-    background: var(--wp--preset--color--custom-vpe-steel) !important;
+    background: var(--vpe-steel) !important;
 }
 .vpe-custom-btn--tertiary a.uagb-buttons-repeater::before {
-    background: var(--wp--preset--color--custom-vpe-steel-hover);
+    background: var(--vpe-steel-hover);
 }
 
 /* ── Quaternary ─────────────────────────────────────────────── */
 .vpe-custom-btn--quaternary a.uagb-buttons-repeater {
-    background: var(--wp--preset--color--custom-vpe-warm-white) !important;
-    border-color: var(--wp--preset--color--custom-vpe-warm-white) !important;
-    color: var(--wp--preset--color--custom-vpe-charcoal) !important;
+    background: var(--vpe-warm-white) !important;
+    border-color: var(--vpe-warm-white) !important;
+    color: var(--vpe-charcoal) !important;
 }
 .vpe-custom-btn--quaternary a.uagb-buttons-repeater:hover {
-    background: var(--wp--preset--color--custom-vpe-warm-white) !important;
-    color: var(--wp--preset--color--custom-vpe-charcoal) !important;
+    background: var(--vpe-warm-white) !important;
+    color: var(--vpe-charcoal) !important;
 }
 .vpe-custom-btn--quaternary a.uagb-buttons-repeater::before {
-    background: var(--wp--preset--color--custom-vpe-light-grey);
+    background: var(--vpe-light-grey);
 }
 
 /* Quaternary circle and glow are dark instead of white */
 .vpe-custom-btn--quaternary a.uagb-buttons-repeater::after {
-    border-color: var(--wp--preset--color--custom-vpe-charcoal);
+    border-color: var(--vpe-charcoal);
 }
 .vpe-custom-btn--quaternary a.uagb-buttons-repeater:hover::after {
     filter: drop-shadow(0 0 4px rgba(0,0,0,0.4)) drop-shadow(0 0 8px rgba(0,0,0,0.2));
