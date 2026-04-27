@@ -594,8 +594,8 @@ jobs:
   </div>
 
   <div class="card">
-    <h4><span class="tag tag--risk">Risk</span> Large functions.php</h4>
-    <p>At 855 lines, <code>functions.php</code> handles CPT registration, taxonomy registration, Carbon Fields setup, and 8+ shortcodes. This is manageable now but will become harder to maintain. <strong>Mitigation:</strong> extract shortcode registrations into <code>inc/video-project-shortcodes.php</code> and CPT/taxonomy registration into <code>inc/post-types.php</code>. Follow the same modular pattern already used for <code>inc/project-rest-api.php</code>.</p>
+    <h4><span class="tag tag--done">Resolved</span> Large functions.php</h4>
+    <p><strong>Previously:</strong> At 855 lines, <code>functions.php</code> handled CPT registration, taxonomy registration, Carbon Fields setup, and 8+ shortcodes. <strong>Resolution:</strong> extracted into three dedicated files — <code>inc/post-types.php</code> (CPTs, taxonomies, term populators), <code>inc/carbon-fields-setup.php</code> (Carbon Fields boot + field registrations), and <code>inc/video-project-shortcodes.php</code> (helper + all shortcodes). <code>functions.php</code> is now 54 lines and only bootstraps includes + small utilities.</p>
   </div>
 
   <div class="card">
