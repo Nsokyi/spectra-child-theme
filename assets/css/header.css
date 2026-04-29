@@ -3,7 +3,7 @@
    ============================================================ */
 
 :root {
-	--header-height: 80px;
+	--header-height: clamp(88px, 3.57vw + 60.6px, 112px);
 	--nav-text: #0d0d0d;
 	--nav-text-light: rgba(13, 13, 13, 0.6);
 	--cta-bg: #b64a4a;
@@ -74,7 +74,7 @@
 
 .logo-img {
 	display: block;
-	height: 72px;
+	height: clamp(64px, 2.98vw + 41px, 92px);
 	width: auto;
 	object-fit: contain;
 }
@@ -108,7 +108,7 @@
 	padding: 0.45rem 0.85rem;
 	color: var(--nav-text);
 	text-decoration: none;
-	font-size: 1.125rem;
+	font-size: clamp(0.9375rem, 0.28vw + 0.8rem, 1.125rem);
 	font-weight: 400;
 	letter-spacing: 0.01em;
 	border-radius: var(--header-radius);
@@ -238,13 +238,13 @@
 .site-nav__cta {
 	display: none;
 	align-items: center;
-	gap: 12px;
-	padding: 16px 32px;
+	gap: clamp(8px, 0.6vw + 4px, 12px);
+	padding: clamp(12px, 0.6vw + 7px, 16px) clamp(24px, 1.19vw + 15px, 32px);
 	background: var(--cta-bg);
 	color: var(--cta-text);
 	border: 1.5px solid var(--cta-bg);
 	text-decoration: none;
-	font-size: 1.125rem;
+	font-size: clamp(0.9375rem, 0.28vw + 0.8rem, 1.125rem);
 	font-weight: 400;
 	border-radius: var(--cta-radius);
 	letter-spacing: 0.01em;
