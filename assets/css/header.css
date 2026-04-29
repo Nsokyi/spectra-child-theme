@@ -8,7 +8,7 @@
 	--nav-text-light: rgba(13, 13, 13, 0.6);
 	--cta-bg: #b64a4a;
 	--cta-text: #FCFDFD;
-	--pill-bg: rgba(252, 253, 253, 0.85);
+	--pill-bg: rgba(252, 253, 253, 0.92);
 	--pill-border: rgba(13, 13, 13, 0.08);
 	--dropdown-bg: #FCFDFD;
 	--dropdown-border: rgba(13, 13, 13, 0.08);
@@ -40,7 +40,7 @@
 /* ── Nav bar ── */
 .site-nav {
 	width: 100%;
-	padding: 0 1.75rem;
+	padding: 0 clamp(1rem, 2vw, 1.75rem);
 	background: #FCFDFD;
 	transition: padding var(--header-t) var(--header-ease),
 	            background var(--header-t) var(--header-ease);
@@ -55,12 +55,25 @@
 	transition: all var(--header-t) var(--header-ease);
 }
 
-/* ── Scrolled — full-width frosted bar ── */
+/* ── Scrolled — full-width frosted bar + compact ── */
+.site-header.is-scrolled {
+	--header-height: 88px;
+}
+
 .site-header.is-scrolled .site-nav {
 	background: var(--pill-bg);
-	backdrop-filter: blur(20px) saturate(180%);
-	-webkit-backdrop-filter: blur(20px) saturate(180%);
+	backdrop-filter: blur(28px) saturate(200%);
+	-webkit-backdrop-filter: blur(28px) saturate(200%);
 	border-bottom: 1px solid var(--pill-border);
+	box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+}
+
+.site-header.is-scrolled .logo-img {
+	height: 64px;
+}
+
+.site-header.is-scrolled .site-nav__cta {
+	padding: 12px 24px;
 }
 
 /* ── Logo ── */
@@ -77,6 +90,7 @@
 	height: clamp(64px, 2.98vw + 41px, 92px);
 	width: auto;
 	object-fit: contain;
+	transition: height var(--header-t) var(--header-ease);
 }
 
 /* ── Desktop menu — centred absolutely ── */
