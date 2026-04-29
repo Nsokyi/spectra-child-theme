@@ -869,3 +869,35 @@ TRUST STRIP STYLES
 .noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]:after {
     transform: translateX(10px);
 }
+
+/* 
+===================================================================================================
+FAQ SECTION — kicker-style numbered items (// 01, // 02 …)
+===================================================================================================
+*/
+
+/* Initialise counter on the wrapper */
+.vpe-faq {
+    counter-reset: faq-counter;
+}
+
+/* Each FAQ item increments the counter and reserves space for the number */
+.vpe-faq .uagb-faq-item {
+    counter-increment: faq-counter;
+    position: relative;
+    padding-left: 100px;
+}
+
+/* Number label positioned to the left of the question */
+.vpe-faq .uagb-faq-item::before {
+    content: "// " counter(faq-counter, decimal-leading-zero);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    color: #808080;
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding-top: 31px;
+}
