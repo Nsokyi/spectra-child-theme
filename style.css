@@ -960,3 +960,98 @@ SERVICES PAGE — square boxes
     max-height: 36px;
     text-transform: uppercase;
 }
+
+/* 
+===================================================================================================
+WHATSAPP LINK — Contact Page
+===================================================================================================
+*/
+
+.whatsapp-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.whatsapp-link img {
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+}
+
+.whatsapp-link:hover {
+    color: var(--wp--preset--color--secondary);
+}
+
+/* 
+===================================================================================================
+RECAPTCHA — hide badge
+===================================================================================================
+*/
+
+.grecaptcha-badge {
+    visibility: hidden !important;
+}
+
+/* 
+===================================================================================================
+OUTBOUND SOCIAL LINKS — dark & light variants with arrow
+===================================================================================================
+*/
+
+.social-link-dark a,
+.social-link-light a {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    outline: none;
+}
+
+.social-link-dark a::after,
+.social-link-light a::after {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-left: 8px;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 22 22'%3E%3Cpath stroke='black' stroke-linecap='square' stroke-miterlimit='10' stroke-width='1.3125' d='M11.5156 17.1875 17.7031 11l-6.1875-6.1875M16.8438 11H4.29688'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 22 22'%3E%3Cpath stroke='black' stroke-linecap='square' stroke-miterlimit='10' stroke-width='1.3125' d='M11.5156 17.1875 17.7031 11l-6.1875-6.1875M16.8438 11H4.29688'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    transform: rotate(-45deg);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    background-color: currentColor;
+}
+
+.social-link-dark a {
+    color: #AAAAAA;
+}
+
+.social-link-light a {
+    color: #58595B;
+}
+
+.social-link-light a:hover,
+.social-link-light a:focus {
+    color: #121313;
+}
+
+.social-link-dark a:hover,
+.social-link-dark a:focus {
+    color: #58595B;
+}
+
+.social-link-light a:hover::after,
+.social-link-light a:focus::after {
+    transform: rotate(0deg);
+    background-color: #121313;
+}
+
+.social-link-dark a:hover::after,
+.social-link-dark a:focus::after {
+    transform: rotate(0deg);
+    background-color: #58595B;
+}

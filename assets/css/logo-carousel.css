@@ -9,6 +9,27 @@
 	position: relative;
 }
 
+.wp-block-spectra-child-logo-carousel::before,
+.wp-block-spectra-child-logo-carousel::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 120px;
+	z-index: 2;
+	pointer-events: none;
+}
+
+.wp-block-spectra-child-logo-carousel::before {
+	left: 0;
+	background: linear-gradient(to right, #FCFDFD, transparent);
+}
+
+.wp-block-spectra-child-logo-carousel::after {
+	right: 0;
+	background: linear-gradient(to left, #FCFDFD, transparent);
+}
+
 .logo-carousel__track {
 	display: flex;
 	width: max-content;
