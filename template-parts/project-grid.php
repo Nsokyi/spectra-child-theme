@@ -103,7 +103,8 @@ $active_industry = $current_term && $current_term['taxonomy'] === 'industry' ? $
                 <?php
                 $post_id       = get_the_ID();
                 $thumbnail_url = get_the_post_thumbnail_url($post_id, 'medium_large');
-                $client = carbon_get_post_meta($post_id, 'client_name');
+                $client        = carbon_get_post_meta($post_id, 'client_name');
+                $item_services = get_the_terms($post_id, 'service');
                 ?>
                 <a href="<?php the_permalink(); ?>" class="project-item">
                     <figure class="project-item__image">
@@ -118,10 +119,15 @@ $active_industry = $current_term && $current_term['taxonomy'] === 'industry' ? $
                         <?php endif; ?>
                     </figure>
                     <div class="project-item__meta">
-                        <h3 class="project-item__title"><?php the_title(); ?></h3>
-                        <?php if ($client) : ?>
-                            <span class="project-item__client"><?php echo esc_html($client); ?></span>
+                        <?php if ($client || ($item_services && !is_wp_error($item_services))) : ?>
+                            <div class="project-item__tags">
+                                <span class="project-item__client-tag"><?php echo $client ? esc_html($client) : '&nbsp;'; ?></span>
+                                <?php if ($item_services && !is_wp_error($item_services)) : ?>
+                                    <span class="project-item__service-tag"><?php echo esc_html($item_services[0]->name); ?></span>
+                                <?php endif; ?>
+                            </div>
                         <?php endif; ?>
+                        <h3 class="project-item__title"><?php the_title(); ?></h3>
                     </div>
                 </a>
             <?php endwhile; ?>
