@@ -807,7 +807,7 @@ TRUST STRIP STYLES
 
 .noahsportfolio-text {
     font-size: var(--wp--preset--font-size--x-small);
-    color: var(--wp--preset--color--slate);
+    color: var(--wp--preset--color--steel);
     transition: color 0.3s ease;
 }
 
@@ -826,11 +826,11 @@ TRUST STRIP STYLES
 
 .noahsportfolio-combined-link:hover .noahsportfolio-logo {
     transform: scale(1.5);
-    filter: brightness(0) saturate(100%) invert(85%) sepia(48%) saturate(6215%) hue-rotate(8deg) brightness(108%) contrast(108%);
+    filter: brightness(0) saturate(100%) invert(36%) sepia(5%) saturate(304%) hue-rotate(160deg) brightness(91%) contrast(89%);
 }
 
 .noahsportfolio-combined-link:hover .noahsportfolio-text {
-    color: #fbb900;
+    color: var(--wp--preset--color--custom-slate);
 }
 
 /* Tooltip styles */
@@ -844,7 +844,7 @@ TRUST STRIP STYLES
     visibility: hidden;
     opacity: 0;
     transition: transform 200ms ease, opacity 200ms;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 10px var(--vpe-red-hover);
     z-index: 99;
     pointer-events: none;
 }
@@ -1080,4 +1080,94 @@ OUTBOUND SOCIAL LINKS — dark & light variants with arrow
 .social-link-dark a:focus::after {
     transform: rotate(0deg);
     background-color: var(--wp--preset--color--slate);
+}
+
+/* 
+===================================================================================================
+STAR HEADING — homepage heading with inline star decoration
+===================================================================================================
+*/
+
+.star-heading h2 {
+    width: 100%;
+    display: inline-block !important;
+}
+
+.star-heading .uagb-heading-text {
+    display: inline-flex;
+    align-items: center;
+}
+
+.star-heading .uagb-heading-text::after {
+    content: "\2605";
+    color: var(--wp--preset--color--vpe-red-light);
+    font-size: 0.75em;
+    line-height: 1;
+    margin-left: 8px;
+    margin-right: 4px;
+    position: relative;
+    top: -8px;
+}
+
+.uagb-block-49f585a7 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+}
+
+/* 
+===================================================================================================
+FOOTER — layout grid, button width, link colours
+===================================================================================================
+*/
+
+@media (min-width: 768px) {
+    .vpe-footer-top {
+        display: grid !important;
+        grid-template-columns: 1.25fr 1fr 1fr !important;
+        grid-template-areas: "logo links contact" !important;
+        align-items: start !important;
+        gap: 0 var(--grid-gutter, 40px) !important;
+    }
+
+    .vpe-footer-logo {
+        grid-area: logo !important;
+    }
+
+    .wp-block-uagb-container.vpe-footer-links-wrap {
+        grid-area: links;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0 var(--grid-gutter, 40px) !important;
+        width: 100% !important;
+    }
+
+    .vpe-footer-contact {
+        grid-area: contact !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .wp-block-uagb-container.vpe-footer-links-wrap {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0 24px !important;
+    }
+}
+
+.vpe-footer-btn,
+.vpe-footer-btn a.wp-block-button__link {
+    width: 100% !important;
+}
+
+.footer a,
+.footer a:visited,
+.footer a.noahsportfolio-combined-link {
+    transition: color 0.3s ease;
+    color: var(--wp--preset--color--steel) !important;
+}
+
+.footer a:hover {
+    color: var(--wp--preset--color--slate) !important;
 }
