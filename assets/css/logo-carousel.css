@@ -22,12 +22,12 @@
 
 .wp-block-spectra-child-logo-carousel::before {
 	left: 0;
-	background: linear-gradient(to right, #FCFDFD, transparent);
+	background: linear-gradient(to right, var(--wp--preset--color--warm-white), transparent);
 }
 
 .wp-block-spectra-child-logo-carousel::after {
 	right: 0;
-	background: linear-gradient(to left, #FCFDFD, transparent);
+	background: linear-gradient(to left, var(--wp--preset--color--warm-white), transparent);
 }
 
 .logo-carousel__track {

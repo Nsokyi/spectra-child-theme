@@ -10,6 +10,32 @@ Version: 1.0.0
 
 /* 
 ===================================================================================================
+VPE COLOUR ALIASES — bridge clean names ↔ Site Editor Global Styles (custom-* slugs)
+To remove: if Global Styles are ever reset, delete this block; theme.json will take over.
+===================================================================================================
+*/
+:root {
+    --wp--preset--color--rich-black:      var(--wp--preset--color--custom-rich-black);
+    --wp--preset--color--charcoal:        var(--wp--preset--color--custom-charcoal);
+    --wp--preset--color--slate:           var(--wp--preset--color--custom-slate);
+    --wp--preset--color--steel:           var(--wp--preset--color--custom-steel);
+    --wp--preset--color--silver:          var(--wp--preset--color--custom-silver);
+    --wp--preset--color--light-gray:      var(--wp--preset--color--custom-light-gray);
+    --wp--preset--color--pale-gray:       var(--wp--preset--color--custom-pale-gray);
+    --wp--preset--color--ghost-white:     var(--wp--preset--color--custom-ghost-white);
+    --wp--preset--color--warm-white:      var(--wp--preset--color--custom-warm-white);
+    --wp--preset--color--vpe-red:         var(--wp--preset--color--custom-vpe-red);
+    --wp--preset--color--vpe-red-light:   var(--wp--preset--color--custom-red-light);
+    --wp--preset--color--vpe-red-blush:   var(--wp--preset--color--custom-red-blush);
+    --wp--preset--color--vpe-red-dark:    var(--wp--preset--color--custom-red-dark);
+    --wp--preset--color--vpe-red-darker:  var(--wp--preset--color--custom-red-darker);
+    --wp--preset--color--vpe-red-deepest: var(--wp--preset--color--custom-red-deepest);
+    --wp--preset--color--vpe-red-pale:    var(--wp--preset--color--custom-red-pale);
+    --wp--preset--color--vpe-red-tint:    var(--wp--preset--color--custom-red-tint);
+}
+
+/* 
+===================================================================================================
 VIDEO HERO - HOMEPAGE STYLES
 ===================================================================================================
 */
@@ -28,7 +54,7 @@ VIDEO HERO - HOMEPAGE STYLES
 	width: 100%;
 	overflow: hidden !important;
 	max-width: 100%;
-	background: #0d0d0d;
+	background: var(--wp--preset--color--rich-black);
 
 	/* Mobile: tall enough to show video + content stacked */
 	min-height: 100svh;
@@ -121,7 +147,7 @@ VIDEO HERO - HOMEPAGE STYLES
 	font-weight: 800;
 	line-height: 1;
 	letter-spacing: -0.03em;
-	color: #f0f0f0;
+	color: var(--wp--preset--color--ghost-white);
 	/* text-transform: uppercase; */
 }
 
@@ -430,7 +456,7 @@ VIDEO PROJECT STYLES
 }
 
 .project-testimonial__star.is-filled {
-	color: #f5a523;
+	color: var(--wp--preset--color--vpe-red-light);
 }
 
 .project-testimonial__quote {
@@ -531,7 +557,7 @@ TRUST STRIP STYLES
 	top: 10%;
 	height: 80%;
 	width: 4px;
-	background-color: #f0f0f0;
+	background-color: var(--wp--preset--color--ghost-white);
 }
 
 /* Fluid Large Lettering */
@@ -539,7 +565,7 @@ TRUST STRIP STYLES
 	/* font-size: clamp(1.8rem, 5vw, 7rem); */
 	font-size: clamp(1.8rem, 0.7368rem + 2.7vw, 7rem) !important;
 	font-weight: 900;
-	color: #f0f0f0;
+	color: var(--wp--preset--color--ghost-white);
 	margin: 0;
 	line-height: 1.1;
 	letter-spacing: -0.02em;
@@ -592,14 +618,14 @@ TRUST STRIP STYLES
 
 /* ── VPE Button System ─────────────────────────────────────── */
 :root {
-    --vpe-red:            var(--wp--preset--color--custom-vpe-red, #b64a4a);
-    --vpe-red-hover:      var(--wp--preset--color--custom-vpe-red-hover, #9e3f3f);
-    --vpe-charcoal:       var(--wp--preset--color--custom-vpe-charcoal, #121313);
-    --vpe-charcoal-hover: var(--wp--preset--color--custom-vpe-charcoal-hover, #3F4041);
-    --vpe-steel:          var(--wp--preset--color--custom-vpe-steel, #58595B);
-    --vpe-steel-hover:    var(--wp--preset--color--custom-vpe-steel-hover, #808080);
-    --vpe-warm-white:     var(--wp--preset--color--custom-vpe-warm-white, #FCFDFD);
-    --vpe-light-grey:     var(--wp--preset--color--custom-vpe-light-grey, #EFEFEF);
+    --vpe-red:            var(--wp--preset--color--vpe-red, #B64A4A);
+    --vpe-red-hover:      var(--wp--preset--color--vpe-red-dark, #8F3535);
+    --vpe-charcoal:       var(--wp--preset--color--rich-black, #121313);
+    --vpe-charcoal-hover: var(--wp--preset--color--charcoal, #3F4041);
+    --vpe-steel:          var(--wp--preset--color--slate, #58595B);
+    --vpe-steel-hover:    var(--wp--preset--color--steel, #808080);
+    --vpe-warm-white:     var(--wp--preset--color--warm-white, #FCFDFD);
+    --vpe-light-grey:     var(--wp--preset--color--ghost-white, #EFEFEF);
     --btn-height:         48px;
     --btn-padding:        0 24px;
     --btn-radius:         8px;
@@ -737,7 +763,7 @@ TRUST STRIP STYLES
 .my-team-card {
     height: auto !important;
     border-radius: 8px;
-    border: solid 1px #e9e9e9;
+    border: solid 1px var(--wp--preset--color--pale-gray);
     overflow: hidden;
 }
 
@@ -776,12 +802,12 @@ TRUST STRIP STYLES
     align-items: center;
     gap: 8px;
     text-decoration: none;
-    color: var(--wp--preset--color--custom-steel);
+    color: var(--wp--preset--color--slate);
 }
 
 .noahsportfolio-text {
     font-size: var(--wp--preset--font-size--x-small);
-    color: var(--wp--preset--color--custom-steel);
+    color: var(--wp--preset--color--slate);
     transition: color 0.3s ease;
 }
 
@@ -825,8 +851,8 @@ TRUST STRIP STYLES
 
 [data-tooltip]:before {
     content: attr(data-tooltip);
-    background: #002839;
-    color: #fff;
+    background: var(--wp--preset--color--rich-black);
+    color: var(--wp--preset--color--ghost-white);
     font-size: 10px;
     font-weight: bold;
     padding: 10px 15px;
@@ -852,7 +878,7 @@ TRUST STRIP STYLES
 }
 
 [data-tooltip][data-position="right"]:after {
-    border-right-color: #002839;
+    border-right-color: var(--wp--preset--color--rich-black);
     border-left: none;
     top: calc(50% - 6px);
     left: calc(100% + 4px);
@@ -899,7 +925,7 @@ FAQ SECTION — kicker-style numbered items (// 01, // 02 …)
     font-size: 15px;
     font-weight: 400;
     letter-spacing: 1.2px;
-    color: #808080;
+    color: var(--wp--preset--color--steel);
     position: absolute;
     left: 0;
     top: 0;
@@ -923,7 +949,7 @@ p.vpe-text-link {
     font-family: var(--btn-font, 'Roboto', sans-serif);
     font-size: var(--btn-font-size, 1rem);
     font-weight: 500;
-    color: #58595B;
+    color: var(--wp--preset--color--slate);
     text-decoration: none;
     transition: color 0.2s ease, gap 0.2s ease;
 }
@@ -936,7 +962,7 @@ p.vpe-text-link {
 }
 
 .vpe-text-link:hover {
-    color: #121313;
+    color: var(--wp--preset--color--rich-black);
     gap: 14px;
 }
 
@@ -1027,31 +1053,31 @@ OUTBOUND SOCIAL LINKS — dark & light variants with arrow
 }
 
 .social-link-dark a {
-    color: #AAAAAA;
+    color: var(--wp--preset--color--silver);
 }
 
 .social-link-light a {
-    color: #58595B;
+    color: var(--wp--preset--color--slate);
 }
 
 .social-link-light a:hover,
 .social-link-light a:focus {
-    color: #121313;
+    color: var(--wp--preset--color--rich-black);
 }
 
 .social-link-dark a:hover,
 .social-link-dark a:focus {
-    color: #58595B;
+    color: var(--wp--preset--color--slate);
 }
 
 .social-link-light a:hover::after,
 .social-link-light a:focus::after {
     transform: rotate(0deg);
-    background-color: #121313;
+    background-color: var(--wp--preset--color--rich-black);
 }
 
 .social-link-dark a:hover::after,
 .social-link-dark a:focus::after {
     transform: rotate(0deg);
-    background-color: #58595B;
+    background-color: var(--wp--preset--color--slate);
 }

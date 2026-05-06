@@ -25,10 +25,10 @@
 	justify-content: center;
 	height: 32px;
 	padding: 6px 16px;
-	border: 1px solid #cac4d0;
+	border: 1px solid var(--wp--preset--color--light-gray);
 	border-radius: 24px;
 	background: transparent;
-	color: #49454f;
+	color: var(--wp--preset--color--slate);
 	font-family: 'Roboto', sans-serif;
 	font-size: 14px;
 	font-weight: 500;
@@ -42,21 +42,21 @@
 }
 
 .project-filters__btn:hover {
-	border-color: #121313;
-	color: #121313;
+	border-color: var(--wp--preset--color--rich-black);
+	color: var(--wp--preset--color--rich-black);
 }
 
 .project-filters__btn.is-active {
-	background: #121313;
-	border-color: #121313;
-	color: #FCFDFD;
+	background: var(--wp--preset--color--rich-black);
+	border-color: var(--wp--preset--color--rich-black);
+	color: var(--wp--preset--color--warm-white);
 }
 
 /* ── Secondary Filter (hidden by default, revealed on industry selection) ── */
 .project-filters--secondary {
 	display: none;
 	padding-top: 8px;
-	border-top: 1px solid #d4d4d4;
+	border-top: 1px solid var(--wp--preset--color--light-gray);
 }
 
 .project-filters--secondary.is-visible {
@@ -96,7 +96,7 @@
 	margin: 0;
 	aspect-ratio: 16 / 9;
 	overflow: hidden;
-	background: #efefef;
+	background: var(--wp--preset--color--ghost-white);
 	border-radius: 4px;
 }
 
@@ -132,7 +132,7 @@
 	gap: 8px;
 	font-family: 'Roboto Mono', monospace;
 	font-size: 11px;
-	color: #808080;
+	color: var(--wp--preset--color--steel);
 	text-transform: uppercase;
 	letter-spacing: 0.08em;
 	line-height: 1.2;
@@ -150,7 +150,7 @@
 	font-family: 'Roboto', sans-serif;
 	font-size: 20px;
 	font-weight: 500;
-	color: #121313;
+	color: var(--wp--preset--color--rich-black);
 	line-height: 1.2;
 	letter-spacing: -0.4px;
 }
@@ -234,7 +234,7 @@
 	padding: 0;
 	border: none;
 	background: transparent;
-	color: #58595B;
+	color: var(--wp--preset--color--slate);
 	font-family: 'Roboto', sans-serif;
 	font-size: 18px;
 	font-weight: 400;
@@ -243,7 +243,7 @@
 }
 
 .project-grid__load-more:hover {
-	color: #121313;
+	color: var(--wp--preset--color--rich-black);
 	gap: 20px;
 }
 

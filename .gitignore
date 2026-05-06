@@ -18,3 +18,16 @@ Thumbs.db
 # Local environment
 .env
 .env.local
+
+
+# WordPress
+wp-content/uploads/
+wp-config.php
+
+
+# Dev-only files in theme
+vpe-development-plan.html
+
+# Rules
+.windsurfrules
+WINDSURF-CONTEXT.md

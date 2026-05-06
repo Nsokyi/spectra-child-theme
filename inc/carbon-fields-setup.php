@@ -12,7 +12,11 @@ use Carbon_Fields\Field;
 
 add_action('after_setup_theme', 'crb_load_carbon_fields');
 function crb_load_carbon_fields() {
-    require_once(get_stylesheet_directory() . '/vendor/autoload.php');
+    $autoload = get_stylesheet_directory() . '/vendor/autoload.php';
+    if ( ! file_exists( $autoload ) ) {
+        return;
+    }
+    require_once $autoload;
     \Carbon_Fields\Carbon_Fields::boot();
 }
 
