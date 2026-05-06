@@ -388,6 +388,7 @@ function spectra_child_render_video_project_similar($atts) {
 
     $similar = new WP_Query(array(
         'post_type'      => 'video-project',
+        'post_status'    => 'publish',
         'posts_per_page' => 4,
         'post__not_in'   => array($post_id),
         'tax_query'      => $tax_query,

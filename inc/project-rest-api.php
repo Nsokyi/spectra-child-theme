@@ -53,7 +53,7 @@ function spectra_child_handle_project_filter_request($request) {
     $service_slugs  = $request->get_param('service');
     $industry_slugs = $request->get_param('industry');
     $featured       = $request->get_param('featured');
-    $paged          = $request->get_param('paged');
+    $paged          = max(1, $request->get_param('paged'));
     $per_page       = max(1, min($request->get_param('per_page'), 48));
 
     $cache_key = 'project_filter_' . md5(wp_json_encode($request->get_params()));
@@ -160,7 +160,7 @@ function spectra_child_format_project_for_rest($post_id) {
 /**
  * Invalidate project filter transients when content changes.
  */
-add_action('save_post_video-project', 'spectra_child_invalidate_project_filter_cache');
+add_action('save_post_video-project', 'spectra_child_invalidate_project_filter_cache_on_save');
 add_action('carbon_fields_post_meta_container_saved', 'spectra_child_invalidate_project_filter_cache_on_cf_save');
 add_action('delete_post', 'spectra_child_invalidate_project_filter_cache_on_delete');
 add_action('wp_trash_post', 'spectra_child_invalidate_project_filter_cache_on_delete');
@@ -188,4 +188,11 @@ function spectra_child_invalidate_project_filter_cache_on_cf_save($post_id) {
     if (get_post_type($post_id) === 'video-project') {
         spectra_child_invalidate_project_filter_cache();
     }
+}
+
+function spectra_child_invalidate_project_filter_cache_on_save($post_id) {
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    spectra_child_invalidate_project_filter_cache();
 }
