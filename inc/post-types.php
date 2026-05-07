@@ -94,7 +94,7 @@ function spectra_child_create_service_taxonomy() {
         'show_in_nav_menus'          => true,
         'show_tagcloud'              => false,
         'show_in_rest'               => true,
-        'rewrite'                    => array('slug' => 'service'),
+        'rewrite'                    => array('slug' => 'portfolio'),
     );
     
     register_taxonomy('service', array('video-project'), $args);

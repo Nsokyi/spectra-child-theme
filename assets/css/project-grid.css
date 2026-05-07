@@ -282,19 +282,38 @@
 
 .featured-project {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: var(--wp--preset--spacing--x-large);
-	align-items: center;
+	grid-template-columns: minmax(0, 524px) 1fr;
+	gap: clamp(32px, 11.8vw, 142px);
+	align-items: start;
 	margin-bottom: var(--wp--preset--spacing--x-large);
 }
 
-/* ── Media (left column) ── */
+/* ── Left column (label + media) ── */
+.featured-project__left {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+/* ── Labels: above-media label and right-column kicker ── */
+.featured-project__label,
+.featured-project__kicker {
+	font-family: 'Roboto Mono', monospace;
+	font-size: 0.75em;
+	line-height: 1.4;
+	color: var(--wp--preset--color--steel);
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	margin-bottom: 1rem;
+}
+
+/* ── Media ── */
 .featured-project__media {
 	position: relative;
 	display: block;
 	overflow: hidden;
-	border-radius: var(--wp--custom--border-radius--medium, 8px);
-	background: var(--wp--preset--color--surface, #e8e8e8);
+	border-radius: 4px;
+	background: var(--wp--preset--color--pale-gray);
 	aspect-ratio: 16 / 9;
 	text-decoration: none;
 }
@@ -312,100 +331,77 @@
 }
 
 .featured-project__media:focus-visible {
-	outline: 2px solid var(--wp--preset--color--primary);
+	outline: 2px solid var(--wp--preset--color--vpe-red);
 	outline-offset: 4px;
 }
 
+/* ── Placeholder (no thumbnail) ── */
 .featured-project__media--placeholder {
 	cursor: default;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.featured-project__play-icon {
+	color: var(--wp--preset--color--light-gray);
+	display: block;
 }
 
 /* ── Content (right column) ── */
 .featured-project__content {
 	display: flex;
 	flex-direction: column;
-	gap: var(--wp--preset--spacing--small);
+	gap: 0;
 }
 
-.featured-project__meta {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: var(--wp--preset--spacing--small);
-}
-
-.featured-project__label,
-.featured-project__service {
-	font-size: var(--wp--preset--font-size--x-small, 0.75rem);
-	text-transform: uppercase;
-	letter-spacing: 0.1em;
-	color: var(--wp--preset--color--subtle, #6b7280);
+.featured-project__kicker {
+	margin-bottom: 8px;
 }
 
 .featured-project__title {
-	font-size: clamp(1.75rem, 3vw, 2.75rem);
+	font-size: clamp(1.5rem, 2.5vw, 2.25rem);
 	font-weight: 800;
 	line-height: 1.15;
 	letter-spacing: -0.02em;
-	margin: 0;
+	margin: 0 0 16px;
 }
 
 .featured-project__title a {
-	color: inherit;
+	color: var(--wp--preset--color--rich-black);
 	text-decoration: none;
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: inherit;
 }
 
 .featured-project__title a:hover {
-	color: var(--wp--preset--color--primary);
+	color: var(--wp--preset--color--vpe-red);
 }
 
 .featured-project__title a:focus-visible {
-	outline: 2px solid var(--wp--preset--color--primary);
+	outline: 2px solid var(--wp--preset--color--vpe-red);
 	outline-offset: 4px;
 	border-radius: 2px;
 }
 
 .featured-project__excerpt {
-	font-size: var(--wp--preset--font-size--medium, 1rem);
+	font-size: 1rem;
 	line-height: 1.7;
-	color: var(--wp--preset--color--subtle, #6b7280);
-	margin: 0;
-}
-
-.featured-project__link {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.4em;
-	font-size: var(--wp--preset--font-size--small, 0.875rem);
-	font-weight: 600;
-	color: var(--wp--preset--color--foreground, #1a1a2e);
-	text-decoration: underline;
-	text-underline-offset: 3px;
-	margin-top: var(--wp--preset--spacing--x-small);
-	transition: color 0.2s;
-}
-
-.featured-project__link:hover {
-	color: var(--wp--preset--color--primary);
-}
-
-.featured-project__link:focus-visible {
-	outline: 2px solid var(--wp--preset--color--primary);
-	outline-offset: 4px;
-	border-radius: 2px;
+	color: var(--wp--preset--color--slate);
+	margin: 0 0 28px;
 }
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
 	.featured-project {
 		grid-template-columns: 1fr;
+		gap: 32px;
 	}
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.featured-project__media img,
-	.featured-project__link,
-	.featured-project__title a {
+	.featured-project__media img {
 		transition: none;
 	}
 }
