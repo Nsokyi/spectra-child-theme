@@ -344,7 +344,7 @@
 }
 
 .featured-project__play-icon {
-	color: var(--wp--preset--color--light-gray);
+	color: var(--wp--preset--color--steel);
 	display: block;
 }
 

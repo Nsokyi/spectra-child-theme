@@ -18,6 +18,7 @@ require_once __DIR__ . '/inc/featured-project-shortcode.php';
 require_once __DIR__ . '/inc/logo-carousel-block.php';
 require_once __DIR__ . '/inc/testimonials-slider-block.php';
 require_once __DIR__ . '/inc/site-header-block.php';
+require_once __DIR__ . '/inc/redirects.php';
 
 // Enqueue parent and child theme styles
 function spectra_child_enqueue_parent_styles() {
