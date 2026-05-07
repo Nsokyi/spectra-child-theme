@@ -78,6 +78,23 @@
 	pointer-events: none;
 }
 
+/* ── Suppress wpautop artefacts injected when shortcode runs inside UAGB/Spectra Container ── */
+.project-grid > p {
+	display: none;
+}
+
+.project-item > p,
+.project-item__meta > p {
+	margin: 0;
+	padding: 0;
+	line-height: 0;
+}
+
+.project-item br,
+.project-item__image br {
+	display: none;
+}
+
 /* ── Project Item ── */
 .project-item {
 	display: block;
