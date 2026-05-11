@@ -127,12 +127,12 @@ VIDEO HERO - HOMEPAGE STYLES
 	flex-direction: row;
 	align-items: flex-start;
 	column-gap: 16px;
-	row-gap: 1.25rem;
+	row-gap: 1.75rem;
 
 	/* Mobile: sits at bottom-left with padding */
 	padding: clamp(1.5rem, 5vw, 4rem);
-	padding-bottom: clamp(2.5rem, 8vw, 5rem);
-	max-width: 700px;
+	padding-bottom: clamp(2.5rem, 8vw, 6rem);
+	max-width: 648px;
 }
 
 /* Heading and subtext span full width so buttons sit below */
@@ -145,18 +145,26 @@ VIDEO HERO - HOMEPAGE STYLES
 .hero__heading {
 	font-size: clamp(2.5rem, 8vw, 4rem);
 	font-weight: 800;
-	line-height: 1;
-	letter-spacing: -0.03em;
-	color: var(--wp--preset--color--ghost-white);
-	/* text-transform: uppercase; */
+	line-height: 1.1;
+	letter-spacing: 0;
+	color: var(--wp--preset--color--warm-white);
 }
 
 /* ── Subtext ── */
 .hero__sub { 
-	font-size: clamp(0.9rem, 1.5vw, 1.05rem);
-	line-height: 1.65;
-	color: rgba(255, 255, 255, 0.7);
+	font-size: clamp(0.9rem, 1.5vw, 1.25rem);
+	line-height: 1.5;
+	color: var(--wp--preset--color--warm-white);
 	max-width: 52ch;
+	font-weight: 300;
+}
+
+.uppercase {
+	color: var(--wp--preset--color--silver);
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	font-size: var(--wp--preset--font-size--small);
+	font-family: var(--wp--preset--font-family--roboto-mono);
 }
 
 /* ── CTA button (primary — VPE Red) ── */
@@ -168,7 +176,7 @@ VIDEO HERO - HOMEPAGE STYLES
 	height: 56px;
 	padding: 16px 32px;
 	background: var(--vpe-red);
-	color: #fff;
+	color: var(--wp--preset--color--warm-white);
 	border: 1.5px solid var(--vpe-red);
 	text-decoration: none;
 	font-family: 'Roboto', sans-serif;
