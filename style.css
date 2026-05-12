@@ -190,7 +190,7 @@ VIDEO HERO - HOMEPAGE STYLES
 }
 
 .hero__cta:hover {
-	color: #fff;
+	color: var(--wp--preset--color--warm-white);
 }
 
 .hero__cta:active {
@@ -217,7 +217,7 @@ VIDEO HERO - HOMEPAGE STYLES
 	content: "";
 	width: 10px;
 	height: 10px;
-	border: 1.5px solid #fff;
+	border: 1.5px solid var(--wp--preset--color--warm-white);
 	border-radius: 50%;
 	flex-shrink: 0;
 	position: relative;
@@ -226,7 +226,7 @@ VIDEO HERO - HOMEPAGE STYLES
 }
 
 .hero__cta:hover::after {
-	filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 8px rgba(255,255,255,0.6));
+	filter: drop-shadow(0 0 4px var(--wp--preset--color--warm-white)) drop-shadow(0 0 8px rgba(255,255,255,0.6));
 }
 
 /* ── CTA glass variant (second button) ── */
@@ -641,16 +641,17 @@ TRUST STRIP STYLES
 }
 
 /* 1. Base button */
+button.forminator-button.forminator-button-submit,
 .vpe-custom-btn a.uagb-buttons-repeater {
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
     gap: var(--btn-gap);
-    height: var(--btn-height);
+    height: var(--btn-height) !important;
     padding: var(--btn-padding) !important;
     border-radius: var(--btn-radius) !important;
     background: var(--vpe-red) !important;
-    color: #fff !important;
+    color: var(--wp--preset--color--warm-white) !important;
     border: 1.5px solid var(--vpe-red) !important;
     text-decoration: none;
     position: relative !important;
@@ -662,7 +663,7 @@ TRUST STRIP STYLES
 /* 2. Kill Spectra's default hover styles */
 .vpe-custom-btn a.uagb-buttons-repeater:hover {
     background: var(--vpe-red) !important;
-    color: #fff !important;
+    color: var(--wp--preset--color--warm-white) !important;
     box-shadow: none !important;
 }
 
@@ -691,7 +692,7 @@ TRUST STRIP STYLES
     content: "";
     width: 12px;
     height: 12px;
-    border: 1.5px solid white;
+    border: 1.5px solid var(--wp--preset--color--warm-white);
     border-radius: 50%;
     margin-left: 4px;
     flex-shrink: 0;
@@ -702,7 +703,7 @@ TRUST STRIP STYLES
 
 /* 6. Circle glow on hover */
 .vpe-custom-btn a.uagb-buttons-repeater:hover::after {
-    filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 8px rgba(255,255,255,0.6));
+    filter: drop-shadow(0 0 4px var(--wp--preset--color--warm-white)) drop-shadow(0 0 8px rgba(255,255,255,0.6));
 }
 
 /* 7. Keep button text above the wipe layer */
@@ -722,6 +723,58 @@ TRUST STRIP STYLES
 }
 .vpe-custom-btn--secondary a.uagb-buttons-repeater::before {
     background: var(--vpe-charcoal-hover);
+}
+
+/* ── Forminator Submit (secondary / charcoal style) ─────────── */
+button.forminator-button.forminator-button-submit {
+    background: var(--vpe-charcoal) !important;
+    border-color: var(--vpe-charcoal) !important;
+    width: auto !important;
+    cursor: pointer;
+}
+
+button.forminator-button.forminator-button-submit:hover {
+    background: var(--vpe-charcoal) !important;
+    color: var(--wp--preset--color--warm-white) !important;
+    box-shadow: none !important;
+}
+
+button.forminator-button.forminator-button-submit::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--vpe-charcoal-hover);
+    z-index: -1;
+    transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+button.forminator-button.forminator-button-submit:hover::before {
+    transform: translateX(0);
+}
+
+button.forminator-button.forminator-button-submit:active {
+    transform: scale(0.98);
+}
+
+button.forminator-button.forminator-button-submit span[aria-hidden] {
+    display: none !important;
+}
+
+button.forminator-button.forminator-button-submit::after {
+    content: "";
+    width: 12px;
+    height: 12px;
+    border: 1.5px solid var(--wp--preset--color--warm-white);
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    transition: filter 0.3s ease;
+}
+
+button.forminator-button.forminator-button-submit:hover::after {
+    filter: drop-shadow(0 0 4px var(--wp--preset--color--warm-white)) drop-shadow(0 0 8px rgba(255,255,255,0.6));
 }
 
 /* ── Tertiary ───────────────────────────────────────────────── */
