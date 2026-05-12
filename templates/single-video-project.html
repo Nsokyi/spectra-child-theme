@@ -8,26 +8,20 @@
 	[video_project_embed]
 	<!-- /wp:shortcode -->
 
-	<!-- wp:group {"className":"project-description-layout","layout":{"type":"constrained","contentSize":"1200px"}} -->
-	<div class="wp-block-group project-description-layout">
+	<!-- wp:group {"className":"project-layout","layout":{"type":"constrained","contentSize":"1200px"}} -->
+	<div class="wp-block-group project-layout">
 		<!-- wp:columns -->
 		<div class="wp-block-columns">
-			<!-- wp:column {"width":"65%","className":"project-description-col"} -->
-			<div
-				class="wp-block-column project-description-col"
-				style="flex-basis: 65%">
-				<!-- wp:post-content /-->
-
+			<!-- wp:column {"width":"65%","className":"project-content-col"} -->
+			<div class="wp-block-column project-content-col" style="flex-basis: 65%">
 				<!-- wp:shortcode -->
-				[video_project_credits]
+				[video_project_content]
 				<!-- /wp:shortcode -->
 			</div>
 			<!-- /wp:column -->
 
 			<!-- wp:column {"width":"35%","className":"project-meta-col"} -->
-			<div
-				class="wp-block-column project-meta-col"
-				style="flex-basis: 35%">
+			<div class="wp-block-column project-meta-col" style="flex-basis: 35%">
 				<!-- wp:shortcode -->
 				[video_project_meta]
 				<!-- /wp:shortcode -->
