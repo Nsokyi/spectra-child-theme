@@ -180,6 +180,7 @@ function spectra_child_render_video_project_testimonial($atts) {
 
     $author = carbon_get_post_meta($post_id, 'testimonial_author');
     $role   = carbon_get_post_meta($post_id, 'testimonial_author_role');
+    $rating = carbon_get_post_meta($post_id, 'testimonial_rating');
 
     $left  = '<div class="project-testimonial__meta">';
     $left .= '<span class="project-testimonial__kicker uppercase">// Client Feedback</span>';
@@ -189,11 +190,14 @@ function spectra_child_render_video_project_testimonial($atts) {
     if ($role) {
         $left .= '<span class="project-testimonial__role">' . esc_html($role) . '</span>';
     }
+    if ($rating && intval($rating) > 0) {
+        $left .= '<span class="project-testimonial__stars" aria-label="' . esc_attr($rating) . ' out of 5 stars">' . str_repeat('&#9733;', intval($rating)) . '</span>';
+    }
     $left .= '</div>';
 
     $right = '<blockquote class="project-testimonial__quote"><p>&ldquo;' . esc_html($text) . '&rdquo;</p></blockquote>';
 
-    return '<div class="project-testimonial"><hr class="project-testimonial__rule">' . $left . $right . '<hr class="project-testimonial__rule"></div>';
+    return '<div class="project-testimonial">' . $left . $right . '</div>';
 }
 
 /**
@@ -219,10 +223,12 @@ function spectra_child_render_video_project_stills($atts) {
         $img_full = wp_get_attachment_image_url($image_id, 'full');
         if (!$img_url) continue;
         $alt = esc_attr($img_alt ?: __('Production still', 'spectra-child'));
-        $items .= '<a class="project-stills__item" href="' . esc_url($img_full) . '" target="_blank" rel="noopener"><img src="' . esc_url($img_url) . '" alt="' . $alt . '" width="600" height="400" loading="lazy"></a>';
+        $items .= '<figure class="project-stills__item" role="button" tabindex="0" data-full="' . esc_url($img_full) . '" data-thumb="' . esc_url($img_url) . '"><img src="' . esc_url($img_url) . '" alt="' . $alt . '" width="600" height="400" loading="lazy"><span class="project-stills__close" aria-label="' . esc_attr__('Close', 'spectra-child') . '">&times;</span></figure>';
     }
 
-    return '<div class="project-stills wp-block-group"><h2 class="has-heading-color has-text-color">Production Stills</h2><div class="project-stills__grid">' . $items . '</div></div>';
+    $script = '<script>document.addEventListener("click",function(e){var item=e.target.closest(".project-stills__item");if(!item)return;var grid=item.closest(".project-stills__grid");if(!grid)return;var isExpanded=item.classList.contains("is-expanded");grid.querySelectorAll(".project-stills__item.is-expanded").forEach(function(el){el.classList.remove("is-expanded");var img=el.querySelector("img");if(el.dataset.thumb)img.src=el.dataset.thumb;});if(!isExpanded){item.classList.add("is-expanded");var img=item.querySelector("img");if(item.dataset.full)img.src=item.dataset.full;item.scrollIntoView({behavior:"smooth",block:"nearest"});}});</script>';
+
+    return '<div class="project-stills wp-block-group"><h2 class="has-heading-color has-text-color">Production Stills</h2><div class="project-stills__grid">' . $items . '</div></div>' . $script;
 }
 
 /**
@@ -288,7 +294,8 @@ function spectra_child_render_video_project_similar($atts) {
     }
     wp_reset_postdata();
 
-    return '<div class="project-similar"><h2 class="has-heading-color has-text-color">Similar Projects</h2><div class="project-similar__grid">' . $items . '</div></div>';
+    $grid_class = 'project-similar__grid' . ($similar->post_count >= 4 ? ' project-similar__grid--cols-4' : '');
+    return '<div class="project-similar"><h2 class="has-heading-color has-text-color">Similar Projects</h2><div class="' . $grid_class . '">' . $items . '</div></div>';
 }
 
 /**

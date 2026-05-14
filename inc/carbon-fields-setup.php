@@ -131,10 +131,6 @@ function spectra_child_register_video_project_fields() {
                 ->set_attribute('placeholder', __('e.g., Head of Communications, NHS Scotland'))
                 ->set_width(50),
             
-            Field::make('image', 'testimonial_photo', __('Author Photo'))
-                ->set_help_text(__('Optional: Small portrait of the testimonial author'))
-                ->set_value_type('url')
-                ->set_width(50),
         ));
 }
 
