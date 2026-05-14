@@ -53,7 +53,7 @@
 				t.setAttribute('aria-expanded', 'false');
 			});
 			if (isOpen) {
-				parent.classList.add('hover-suppressed');
+				if (parent) parent.classList.add('hover-suppressed');
 			} else {
 				this.setAttribute('aria-expanded', 'true');
 			}

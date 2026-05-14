@@ -248,6 +248,7 @@
 	font-size: 0.875rem;
 	border-top: 1px solid var(--dropdown-border);
 	border-radius: 0 0 8px 8px;
+	overflow-x: hidden;
 	width: 104.5%;
 }
 
