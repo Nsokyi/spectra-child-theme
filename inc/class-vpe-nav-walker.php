@@ -10,6 +10,9 @@
  */
 class VPE_Nav_Walker extends Walker_Nav_Menu {
 
+    private $parent_url   = '';
+    private $parent_title = '';
+
     /**
      * Opens the sub-menu wrapper.
      */
@@ -22,7 +25,14 @@ class VPE_Nav_Walker extends Walker_Nav_Menu {
      * Closes the sub-menu wrapper.
      */
     public function end_lvl( &$output, $depth = 0, $args = null ) {
-        $output .= '</ul></div>';
+        $output .= '</ul>';
+        if ( $this->parent_url ) {
+            $label = sprintf( __( 'View all %s', 'spectra-child' ), strtolower( $this->parent_title ) );
+            $output .= '<a href="' . esc_url( $this->parent_url ) . '" class="dropdown-view-all vpe-text-link">' . esc_html( $label ) . '</a>';
+            $this->parent_url   = '';
+            $this->parent_title = '';
+        }
+        $output .= '</div>';
     }
 
     /**
@@ -32,8 +42,10 @@ class VPE_Nav_Walker extends Walker_Nav_Menu {
         $classes = empty( $item->classes ) ? array() : (array) $item->classes;
         $has_children = in_array( 'menu-item-has-children', $classes, true );
 
-        // Top-level parent → becomes dropdown trigger
+        // Top-level parent → becomes dropdown trigger, stash URL for "View all" link
         if ( $depth === 0 && $has_children ) {
+            $this->parent_url   = $item->url;
+            $this->parent_title = $item->title;
             $output .= '<li class="has-dropdown">';
             $output .= '<button class="dropdown-trigger" aria-expanded="false" aria-haspopup="true">';
             $output .= esc_html( $item->title );

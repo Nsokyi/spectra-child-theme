@@ -562,6 +562,15 @@ body.single-video-project .uagb-container-inner-blocks-wrap {
 	to   { opacity: 1;   transform: scale(1); }
 }
 
+.project-stills__item.is-collapsing {
+	animation: stills-collapse 0.25s ease forwards;
+}
+
+@keyframes stills-collapse {
+	from { opacity: 1;   transform: scale(1); }
+	to   { opacity: 0.4; transform: scale(0.97); }
+}
+
 .project-stills__item img {
 	width: 100%;
 	height: 100%;
@@ -574,7 +583,7 @@ body.single-video-project .uagb-container-inner-blocks-wrap {
 	aspect-ratio: auto;
 	max-height: 80vh;
 	object-fit: contain;
-	background: var(--wp--preset--color--rich-black);
+	background: var(--wp--preset--color--warm-white);
 	border-radius: 8px;
 }
 

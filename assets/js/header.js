@@ -44,19 +44,33 @@
 
 	/* --- Desktop dropdown (click for keyboard/touch) --- */
 	document.querySelectorAll('.dropdown-trigger').forEach(function (trigger) {
+		var parent = trigger.closest('.has-dropdown');
+
 		trigger.addEventListener('click', function (e) {
 			e.stopPropagation();
 			var isOpen = this.getAttribute('aria-expanded') === 'true';
 			document.querySelectorAll('.dropdown-trigger').forEach(function (t) {
 				t.setAttribute('aria-expanded', 'false');
 			});
-			this.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+			if (isOpen) {
+				parent.classList.add('hover-suppressed');
+			} else {
+				this.setAttribute('aria-expanded', 'true');
+			}
 		});
+
+		if (parent) {
+			parent.addEventListener('mouseleave', function () {
+				this.classList.remove('hover-suppressed');
+			});
+		}
 	});
 
 	document.addEventListener('click', function () {
 		document.querySelectorAll('.dropdown-trigger').forEach(function (t) {
 			t.setAttribute('aria-expanded', 'false');
+			var p = t.closest('.has-dropdown');
+			if (p) p.classList.add('hover-suppressed');
 		});
 	});
 

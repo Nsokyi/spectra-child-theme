@@ -73,7 +73,7 @@
 }
 
 .site-header.is-scrolled .site-nav__cta {
-	padding: 12px 24px;
+	height: 48px;
 }
 
 /* ── Logo ── */
@@ -231,14 +231,31 @@
 
 .dropdown-item__title {
 	color: var(--nav-text);
-	font-size: 0.875rem;
-	font-weight: 600;
+	font-size: 1rem;
+	font-weight: 400;
 }
 
 .dropdown-item__desc {
 	color: var(--nav-text-light);
 	font-size: 0.75rem;
 	line-height: 1.4;
+}
+
+.dropdown-view-all {
+	display: block;
+	margin: 0.25rem -0.5rem 0;
+	padding: 0.75rem 1rem 0.5rem;
+	font-size: 0.875rem;
+	border-top: 1px solid var(--dropdown-border);
+	border-radius: 0 0 8px 8px;
+	width: 104.5%;
+}
+
+/* Suppress hover when user has explicitly closed via click */
+.has-dropdown.hover-suppressed:hover .dropdown-panel {
+	opacity: 0;
+	pointer-events: none;
+	transform: translateX(-50%) translateY(-6px);
 }
 
 /* ── Actions ── */
@@ -252,8 +269,10 @@
 .site-nav__cta {
 	display: none;
 	align-items: center;
+	justify-content: center;
 	gap: clamp(8px, 0.6vw + 4px, 12px);
-	padding: clamp(12px, 0.6vw + 7px, 16px) clamp(24px, 1.19vw + 15px, 32px);
+	height: 52px;
+	padding: 0 clamp(24px, 1.19vw + 15px, 32px);
 	background: var(--cta-bg);
 	color: var(--cta-text);
 	border: 1.5px solid var(--cta-bg);
