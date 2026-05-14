@@ -53,6 +53,6 @@ function spectra_child_render_project_grid_shortcode($atts) {
         'current_term'  => $current_term,
     ));
     $output = ob_get_clean();
-    // Collapse whitespace to prevent wpautop from inserting <br> tags
-    return preg_replace('/>\s+</', '><', $output);
+    // Collapse all whitespace to prevent wpautop from inserting <br> tags
+    return preg_replace('/\s+/', ' ', trim($output));
 }
