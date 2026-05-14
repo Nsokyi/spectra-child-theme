@@ -52,5 +52,7 @@ function spectra_child_render_project_grid_shortcode($atts) {
         'per_page'      => intval($atts['per_page']),
         'current_term'  => $current_term,
     ));
-    return ob_get_clean();
+    $output = ob_get_clean();
+    // Collapse whitespace to prevent wpautop from inserting <br> tags
+    return preg_replace('/>\s+</', '><', $output);
 }
