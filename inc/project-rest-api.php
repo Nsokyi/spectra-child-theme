@@ -9,7 +9,8 @@
  *   - industry (comma-separated slugs)
  *   - featured (1 or 0)
  *   - paged    (page number, default 1)
- *   - per_page (posts per page, default 12)
+ *   - per_page (posts per page, default 6)
+ *   - orderby  ('date' or 'menu_order', default 'date')
  */
 
 add_action('rest_api_init', 'spectra_child_register_project_filter_endpoint');
@@ -43,7 +44,12 @@ function spectra_child_register_project_filter_endpoint() {
             'per_page' => array(
                 'type'              => 'integer',
                 'sanitize_callback' => 'absint',
-                'default'           => 12,
+                'default'           => 6,
+            ),
+            'orderby' => array(
+                'type'              => 'string',
+                'sanitize_callback' => 'sanitize_text_field',
+                'default'           => 'date',
             ),
         ),
     ));
@@ -55,6 +61,9 @@ function spectra_child_handle_project_filter_request($request) {
     $featured       = $request->get_param('featured');
     $paged          = max(1, $request->get_param('paged'));
     $per_page       = max(1, min($request->get_param('per_page'), 48));
+    $orderby_param  = $request->get_param('orderby');
+    $orderby        = ($orderby_param === 'menu_order') ? 'menu_order' : 'date';
+    $order          = ($orderby === 'menu_order') ? 'ASC' : 'DESC';
 
     $cache_key = 'project_filter_' . md5(wp_json_encode($request->get_params()));
     $cached    = get_transient($cache_key);
@@ -68,8 +77,8 @@ function spectra_child_handle_project_filter_request($request) {
         'post_status'    => 'publish',
         'posts_per_page' => $per_page,
         'paged'          => $paged,
-        'orderby'        => 'date',
-        'order'          => 'DESC',
+        'orderby'        => $orderby,
+        'order'          => $order,
         'fields'         => 'ids',
     );
 

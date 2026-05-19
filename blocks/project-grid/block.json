@@ -11,13 +11,37 @@
         "align": ["wide", "full"]
     },
     "attributes": {
+        "postsPerPage": {
+            "type": "number",
+            "default": 6
+        },
+        "showLoadMore": {
+            "type": "boolean",
+            "default": true
+        },
+        "preSelectedIndustry": {
+            "type": "string",
+            "default": ""
+        },
+        "preSelectedService": {
+            "type": "string",
+            "default": ""
+        },
         "showFeaturedOnly": {
             "type": "boolean",
             "default": false
         },
-        "postsPerPage": {
+        "showFilterBar": {
+            "type": "boolean",
+            "default": true
+        },
+        "columns": {
             "type": "number",
-            "default": 12
+            "default": 3
+        },
+        "orderBy": {
+            "type": "string",
+            "default": "date"
         }
     },
     "editorScript": "file:./editor.js",

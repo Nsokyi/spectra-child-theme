@@ -263,6 +263,12 @@
 	gap: 20px;
 }
 
+/* ── 2-column variant ── */
+.project-filters-wrap[data-columns="2"] .project-grid,
+.project-filters-wrap[data-columns="2"] .project-grid__loading:not([hidden]) {
+	grid-template-columns: repeat(2, 1fr);
+}
+
 /* ── Responsive ── */
 @media (max-width: 1024px) {
 	.project-grid,

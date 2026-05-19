@@ -3,24 +3,34 @@
  * Template Part: Filterable Project Grid
  *
  * Accepts $args:
- *   - featured_only (bool)  Show only featured projects
- *   - current_term  (array) Pre-selected filter: ['taxonomy' => 'service', 'slug' => 'brand']
- *   - per_page      (int)   Posts per page (default 12)
+ *   - featured_only   (bool)   Show only featured projects
+ *   - current_term    (array)  Pre-selected filter: ['taxonomy' => 'service', 'slug' => 'brand']
+ *   - per_page        (int)    Posts per page (default 6)
+ *   - show_filter_bar (bool)   Whether to render filter buttons (default true)
+ *   - show_load_more  (bool)   Whether to render the Load More button (default true)
+ *   - columns         (int)    Grid columns: 2 or 3 (default 3)
+ *   - orderby         (string) 'date' or 'menu_order' (default 'date')
  */
 
-$featured_only = !empty($args['featured_only']);
-$current_term  = !empty($args['current_term']) ? $args['current_term'] : null;
-$per_page      = !empty($args['per_page']) ? intval($args['per_page']) : 12;
+$featured_only   = !empty($args['featured_only']);
+$current_term    = !empty($args['current_term']) ? $args['current_term'] : null;
+$per_page        = !empty($args['per_page']) ? intval($args['per_page']) : 6;
+$show_filter_bar = isset($args['show_filter_bar']) ? (bool) $args['show_filter_bar'] : true;
+$show_load_more  = isset($args['show_load_more']) ? (bool) $args['show_load_more'] : true;
+$columns         = !empty($args['columns']) ? intval($args['columns']) : 3;
+$orderby         = !empty($args['orderby']) && $args['orderby'] === 'menu_order' ? 'menu_order' : 'date';
 
 $services   = get_terms(array('taxonomy' => 'service', 'hide_empty' => true));
 $industries = get_terms(array('taxonomy' => 'industry', 'hide_empty' => true));
+
+$order = ($orderby === 'menu_order') ? 'ASC' : 'DESC';
 
 $query_args = array(
     'post_type'      => 'video-project',
     'post_status'    => 'publish',
     'posts_per_page' => $per_page,
-    'orderby'        => 'date',
-    'order'          => 'DESC',
+    'orderby'        => $orderby,
+    'order'          => $order,
 );
 
 if ($featured_only) {
@@ -58,43 +68,48 @@ $active_industry = $current_term && $current_term['taxonomy'] === 'industry' ? $
 <div class="project-filters-wrap"
      data-featured="<?php echo $featured_only ? '1' : ''; ?>"
      data-per-page="<?php echo esc_attr($per_page); ?>"
+     data-show-load-more="<?php echo $show_load_more ? '1' : '0'; ?>"
+     data-columns="<?php echo esc_attr($columns); ?>"
+     data-orderby="<?php echo esc_attr($orderby); ?>"
      <?php if ($current_term && isset($current_term['taxonomy'], $current_term['slug'])) : ?>
      data-current-taxonomy="<?php echo esc_attr($current_term['taxonomy']); ?>"
      data-current-slug="<?php echo esc_attr($current_term['slug']); ?>"
      <?php endif; ?>>
 
-    <?php if (!is_wp_error($industries) && !empty($industries)) : ?>
-        <div class="project-filters project-filters--primary" data-taxonomy="industry" role="group" aria-label="<?php esc_attr_e('Filter by industry', 'spectra-child'); ?>">
-            <button class="project-filters__btn<?php echo empty($active_industry) ? ' is-active' : ''; ?>"
-                    data-slug=""
-                    type="button">
-                <?php esc_html_e('All Projects', 'spectra-child'); ?>
-            </button>
-            <?php foreach ($industries as $term) : ?>
-                <button class="project-filters__btn<?php echo $active_industry === $term->slug ? ' is-active' : ''; ?>"
-                        data-slug="<?php echo esc_attr($term->slug); ?>"
+    <?php if ($show_filter_bar) : ?>
+        <?php if (!is_wp_error($industries) && !empty($industries)) : ?>
+            <div class="project-filters project-filters--primary" data-taxonomy="industry" role="group" aria-label="<?php esc_attr_e('Filter by industry', 'spectra-child'); ?>">
+                <button class="project-filters__btn<?php echo empty($active_industry) ? ' is-active' : ''; ?>"
+                        data-slug=""
                         type="button">
-                    <?php echo esc_html($term->name); ?>
+                    <?php esc_html_e('All Projects', 'spectra-child'); ?>
                 </button>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
+                <?php foreach ($industries as $term) : ?>
+                    <button class="project-filters__btn<?php echo $active_industry === $term->slug ? ' is-active' : ''; ?>"
+                            data-slug="<?php echo esc_attr($term->slug); ?>"
+                            type="button">
+                        <?php echo esc_html($term->name); ?>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
 
-    <?php if (!is_wp_error($services) && !empty($services)) : ?>
-        <div class="project-filters project-filters--secondary<?php echo (!empty($active_industry) || !empty($active_service)) ? ' is-visible' : ''; ?>" data-taxonomy="service" role="group" aria-label="<?php esc_attr_e('Filter by service', 'spectra-child'); ?>">
-            <button class="project-filters__btn<?php echo empty($active_service) ? ' is-active' : ''; ?>"
-                    data-slug=""
-                    type="button">
-                <?php esc_html_e('All Services', 'spectra-child'); ?>
-            </button>
-            <?php foreach ($services as $term) : ?>
-                <button class="project-filters__btn<?php echo $active_service === $term->slug ? ' is-active' : ''; ?>"
-                        data-slug="<?php echo esc_attr($term->slug); ?>"
+        <?php if (!is_wp_error($services) && !empty($services)) : ?>
+            <div class="project-filters project-filters--secondary<?php echo (!empty($active_industry) || !empty($active_service)) ? ' is-visible' : ''; ?>" data-taxonomy="service" role="group" aria-label="<?php esc_attr_e('Filter by service', 'spectra-child'); ?>">
+                <button class="project-filters__btn<?php echo empty($active_service) ? ' is-active' : ''; ?>"
+                        data-slug=""
                         type="button">
-                    <?php echo esc_html($term->name); ?>
+                    <?php esc_html_e('All Services', 'spectra-child'); ?>
                 </button>
-            <?php endforeach; ?>
-        </div>
+                <?php foreach ($services as $term) : ?>
+                    <button class="project-filters__btn<?php echo $active_service === $term->slug ? ' is-active' : ''; ?>"
+                            data-slug="<?php echo esc_attr($term->slug); ?>"
+                            type="button">
+                        <?php echo esc_html($term->name); ?>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
     <?php endif; ?>
 
     <div class="project-grid" aria-live="polite">
@@ -151,7 +166,7 @@ $active_industry = $current_term && $current_term['taxonomy'] === 'industry' ? $
         <?php endfor; ?>
     </div>
 
-    <?php if ($projects->max_num_pages > 1) : ?>
+    <?php if ($show_load_more && $projects->max_num_pages > 1) : ?>
         <div class="project-grid__pagination">
             <button class="project-grid__load-more"
                     type="button"
