@@ -269,6 +269,61 @@ VIDEO HERO - HOMEPAGE STYLES
 
 /* 
 ===================================================================================================
+BREADCRUMB NAVIGATION
+===================================================================================================
+*/
+.vpe-breadcrumb {
+	position: relative;
+	z-index: 1;
+	max-width: var(--wp--style--global--content-size, 1200px);
+	margin: 0 auto;
+	padding: clamp(1rem, 2vw, 1.75rem) 0;
+}
+
+.vpe-breadcrumb__list {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	gap: 0;
+	font-family: Roboto, sans-serif;
+	font-size: 0.875rem;
+	line-height: 1.4;
+}
+
+.vpe-breadcrumb__item {
+	display: inline-flex;
+	align-items: center;
+	color: var(--wp--preset--color--steel);
+}
+
+.vpe-breadcrumb__item:not(:last-child)::after {
+	content: '/';
+	margin: 0 0.5rem;
+	color: var(--wp--preset--color--silver);
+}
+
+.vpe-breadcrumb__item a {
+	color: var(--wp--preset--color--steel);
+	text-decoration: none;
+	transition: color 0.2s ease;
+	font-family: Roboto, sans-serif;
+	font-size: 0.875rem;
+}
+
+.vpe-breadcrumb__item a:hover {
+	color: var(--wp--preset--color--charcoal);
+	text-decoration: underline;
+}
+
+.vpe-breadcrumb__current span {
+	color: var(--wp--preset--color--charcoal);
+}
+
+/* 
+===================================================================================================
 VIDEO PROJECT STYLES
 ===================================================================================================
 */
