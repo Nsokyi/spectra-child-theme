@@ -275,11 +275,21 @@
 	.project-grid__loading {
 		grid-template-columns: repeat(2, 1fr);
 	}
+
+	.project-filters-wrap[data-columns="2"] .project-grid,
+	.project-filters-wrap[data-columns="2"] .project-grid__loading:not([hidden]) {
+		grid-template-columns: repeat(2, 1fr);
+	}
 }
 
 @media (max-width: 600px) {
 	.project-grid,
 	.project-grid__loading {
+		grid-template-columns: 1fr;
+	}
+
+	.project-filters-wrap[data-columns="2"] .project-grid,
+	.project-filters-wrap[data-columns="2"] .project-grid__loading:not([hidden]) {
 		grid-template-columns: 1fr;
 	}
 }
