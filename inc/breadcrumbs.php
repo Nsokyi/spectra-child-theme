@@ -118,35 +118,36 @@ add_shortcode( 'vpe_breadcrumb', function () {
  *
  * Excluded on: front page and main pages (about, services, projects, contact).
  */
-add_filter( 'render_block', 'vpe_inject_breadcrumb_after_header', 10, 2 );
+// add_filter( 'render_block', 'vpe_inject_breadcrumb_after_header', 10, 2 );
 
-function vpe_inject_breadcrumb_after_header( $block_content, $block ) {
+// function vpe_inject_breadcrumb_after_header( $block_content, $block ) {
 
-    // Only target the header template part.
-    if (
-        $block['blockName'] !== 'core/template-part'
-        || ! isset( $block['attrs']['slug'] )
-        || $block['attrs']['slug'] !== 'header'
-    ) {
-        return $block_content;
-    }
+//     // Target either the header template part or the custom site-header block.
+//     $is_header_part  = $block['blockName'] === 'core/template-part'
+//                        && isset( $block['attrs']['slug'] )
+//                        && $block['attrs']['slug'] === 'header';
+//     $is_header_block = $block['blockName'] === 'spectra-child/site-header';
 
-    // Skip front page.
-    if ( is_front_page() ) {
-        return $block_content;
-    }
+//     if ( ! $is_header_part && ! $is_header_block ) {
+//         return $block_content;
+//     }
 
-    // Skip main pages by slug.
-    $excluded_slugs = array( 'about', 'services', 'projects', 'contact' );
-    if ( is_page( $excluded_slugs ) ) {
-        return $block_content;
-    }
+//     // Skip front page.
+//     if ( is_front_page() ) {
+//         return $block_content;
+//     }
 
-    $breadcrumb = vpe_breadcrumb( true );
+//     // Skip main pages by slug.
+//     $excluded_slugs = array( 'about', 'services', 'projects', 'contact' );
+//     if ( is_page( $excluded_slugs ) ) {
+//         return $block_content;
+//     }
 
-    if ( $breadcrumb ) {
-        $block_content .= $breadcrumb;
-    }
+//     $breadcrumb = vpe_breadcrumb( true );
 
-    return $block_content;
-}
+//     if ( $breadcrumb ) {
+//         $block_content .= $breadcrumb;
+//     }
+
+//     return $block_content;
+// }
