@@ -65,5 +65,6 @@ function spectra_child_enqueue_project_grid_assets() {
         'restUrl'     => rest_url('project/v1/filter'),
         'nonce'       => wp_create_nonce('wp_rest'),
         'currentTerm' => $current_term,
+        'defaultPerPage' => 6,
     ));
 }

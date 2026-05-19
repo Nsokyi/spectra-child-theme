@@ -7,7 +7,7 @@
  *
  * Attributes:
  *   - featured  (bool)   Show only featured projects. Default: false.
- *   - per_page  (int)    Posts per page. Default: 12.
+ *   - per_page  (int)    Posts per page. Default: 6.
  *   - service   (string) Pre-select a service slug, e.g. service="photography".
  *   - industry  (string) Pre-select an industry slug, e.g. industry="corporate".
  */
@@ -18,7 +18,7 @@ function spectra_child_render_project_grid_shortcode($atts) {
     $atts = is_array($atts) ? $atts : array();
     $atts = shortcode_atts(array(
         'featured'  => false,
-        'per_page'  => 12,
+        'per_page'  => 6,
         'service'   => '',
         'industry'  => '',
     ), $atts);

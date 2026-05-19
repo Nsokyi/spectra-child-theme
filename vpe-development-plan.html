@@ -175,7 +175,7 @@
     </tr>
     <tr>
       <td><code>spectra-child/project-grid</code></td>
-      <td>Video Project CPT via WP_Query + REST API</td>
+      <td>Video Project CPT via WP_Query + REST API. Block sidebar controls: Per Page (default 6), Show Load More, Pre-selected Industry/Service, Featured Only, Show Filter Bar, Columns (2/3), Order By (date/menu_order).</td>
       <td><code>project-grid.css</code></td>
       <td><code>project-filter.js</code></td>
     </tr>
@@ -190,7 +190,7 @@
   <h3>Shortcodes</h3>
   <table>
     <tr><th>Shortcode</th><th>Purpose</th><th>Context</th></tr>
-    <tr><td><code>[project_grid]</code></td><td>Filterable project grid with service/industry params</td><td>Archive, service pages</td></tr>
+    <tr><td><code>[project_grid]</code></td><td>Filterable project grid with service/industry params. Default per_page: 6 (overridable).</td><td>Archive, service pages</td></tr>
     <tr><td><code>[project_featured]</code></td><td>Featured project hero (two-column)</td><td>Archive page</td></tr>
     <tr><td><code>[video_project_embed]</code></td><td>Video iframe player</td><td>Single project</td></tr>
     <tr><td><code>[video_project_meta]</code></td><td>Client, agency, duration sidebar</td><td>Single project</td></tr>
@@ -433,7 +433,7 @@ jobs:
         <tr><th>#</th><th>Section</th><th>Implementation</th><th>Status</th></tr>
         <tr><td>1</td><td>Video Hero</td><td>Custom HTML in <code>style.css</code> + Spectra Container. Vimeo background embed, heading, subtext, CTA button.</td><td><span class="tag tag--wip">WIP</span></td></tr>
         <tr><td>2</td><td>Trust Strip</td><td>Spectra Row + custom CSS (<code>.trust-strip</code>). Stat numbers with labels and dividers.</td><td><span class="tag tag--wip">WIP</span></td></tr>
-        <tr><td>3</td><td>Featured Projects</td><td><code>[project_featured]</code> or manually curated Spectra blocks showing 2–3 key projects.</td><td><span class="tag tag--todo">TODO</span></td></tr>
+        <tr><td>3</td><td>Featured Projects</td><td><code>spectra-child/project-grid</code> block with Featured Only + Hide Filter Bar + Hide Load More (6 projects). Or <code>[project_featured]</code> shortcode.</td><td><span class="tag tag--done">Done</span></td></tr>
         <tr><td>4</td><td>Services Overview</td><td>Service cards linking to <code>/services/[slug]</code>. Could be a new block or Spectra grid.</td><td><span class="tag tag--todo">TODO</span></td></tr>
         <tr><td>5</td><td>Testimonials</td><td><code>spectra-child/testimonials-slider</code> block (already built).</td><td><span class="tag tag--done">Done</span></td></tr>
         <tr><td>6</td><td>Logo Carousel</td><td><code>spectra-child/logo-carousel</code> block (already built).</td><td><span class="tag tag--done">Done</span></td></tr>

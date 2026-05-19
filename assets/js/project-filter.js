@@ -16,8 +16,17 @@
 
 	var loadMore = wrap.querySelector(".project-grid__load-more");
 	var featured = wrap.dataset.featured || "";
-	var perPage = parseInt(wrap.dataset.perPage, 10) || 12;
+	var perPage = parseInt(wrap.dataset.perPage, 10) || 6;
+	var showLoadMore = wrap.dataset.showLoadMore !== "0";
+	var orderby = wrap.dataset.orderby || "date";
 	var debounceId = null;
+
+	// If load more is disabled, hide the pagination container.
+	if (!showLoadMore && loadMore) {
+		var paginationEl = wrap.querySelector(".project-grid__pagination");
+		if (paginationEl) paginationEl.hidden = true;
+		loadMore = null;
+	}
 
 	if (typeof projectFilterData === "undefined") return;
 
@@ -185,6 +194,7 @@
 		if (featured) params.set("featured", featured);
 		params.set("paged", state.paged);
 		params.set("per_page", perPage);
+		if (orderby && orderby !== "date") params.set("orderby", orderby);
 
 		var url = projectFilterData.restUrl + "?" + params.toString();
 
