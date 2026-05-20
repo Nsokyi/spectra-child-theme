@@ -41,8 +41,8 @@
 	// Initialise state from URL params.
 	function initFromURL() {
 		var params = new URLSearchParams(window.location.search);
-		var s = params.get("service");
-		var i = params.get("industry");
+		var s = params.get("filter_service");
+		var i = params.get("filter_industry");
 		if (s) state.service = s.split(",");
 		if (i) state.industry = i.split(",");
 
@@ -172,8 +172,8 @@
 
 	function updateURL() {
 		var params = new URLSearchParams();
-		if (state.service.length) params.set("service", state.service.join(","));
-		if (state.industry.length) params.set("industry", state.industry.join(","));
+		if (state.service.length) params.set("filter_service", state.service.join(","));
+		if (state.industry.length) params.set("filter_industry", state.industry.join(","));
 
 		var qs = params.toString();
 		var url = window.location.pathname + (qs ? "?" + qs : "");
@@ -317,7 +317,7 @@
 
 	// If URL query params set a filter, fetch immediately (server render doesn't account for URL params).
 	var initParams = new URLSearchParams(window.location.search);
-	if (initParams.get("service") || initParams.get("industry")) {
+	if (initParams.get("filter_service") || initParams.get("filter_industry")) {
 		fetchProjects(false);
 	}
 })();
