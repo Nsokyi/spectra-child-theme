@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Child Theme Functions
  *
@@ -55,3 +56,27 @@ function spectra_child_enqueue_block_styles() {
         wp_enqueue_style('global-styles');
     }
 }
+
+/**
+ * Add 'plain-body-link' class to links without existing classes.
+ * Runs on paragraph and heading blocks in single posts/pages.
+ */
+function add_class_to_plain_text_links_in_block( $block_content, $block ) {
+    // Only process core/paragraph and core/heading blocks on single posts/pages
+    if ( ! in_array( $block['blockName'], ['core/paragraph', 'core/heading'], true ) ) {
+        return $block_content;
+    }
+    if ( ! ( is_single() || is_page() ) ) {
+        return $block_content;
+    }
+
+    // Match any <a> tag that doesn't already have a class attribute
+    $pattern = '/<a\s+((?![^>]*class\s*=)[^>]*)>(.*?)<\/a>/i';
+
+    $block_content = preg_replace_callback( $pattern, function( $matches ) {
+        return '<a ' . trim($matches[1]) . ' class="plain-body-link">' . $matches[2] . '</a>';
+    }, $block_content );
+
+    return $block_content;
+}
+add_filter( 'render_block', 'add_class_to_plain_text_links_in_block', 10, 2 );
