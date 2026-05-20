@@ -314,4 +314,10 @@
 
 	// Init.
 	initFromURL();
+
+	// If URL query params set a filter, fetch immediately (server render doesn't account for URL params).
+	var initParams = new URLSearchParams(window.location.search);
+	if (initParams.get("service") || initParams.get("industry")) {
+		fetchProjects(false);
+	}
 })();
