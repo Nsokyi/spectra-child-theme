@@ -80,6 +80,9 @@ VIDEO HERO - HOMEPAGE STYLES
 	z-index: 0;
 	pointer-events: none;
 	overflow: hidden;
+	background-image: url('https://stagingdev.org/vprod/wp-content/uploads/2026/05/hero-opener.jpg');
+	background-size: cover;
+	background-position: center;
 }
 
 .hero__video {
@@ -1079,6 +1082,33 @@ button.forminator-button.forminator-button-submit:hover::after {
     filter: drop-shadow(0 0 4px rgba(0,0,0,0.4)) drop-shadow(0 0 8px rgba(0,0,0,0.2));
 }
 
+/* ── UAGB Buttons — tablet/mobile full-width stacking ─────── */
+@media (max-width: 1024px) {
+    .wp-block-uagb-buttons.uagb-buttons__layout-wrap {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 15px;
+    }
+
+    .wp-block-uagb-buttons-child.uagb-buttons__outer-wrap {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .wp-block-uagb-buttons a.uagb-buttons-repeater.wp-block-button__link {
+        width: 100% !important;
+        justify-content: center;
+        display: inline-flex !important;
+    }
+}
+
+/* ── Buttons — mobile left-alignment ─────────────────────── */
+@media only screen and (max-width: 767px) {
+    .vpe-buttons .uagb-buttons-layout-wrap {
+        align-items: flex-start !important;
+    }
+}
+
 /* ── Team Section ──────────────────────────────────────────── */
 .my-team-card.uagb-team__image-position-above img {
     width: 100% !important;
@@ -1302,6 +1332,48 @@ p.vpe-text-link {
 
 /* 
 ===================================================================================================
+CONTENT TEXT LINKS — inline links inside page/post body paragraphs
+Excludes .vpe-text-link paragraphs which have their own arrow-link style.
+===================================================================================================
+*/
+
+.entry-content p:not(.vpe-text-link) a,
+.single-post p:not(.vpe-text-link) a,
+.page p:not(.vpe-text-link) a {
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+    color: #755454;
+    transition: color 0.3s ease;
+}
+
+.entry-content p:not(.vpe-text-link) a:hover,
+.single-post p:not(.vpe-text-link) a:hover,
+.page p:not(.vpe-text-link) a:hover {
+    color: var(--wp--preset--color--custom-rich-black);
+}
+
+/* Animated underline — expands from centre on hover */
+.entry-content p:not(.vpe-text-link) a::before,
+.single-post p:not(.vpe-text-link) a::before {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: -1px;
+    left: 50%;
+    background-color: #755454;
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+.entry-content p:not(.vpe-text-link) a:hover::before,
+.single-post p:not(.vpe-text-link) a:hover::before {
+    width: 100%;
+    left: 0;
+}
+
+/* 
+===================================================================================================
 WHY VPE — card accent bar
 ===================================================================================================
 */
@@ -1374,6 +1446,27 @@ RECAPTCHA — hide badge
 	font-family: var(--wp--preset--font-family--roboto-mono) !important;
 	font-size: var(--wp--preset--font-size--custom-7) !important;
 	color: var(--wp--preset--color--steel) !important;
+}
+
+/* ── Contact Form Layout ─────────────────────────────────────── */
+.contact-sidebar-sticky {
+    position: sticky;
+    top: 2rem;
+    align-self: start;
+}
+
+.vpe-form-catch-line {
+    margin-top: 6rem;
+    position: absolute;
+    margin-left: 0;
+}
+
+@media screen and (min-width: 768px) {
+    .vpe-form-catch-line {
+        margin-top: 5rem;
+        position: absolute;
+        margin-left: 11rem;
+    }
 }
 
 /* 
@@ -1513,6 +1606,15 @@ BLOG — featured image, meta, archive text links
 	text-transform: uppercase;
 }
 
+/* Blog pagination */
+.page-numbers {
+	font-size: var(--wp--preset--font-size--custom-7) !important;
+}
+
+.page-numbers.current {
+	color: var(--wp--preset--color--steel) !important;
+}
+
 /* Blog archive — text links with arrow */
 .uagb-post__text a.uagb-text-link {
 	padding-left: 0;
@@ -1588,4 +1690,9 @@ FOOTER — layout grid, button width, link colours
 
 .footer a:hover {
     color: var(--wp--preset--color--slate) !important;
+}
+
+/* Footer CTA button — force warm-white text */
+.vpe-custom-btn.vpe-footer-btn a.uagb-buttons-repeater {
+    color: var(--wp--preset--color--warm-white) !important;
 }
