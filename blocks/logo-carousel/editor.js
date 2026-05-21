@@ -35,9 +35,6 @@
 			var dragRef = useState(null);
 			var dragIndex = dragRef[0];
 			var setDragIndex = dragRef[1];
-			var overRef = useState(null);
-			var overIndex = overRef[0];
-			var setOverIndex = overRef[1];
 
 			function updateLogo(index, key, value) {
 				var updated = logos.map(function (logo, i) {
@@ -160,48 +157,35 @@
 										},
 									},
 									logos.map(function (logo, index) {
-										var isDragging = dragIndex === index;
-										var isOver = overIndex === index && dragIndex !== index;
+										var isSelected = dragIndex === index;
+										var isTarget = dragIndex !== null && dragIndex !== index;
 										return el(
 											"div",
 											{
 												key: logo.id || index,
 												className: "logo-carousel-editor__item",
-												draggable: true,
-												onDragStart: function (e) {
-													setDragIndex(index);
-													e.dataTransfer.effectAllowed = "move";
-												},
-												onDragOver: function (e) {
-													e.preventDefault();
-													e.dataTransfer.dropEffect = "move";
-													setOverIndex(index);
-												},
-												onDragLeave: function () {
-													setOverIndex(null);
-												},
-												onDrop: function (e) {
-													e.preventDefault();
-													if (dragIndex !== null) {
+												onClick: function (e) {
+													e.stopPropagation();
+													if (dragIndex === null) {
+														setDragIndex(index);
+													} else if (dragIndex === index) {
+														setDragIndex(null);
+													} else {
 														moveLogo(dragIndex, index);
+														setDragIndex(null);
 													}
-													setDragIndex(null);
-													setOverIndex(null);
-												},
-												onDragEnd: function () {
-													setDragIndex(null);
-													setOverIndex(null);
 												},
 												style: {
 													position: "relative",
-													background: isOver ? "#e0e7ff" : "#f0f0f0",
+													background: isSelected ? "#dbeafe" : "#f0f0f0",
 													borderRadius: "4px",
 													padding: "12px",
 													textAlign: "center",
-													cursor: "grab",
-													opacity: isDragging ? 0.4 : 1,
-													outline: isOver ? "2px dashed #3858e9" : "none",
-													transition: "background 0.15s, opacity 0.15s",
+													cursor: isTarget ? "pointer" : "grab",
+													outline: isSelected ? "2px solid #3b82f6" : "none",
+													boxShadow: isSelected ? "0 2px 8px rgba(59,130,246,0.3)" : "none",
+													opacity: isTarget ? 0.65 : 1,
+													transition: "all 0.15s ease",
 												},
 											},
 											el("img", {
@@ -219,7 +203,8 @@
 												{
 													type: "button",
 													className: "logo-carousel-editor__remove",
-													onClick: function () {
+													onClick: function (e) {
+														e.stopPropagation();
 														removeLogo(index);
 													},
 													style: {
