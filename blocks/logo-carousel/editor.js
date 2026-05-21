@@ -166,24 +166,36 @@
 													objectFit: "contain",
 												},
 											}),
-											el(Button, {
-												icon: "no-alt",
-												isDestructive: true,
-												size: "small",
-												onClick: function () {
-													removeLogo(index);
+											el(
+												"button",
+												{
+													type: "button",
+													className: "logo-carousel-editor__remove",
+													onClick: function () {
+														removeLogo(index);
+													},
+													style: {
+														position: "absolute",
+														top: "-6px",
+														right: "-6px",
+														width: "24px",
+														height: "24px",
+														padding: "0",
+														borderRadius: "50%",
+														background: "#cc1818",
+														color: "#fff",
+														border: "2px solid #fff",
+														cursor: "pointer",
+														fontSize: "16px",
+														lineHeight: "1",
+														display: "flex",
+														alignItems: "center",
+														justifyContent: "center",
+													},
+													"aria-label": "Remove logo",
 												},
-												style: {
-													position: "absolute",
-													top: "-6px",
-													right: "-6px",
-													minWidth: "24px",
-													height: "24px",
-													padding: "0",
-													borderRadius: "50%",
-												},
-												label: "Remove logo",
-											}),
+												"\u00D7",
+											),
 										);
 									}),
 								)
