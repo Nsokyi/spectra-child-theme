@@ -1,5 +1,6 @@
 (function (blocks, element, blockEditor, components) {
 	var el = element.createElement;
+	var useState = element.useState;
 	var InspectorControls = blockEditor.InspectorControls;
 	var MediaUpload = blockEditor.MediaUpload;
 	var PanelBody = components.PanelBody;
@@ -31,6 +32,13 @@
 			var speed = props.attributes.speed || 30;
 			var logoHeight = props.attributes.logoHeight || 50;
 
+			var dragRef = useState(null);
+			var dragIndex = dragRef[0];
+			var setDragIndex = dragRef[1];
+			var overRef = useState(null);
+			var overIndex = overRef[0];
+			var setOverIndex = overRef[1];
+
 			function updateLogo(index, key, value) {
 				var updated = logos.map(function (logo, i) {
 					if (i === index) {
@@ -48,6 +56,14 @@
 				var updated = logos.filter(function (_, i) {
 					return i !== index;
 				});
+				props.setAttributes({ logos: updated });
+			}
+
+			function moveLogo(from, to) {
+				if (from === to) return;
+				var updated = logos.slice();
+				var item = updated.splice(from, 1)[0];
+				updated.splice(to, 0, item);
 				props.setAttributes({ logos: updated });
 			}
 
@@ -144,17 +160,48 @@
 										},
 									},
 									logos.map(function (logo, index) {
+										var isDragging = dragIndex === index;
+										var isOver = overIndex === index && dragIndex !== index;
 										return el(
 											"div",
 											{
-												key: index,
+												key: logo.id || index,
 												className: "logo-carousel-editor__item",
+												draggable: true,
+												onDragStart: function (e) {
+													setDragIndex(index);
+													e.dataTransfer.effectAllowed = "move";
+												},
+												onDragOver: function (e) {
+													e.preventDefault();
+													e.dataTransfer.dropEffect = "move";
+													setOverIndex(index);
+												},
+												onDragLeave: function () {
+													setOverIndex(null);
+												},
+												onDrop: function (e) {
+													e.preventDefault();
+													if (dragIndex !== null) {
+														moveLogo(dragIndex, index);
+													}
+													setDragIndex(null);
+													setOverIndex(null);
+												},
+												onDragEnd: function () {
+													setDragIndex(null);
+													setOverIndex(null);
+												},
 												style: {
 													position: "relative",
-													background: "#f0f0f0",
+													background: isOver ? "#e0e7ff" : "#f0f0f0",
 													borderRadius: "4px",
 													padding: "12px",
 													textAlign: "center",
+													cursor: "grab",
+													opacity: isDragging ? 0.4 : 1,
+													outline: isOver ? "2px dashed #3858e9" : "none",
+													transition: "background 0.15s, opacity 0.15s",
 												},
 											},
 											el("img", {
@@ -164,6 +211,7 @@
 													maxHeight: "40px",
 													maxWidth: "100%",
 													objectFit: "contain",
+													pointerEvents: "none",
 												},
 											}),
 											el(
