@@ -34,6 +34,13 @@ To remove: if Global Styles are ever reset, delete this block; theme.json will t
     --wp--preset--color--vpe-red-tint:    var(--wp--preset--color--custom-red-tint);
 }
 
+/*
+===================================================================================================
+NOTE: Do NOT apply overflow-x: hidden to html or body — it breaks position: sticky
+on child elements. If horizontal overflow occurs, fix the specific component instead.
+===================================================================================================
+*/
+
 /* 
 ===================================================================================================
 VIDEO HERO - HOMEPAGE STYLES
@@ -369,6 +376,19 @@ body.single-video-project .uagb-container-inner-blocks-wrap {
 
 .project-details-row > .uagb-container-inner-blocks-wrap {
 	align-items: flex-start;
+}
+
+/* Fix header overflow on single video project pages
+   Target the header/breadcrumb area only, not containers with sticky sidebars */
+body.single-video-project {
+	overflow-x: hidden;
+}
+
+/* Ensure sticky sidebars still work by allowing overflow on their containers */
+body.single-video-project .project-layout,
+body.single-video-project .project-meta-col,
+body.single-video-project .project-sidebar-sticky {
+	overflow: visible;
 }
 
 .project-sidebar-sticky {
@@ -1082,6 +1102,23 @@ button.forminator-button.forminator-button-submit:hover::after {
     filter: drop-shadow(0 0 4px rgba(0,0,0,0.4)) drop-shadow(0 0 8px rgba(0,0,0,0.2));
 }
 
+/* ── Button Width Constraints ───────────────────────────────────────
+   Ensures buttons don't exceed 320px and maintain consistent sizing
+   ─────────────────────────────────────────────────────────────────── */
+.vpe-custom-btn a.uagb-buttons-repeater.wp-block-button__link,
+.vpe-custom-btn.vpe-custom-btn--secondary a.uagb-buttons-repeater.wp-block-button__link {
+    max-width: 320px !important;
+    width: 100% !important;
+}
+
+@media (max-width: 767px) {
+    .vpe-custom-btn a.uagb-buttons-repeater.wp-block-button__link,
+    .vpe-custom-btn.vpe-custom-btn--secondary a.uagb-buttons-repeater.wp-block-button__link {
+        min-width: 320px !important;
+        width: 100% !important;
+    }
+}
+
 /* ── UAGB Buttons — tablet/mobile full-width stacking ─────── */
 @media (max-width: 1024px) {
     .wp-block-uagb-buttons.uagb-buttons__layout-wrap {
@@ -1255,7 +1292,39 @@ button.forminator-button.forminator-button-submit:hover::after {
     transform: translateX(10px);
 }
 
-/* 
+/* At 1800px and below, switch tooltip to bottom position to prevent right-edge cutoff */
+@media (max-width: 1800px) {
+    /* Override right-positioned tooltips to bottom-positioned */
+    [data-tooltip][data-position="right"]:before {
+        top: 100% !important;
+        left: -140% !important;
+        margin-left: 0 !important;
+        margin-top: 4px !important;
+        transform: translateX(-50%) translateY(0px) !important;
+    }
+
+    [data-tooltip][data-position="right"]:after {
+        border-bottom-color: var(--wp--preset--color--rich-black) !important;
+        border-top: none !important;
+        border-right-color: transparent !important;
+        border-left: none !important;
+        top: calc(100% - 2px) !important;
+        left: 100% !important;
+        transform: translateX(-50%) translateY(0px) !important;
+        margin-left: -6px !important;
+    }
+
+    .noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]:after,
+    .noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]:before {
+        transform: translateX(-50%) translateY(6px) !important;
+    }
+
+    .noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]:after {
+        transform: translateX(-50%) translateY(6px) !important;
+    }
+}
+
+/*
 ===================================================================================================
 FAQ SECTION — kicker-style numbered items (// 01, // 02 …)
 ===================================================================================================

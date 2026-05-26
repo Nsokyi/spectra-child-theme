@@ -37,6 +37,12 @@
 	z-index: 1000;
 }
 
+/* ── Header Width Fix — prevents right-edge cutoff on smaller screens ── */
+.site-header {
+    width: 100vw !important; /* Forces it to exactly 100% of the viewport width */
+    right: auto !important;  /* Overrides the problematic right: 0 */
+}
+
 /* ── Nav bar ── */
 .site-nav {
 	width: 100%;
