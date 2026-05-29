@@ -49,13 +49,18 @@
 		trigger.addEventListener('click', function (e) {
 			e.stopPropagation();
 			var isOpen = this.getAttribute('aria-expanded') === 'true';
+
+			/* Close all dropdowns first */
 			document.querySelectorAll('.dropdown-trigger').forEach(function (t) {
 				t.setAttribute('aria-expanded', 'false');
+				var p = t.closest('.has-dropdown');
+				if (p) p.classList.add('hover-suppressed');
 			});
-			if (isOpen) {
-				if (parent) parent.classList.add('hover-suppressed');
-			} else {
+
+			/* If it wasn't open, open this one */
+			if (!isOpen) {
 				this.setAttribute('aria-expanded', 'true');
+				if (parent) parent.classList.remove('hover-suppressed');
 			}
 		});
 
