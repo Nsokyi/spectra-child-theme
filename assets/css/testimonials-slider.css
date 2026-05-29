@@ -116,6 +116,7 @@
 }
 
 .testimonials-slider__name {
+	display: block;
 	font-family: 'Roboto', sans-serif;
 	font-size: 18px;
 	font-weight: 400;
@@ -124,6 +125,17 @@
 }
 
 .testimonials-slider__role {
+	display: block;
+	font-family: 'Roboto Mono', monospace;
+	font-size: 11px;
+	line-height: 1.4;
+	color: var(--wp--preset--color--steel);
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+}
+
+.testimonials-slider__company {
+	display: block;
 	font-family: 'Roboto Mono', monospace;
 	font-size: 11px;
 	line-height: 1.4;

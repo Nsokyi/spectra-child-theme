@@ -72,7 +72,7 @@ $wrapper_attributes = get_block_wrapper_attributes(array(
 
             $stars = $stars ? max(1, min(5, intval($stars))) : 5;
             $subtitle_parts = array_filter(array($job, $company));
-            $subtitle = implode(', ', $subtitle_parts);
+            $subtitle = implode(', ', $subtitle_parts); // kept for aria-label fallback
             $card_count++;
         ?>
             <div class="testimonials-slider__card" aria-label="<?php echo esc_attr(sprintf(__('Testimonial from %s', 'spectra-child'), $name)); ?>">
@@ -108,8 +108,11 @@ $wrapper_attributes = get_block_wrapper_attributes(array(
                         <?php if ($name) : ?>
                             <span class="testimonials-slider__name"><?php echo esc_html($name); ?></span>
                         <?php endif; ?>
-                        <?php if ($subtitle) : ?>
-                            <span class="testimonials-slider__role"><?php echo esc_html($subtitle); ?></span>
+                        <?php if ($job) : ?>
+                            <span class="testimonials-slider__role"><?php echo esc_html($job); ?></span>
+                        <?php endif; ?>
+                        <?php if ($company) : ?>
+                            <span class="testimonials-slider__company"><?php echo esc_html($company); ?></span>
                         <?php endif; ?>
                     </div>
                 </div>
