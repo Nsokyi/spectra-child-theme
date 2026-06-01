@@ -26,6 +26,7 @@ class VPE_Mobile_Nav_Walker extends Walker_Nav_Menu {
      */
     public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
         $classes = empty( $item->classes ) ? array() : (array) $item->classes;
+        $classes = apply_filters( 'nav_menu_css_class', $classes, $item, $args, $depth );
         $has_children = in_array( 'menu-item-has-children', $classes, true );
 
         // Top-level parent → accordion trigger

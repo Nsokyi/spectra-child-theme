@@ -130,15 +130,15 @@
 			if (slug === "") {
 				// "All Projects" — clear industry and service selections.
 				state.industry = [];
-				state.service = [];
+				if (!serviceLockedFromURL) state.service = [];
 			} else {
 				// Single-select: clicking the same industry deselects it.
 				if (state.industry.length === 1 && state.industry[0] === slug) {
 					state.industry = [];
-					state.service = [];
+					if (!serviceLockedFromURL) state.service = [];
 				} else {
 					state.industry = [slug];
-					state.service = [];
+					if (!serviceLockedFromURL) state.service = [];
 				}
 			}
 

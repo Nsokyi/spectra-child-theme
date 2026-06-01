@@ -7,6 +7,30 @@ require_once __DIR__ . '/class-vpe-nav-walker.php';
 require_once __DIR__ . '/class-vpe-mobile-nav-walker.php';
 
 /**
+ * Force current-menu-item on the Projects nav item when on the video-project CPT archive.
+ *
+ * WordPress compares nav item URLs against the current URL including query params,
+ * so /projects/?service=photography fails to match /projects/ and current-menu-item
+ * is never set. This filter adds it back when is_post_type_archive('video-project') is true
+ * and the nav item URL matches the CPT archive permalink.
+ */
+add_filter( 'nav_menu_css_class', 'spectra_child_projects_nav_active_class', 10, 3 );
+function spectra_child_projects_nav_active_class( $classes, $item, $args ) {
+    if ( is_admin() ) {
+        return $classes;
+    }
+    if ( is_post_type_archive( 'video-project' ) ) {
+        $archive_url = get_post_type_archive_link( 'video-project' );
+        if ( $archive_url && rtrim( $item->url, '/' ) === rtrim( $archive_url, '/' ) ) {
+            if ( ! in_array( 'current-menu-item', $classes, true ) ) {
+                $classes[] = 'current-menu-item';
+            }
+        }
+    }
+    return $classes;
+}
+
+/**
  * Register the "Primary" menu location.
  */
 add_action('after_setup_theme', 'spectra_child_register_nav_menus');
