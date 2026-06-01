@@ -32,6 +32,11 @@
 
 	var secondaryFilter = wrap.querySelector(".project-filters--secondary");
 
+	// When a ?service= URL param is present on load, the service row stays
+	// permanently hidden. The value is still sent to the REST API but the
+	// visitor only sees the industry row for cross-filtering.
+	var serviceLockedFromURL = false;
+
 	var state = {
 		service: [],
 		industry: [],
@@ -41,10 +46,18 @@
 	// Initialise state from URL params.
 	function initFromURL() {
 		var params = new URLSearchParams(window.location.search);
-		var s = params.get("filter_service");
-		var i = params.get("filter_industry");
-		if (s) state.service = s.split(",");
+		var s = params.get("service") || params.get("filter_service");
+		var i = params.get("industry") || params.get("filter_industry");
+		if (s) {
+			state.service = s.split(",");
+			serviceLockedFromURL = true;
+		}
 		if (i) state.industry = i.split(",");
+
+		// Hide the service row when locked from URL param.
+		if (serviceLockedFromURL && secondaryFilter) {
+			secondaryFilter.hidden = true;
+		}
 
 		// Check for pre-selected term from taxonomy archive context (set via wp_localize_script).
 		if (
@@ -96,6 +109,8 @@
 
 	function syncSecondaryVisibility() {
 		if (!secondaryFilter) return;
+		// Never show the service row when it was locked via URL param.
+		if (serviceLockedFromURL) return;
 		if (state.industry.length > 0 || state.service.length > 0) {
 			secondaryFilter.classList.add("is-visible");
 		} else {
@@ -317,7 +332,7 @@
 
 	// If URL query params set a filter, fetch immediately (server render doesn't account for URL params).
 	var initParams = new URLSearchParams(window.location.search);
-	if (initParams.get("filter_service") || initParams.get("filter_industry")) {
+	if (initParams.get("service") || initParams.get("filter_service") || initParams.get("industry") || initParams.get("filter_industry")) {
 		fetchProjects(false);
 	}
 })();
