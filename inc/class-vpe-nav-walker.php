@@ -41,6 +41,7 @@ class VPE_Nav_Walker extends Walker_Nav_Menu {
      */
     public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
         $classes = empty( $item->classes ) ? array() : (array) $item->classes;
+        $classes = apply_filters( 'nav_menu_css_class', $classes, $item, $args, $depth );
         $has_children = in_array( 'menu-item-has-children', $classes, true );
 
         // Top-level parent → becomes dropdown trigger, stash URL for "View all" link
@@ -57,8 +58,12 @@ class VPE_Nav_Walker extends Walker_Nav_Menu {
 
         // Top-level regular item
         if ( $depth === 0 ) {
-            $active = in_array( 'current-menu-item', $classes, true ) ? ' current-menu-item' : '';
-            $output .= '<li class="' . esc_attr( trim( $active ) ) . '">';
+            // Preserve all WordPress active classes (current-menu-item, current_page_parent, etc.)
+            $active_classes = array_filter( $classes, function( $c ) {
+                return 0 === strpos( $c, 'current' );
+            } );
+            $class_str = implode( ' ', array_map( 'sanitize_html_class', $active_classes ) );
+            $output .= '<li' . ( $class_str ? ' class="' . esc_attr( $class_str ) . '"' : '' ) . '>';
             $output .= '<a href="' . esc_url( $item->url ) . '">';
             $output .= esc_html( $item->title );
             $output .= '</a>';
