@@ -43,9 +43,25 @@ on child elements. If horizontal overflow occurs, fix the specific component ins
 
 /* 
 ===================================================================================================
+404 PAGE — error page typography
+===================================================================================================
+*/
+
+p.404-text {
+    margin: 0 0 -3rem 0 !important;
+}
+
+/* 
+===================================================================================================
 VIDEO HERO - HOMEPAGE STYLES
 ===================================================================================================
 */
+
+/* ── UAGB Hero Container (page hero blocks) ─────────────────── */
+.wp-block-uagb-container.page-hero.uagb-is-root-container {
+    padding-top: 18vh !important;
+    max-height: 1000px !important;
+}
 
 .hero *,
 .hero *::before,
@@ -389,6 +405,25 @@ body.single-video-project .project-layout,
 body.single-video-project .project-meta-col,
 body.single-video-project .project-sidebar-sticky {
 	overflow: visible;
+}
+
+/* ── Single Project Post Terms (Pill Style) ─────────────────── */
+.single .wp-block-post-terms.is-style-swt-post-terms-pill a {
+	letter-spacing: 2px;
+	font-family: var(--wp--preset--font-family--roboto-mono) !important;
+	font-size: 12px;
+	padding: 8px 16px;
+	margin-bottom: 1em;
+	background-color: transparent !important;
+	border: 1px solid var(--wp--preset--color--custom-red-blush) !important;
+	color: var(--wp--preset--color--custom-charcoal) !important;
+	transition: all 0.3s ease-in-out;
+}
+
+.single .wp-block-post-terms.is-style-swt-post-terms-pill a:hover {
+	background-color: var(--wp--preset--color--custom-red-light) !important;
+	border: 1px solid var(--wp--preset--color--custom-red-tint) !important;
+	color: var(--wp--preset--color--custom-warm-white) !important;
 }
 
 .project-sidebar-sticky {
@@ -1364,6 +1399,87 @@ FAQ SECTION — kicker-style numbered items (// 01, // 02 …)
 @media (min-width: 768px) {
     body .vpe-faq .uagb-faq-item::before {
         padding-top: 26px; /* <--- Bumped up for larger screens */
+    }
+}
+
+/* ── FAQ Base Mobile / Small Screens (under 768px) ─────────────── */
+body .vpe-faq .uagb-faq-item::before {
+    padding-top: 34px;
+}
+
+/* ── FAQ Subtle Transitions ────────────────────────────────── */
+.uagb-faq-item .uagb-question,
+.uagb-faq-item {
+    transition: all 0.3s ease-in-out;
+}
+
+/* ── FAQ Last Item Question Button ──────────────────────────── */
+/* Target the questions button inside ONLY the last FAQ item */
+.uagb-faq-child__outer-wrap:last-child .uagb-faq-questions-button {
+    padding-bottom: 0px;
+}
+
+/* ── FAQ Answer Spacing ─────────────────────────────────────── */
+/* Reduce space between question and answer */
+.uagb-faq-content {
+    margin-top: -4px;
+}
+
+.vpe-faq .uagb-faq-child__outer-wrap:last-child .uagb-faq-content {
+    margin-top: 24px;
+}
+
+@media (min-width: 977px) {
+    /* Target all answers inside VPE FAQ block */
+    .vpe-faq .uagb-faq-content {
+        margin-top: -22px;
+    }
+
+    /* Target the answer inside ONLY the final row container */
+    .vpe-faq .uagb-faq-child__outer-wrap:last-child .uagb-faq-content {
+        margin-top: 8px;
+    }
+}
+
+/* ── FAQ Icon Animation ─────────────────────────────────────── */
+/* Reset: Let the plugin handle hiding/showing the wrappers naturally */
+.uagb-faq-questions-button .uagb-icon,
+.uagb-faq-questions-button .uagb-icon-active {
+    display: inherit;
+}
+
+/* Target the SVG inside the active minus icon wrapper */
+.uagb-faq-questions-button .uagb-icon-active svg {
+    animation: uagbSpinIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    transform-origin: center;
+}
+
+/* Target the SVG inside the returning plus icon wrapper */
+.uagb-faq-questions-button .uagb-icon svg {
+    animation: uagbSpinOut 0.35s ease-in-out forwards;
+    transform-origin: center;
+}
+
+/* --- The Animation Smoothers --- */
+@keyframes uagbSpinIn {
+    from {
+        transform: rotate(-90deg) scale(0.6);
+        opacity: 0;
+    }
+    to {
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes uagbSpinOut {
+    from {
+        transform: rotate(90deg) scale(0.6);
+        opacity: 0;
+    }
+    to {
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
     }
 }
 
