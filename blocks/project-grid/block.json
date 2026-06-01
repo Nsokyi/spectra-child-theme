@@ -42,6 +42,10 @@
         "orderBy": {
             "type": "string",
             "default": "date"
+        },
+        "showServiceRow": {
+            "type": "boolean",
+            "default": true
         }
     },
     "editorScript": "file:./editor.js",

@@ -124,25 +124,18 @@
 	color: var(--wp--preset--color--rich-black);
 }
 
-.testimonials-slider__role {
+.testimonials-slider__role,
+.testimonials-slider__company {
 	display: block;
 	font-family: 'Roboto Mono', monospace;
 	font-size: 11px;
-	line-height: 1.4;
+	line-height: 1.1;
 	color: var(--wp--preset--color--steel);
 	text-transform: uppercase;
 	letter-spacing: 0.08em;
 }
 
-.testimonials-slider__company {
-	display: block;
-	font-family: 'Roboto Mono', monospace;
-	font-size: 11px;
-	line-height: 1.4;
-	color: var(--wp--preset--color--steel);
-	text-transform: uppercase;
-	letter-spacing: 0.08em;
-}
+
 
 /* ── Navigation Arrows ── */
 .testimonials-slider__nav {

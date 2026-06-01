@@ -1346,7 +1346,7 @@ FAQ SECTION — kicker-style numbered items (// 01, // 02 …)
     border: none !important;
 }
 
-/* Number label positioned to the left of the question */
+/* Number label positioned to the left of the question (Mobile / Base style) */
 .vpe-faq .uagb-faq-item::before {
     content: "// " counter(faq-counter, decimal-leading-zero);
     font-family: 'Roboto Mono', monospace;
@@ -1357,7 +1357,14 @@ FAQ SECTION — kicker-style numbered items (// 01, // 02 …)
     position: absolute;
     left: 0;
     top: 0;
-    padding-top: 31px;
+    padding-top: 20px; /* <--- For mobile */
+}
+
+/* Tablet and Desktop style (768px and up) */
+@media (min-width: 768px) {
+    body .vpe-faq .uagb-faq-item::before {
+        padding-top: 26px; /* <--- Bumped up for larger screens */
+    }
 }
 
 /* 
@@ -1529,14 +1536,6 @@ RECAPTCHA — hide badge
     margin-top: 6rem;
     position: absolute;
     margin-left: 0;
-}
-
-@media screen and (min-width: 768px) {
-    .vpe-form-catch-line {
-        margin-top: 5rem;
-        position: absolute;
-        margin-left: 11rem;
-    }
 }
 
 /* 

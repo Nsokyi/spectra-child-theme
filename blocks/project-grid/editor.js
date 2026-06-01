@@ -17,6 +17,7 @@
 			preSelectedService: { type: "string", default: "" },
 			showFeaturedOnly: { type: "boolean", default: false },
 			showFilterBar: { type: "boolean", default: true },
+			showServiceRow: { type: "boolean", default: true },
 			columns: { type: "number", default: 3 },
 			orderBy: { type: "string", default: "date" },
 		},
@@ -124,6 +125,14 @@
 							checked: attrs.showFilterBar,
 							onChange: function (val) {
 								set({ showFilterBar: val });
+							},
+						}),
+						el(ToggleControl, {
+							label: "Show Service Row",
+							help: "Hide the service filter row on pages already scoped to a specific service.",
+							checked: attrs.showServiceRow,
+							onChange: function (val) {
+								set({ showServiceRow: val });
 							},
 						}),
 						el(SelectControl, {

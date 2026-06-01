@@ -11,6 +11,7 @@ $featured_only = !empty($attributes['showFeaturedOnly']);
 $per_page      = !empty($attributes['postsPerPage']) ? max(1, min(100, intval($attributes['postsPerPage']))) : 6;
 $show_load_more  = isset($attributes['showLoadMore']) ? (bool) $attributes['showLoadMore'] : true;
 $show_filter_bar = isset($attributes['showFilterBar']) ? (bool) $attributes['showFilterBar'] : true;
+$show_service_row = isset($attributes['showServiceRow']) ? (bool) $attributes['showServiceRow'] : true;
 $columns         = !empty($attributes['columns']) ? intval($attributes['columns']) : 3;
 $orderby         = !empty($attributes['orderBy']) && $attributes['orderBy'] === 'menu_order' ? 'menu_order' : 'date';
 
@@ -38,13 +39,14 @@ $wrapper_attributes = get_block_wrapper_attributes(array(
 <div <?php echo $wrapper_attributes; ?>>
     <?php
     get_template_part('template-parts/project-grid', null, array(
-        'featured_only'   => $featured_only,
-        'per_page'        => $per_page,
-        'current_term'    => $current_term,
-        'show_filter_bar' => $show_filter_bar,
-        'show_load_more'  => $show_load_more,
-        'columns'         => $columns,
-        'orderby'         => $orderby,
+        'featured_only'    => $featured_only,
+        'per_page'         => $per_page,
+        'current_term'     => $current_term,
+        'show_filter_bar'  => $show_filter_bar,
+        'show_service_row' => $show_service_row,
+        'show_load_more'   => $show_load_more,
+        'columns'          => $columns,
+        'orderby'          => $orderby,
     ));
     ?>
 </div>

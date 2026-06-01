@@ -16,6 +16,7 @@ $featured_only   = !empty($args['featured_only']);
 $current_term    = !empty($args['current_term']) ? $args['current_term'] : null;
 $per_page        = !empty($args['per_page']) ? intval($args['per_page']) : 6;
 $show_filter_bar = isset($args['show_filter_bar']) ? (bool) $args['show_filter_bar'] : true;
+$show_service_row = isset($args['show_service_row']) ? (bool) $args['show_service_row'] : true;
 $show_load_more  = isset($args['show_load_more']) ? (bool) $args['show_load_more'] : true;
 $columns         = !empty($args['columns']) ? intval($args['columns']) : 3;
 $orderby         = !empty($args['orderby']) && $args['orderby'] === 'menu_order' ? 'menu_order' : 'date';
@@ -94,7 +95,7 @@ $active_industry = $current_term && $current_term['taxonomy'] === 'industry' ? $
             </div>
         <?php endif; ?>
 
-        <?php if (!is_wp_error($services) && !empty($services)) : ?>
+        <?php if ($show_service_row && !is_wp_error($services) && !empty($services)) : ?>
             <div class="project-filters project-filters--secondary<?php echo (!empty($active_industry) || !empty($active_service)) ? ' is-visible' : ''; ?>" data-taxonomy="service" role="group" aria-label="<?php esc_attr_e('Filter by service', 'spectra-child'); ?>">
                 <button class="project-filters__btn<?php echo empty($active_service) ? ' is-active' : ''; ?>"
                         data-slug=""
