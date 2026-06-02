@@ -1516,12 +1516,12 @@ p.vpe-text-link {
 /* 
 ===================================================================================================
 CONTENT TEXT LINKS — inline links inside page/post body paragraphs
-Excludes .vpe-text-link and .vpe-back-to-link paragraphs which have their own styles.
+Excludes .vpe-text-link, .vpe-back-to-link and .vpe-link paragraphs which have their own styles.
 ===================================================================================================
 */
-.entry-content p:not(.vpe-text-link):not(.vpe-back-to-link) a,
-.single-post p:not(.vpe-text-link):not(.vpe-back-to-link) a,
-.page p:not(.vpe-text-link):not(.vpe-back-to-link) a {
+.entry-content p:not(.vpe-text-link):not(.vpe-back-to-link):not(.vpe-link) a,
+.single-post p:not(.vpe-text-link):not(.vpe-back-to-link):not(.vpe-link) a,
+.page p:not(.vpe-text-link):not(.vpe-back-to-link):not(.vpe-link) a {
     position: relative;
     text-decoration: none;
     display: inline-block;
@@ -1529,15 +1529,15 @@ Excludes .vpe-text-link and .vpe-back-to-link paragraphs which have their own st
     transition: color 0.3s ease;
 }
 
-.entry-content p:not(.vpe-text-link):not(.vpe-back-to-link) a:hover,
-.single-post p:not(.vpe-text-link):not(.vpe-back-to-link) a:hover,
-.page p:not(.vpe-text-link):not(.vpe-back-to-link) a:hover {
+.entry-content p:not(.vpe-text-link):not(.vpe-back-to-link):not(.vpe-link) a:hover,
+.single-post p:not(.vpe-text-link):not(.vpe-back-to-link):not(.vpe-link) a:hover,
+.page p:not(.vpe-text-link):not(.vpe-back-to-link):not(.vpe-link) a:hover {
     color: var(--wp--preset--color--custom-rich-black);
 }
 
 /* Animated underline — expands from centre on hover */
-.entry-content p:not(.vpe-text-link):not(.vpe-back-to-link) a::before,
-.single-post p:not(.vpe-text-link):not(.vpe-back-to-link) a::before {
+.entry-content p:not(.vpe-text-link):not(.vpe-back-to-link):not(.vpe-link) a::before,
+.single-post p:not(.vpe-text-link):not(.vpe-back-to-link):not(.vpe-link) a::before {
     content: "";
     position: absolute;
     width: 0%;
@@ -1548,8 +1548,8 @@ Excludes .vpe-text-link and .vpe-back-to-link paragraphs which have their own st
     transition: width 0.3s ease, left 0.3s ease;
 }
 
-.entry-content p:not(.vpe-text-link):not(.vpe-back-to-link) a:hover::before,
-.single-post p:not(.vpe-text-link):not(.vpe-back-to-link) a:hover::before {
+.entry-content p:not(.vpe-text-link):not(.vpe-back-to-link):not(.vpe-link) a:hover::before,
+.single-post p:not(.vpe-text-link):not(.vpe-back-to-link):not(.vpe-link) a:hover::before {
     width: 100%;
     left: 0;
 }
