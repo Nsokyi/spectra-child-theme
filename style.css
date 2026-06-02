@@ -43,16 +43,6 @@ on child elements. If horizontal overflow occurs, fix the specific component ins
 
 /* 
 ===================================================================================================
-404 PAGE — error page typography
-===================================================================================================
-*/
-
-p.404-text {
-    margin: 0 0 -3rem 0 !important;
-}
-
-/* 
-===================================================================================================
 VIDEO HERO - HOMEPAGE STYLES
 ===================================================================================================
 */
@@ -1138,7 +1128,7 @@ button.forminator-button.forminator-button-submit:hover::after {
 }
 
 /* ── Button Width Constraints ───────────────────────────────────────
-   Ensures buttons don't exceed 320px and maintain consistent sizing
+Ensures buttons don't exceed 320px and maintain consistent sizing
    ─────────────────────────────────────────────────────────────────── */
 .vpe-custom-btn a.uagb-buttons-repeater.wp-block-button__link,
 .vpe-custom-btn.vpe-custom-btn--secondary a.uagb-buttons-repeater.wp-block-button__link {
@@ -1526,13 +1516,12 @@ p.vpe-text-link {
 /* 
 ===================================================================================================
 CONTENT TEXT LINKS — inline links inside page/post body paragraphs
-Excludes .vpe-text-link paragraphs which have their own arrow-link style.
+Excludes .vpe-text-link and .vpe-back-to-link paragraphs which have their own styles.
 ===================================================================================================
 */
-
-.entry-content p:not(.vpe-text-link) a,
-.single-post p:not(.vpe-text-link) a,
-.page p:not(.vpe-text-link) a {
+.entry-content p:not(.vpe-text-link):not(.vpe-back-to-link) a,
+.single-post p:not(.vpe-text-link):not(.vpe-back-to-link) a,
+.page p:not(.vpe-text-link):not(.vpe-back-to-link) a {
     position: relative;
     text-decoration: none;
     display: inline-block;
@@ -1540,15 +1529,15 @@ Excludes .vpe-text-link paragraphs which have their own arrow-link style.
     transition: color 0.3s ease;
 }
 
-.entry-content p:not(.vpe-text-link) a:hover,
-.single-post p:not(.vpe-text-link) a:hover,
-.page p:not(.vpe-text-link) a:hover {
+.entry-content p:not(.vpe-text-link):not(.vpe-back-to-link) a:hover,
+.single-post p:not(.vpe-text-link):not(.vpe-back-to-link) a:hover,
+.page p:not(.vpe-text-link):not(.vpe-back-to-link) a:hover {
     color: var(--wp--preset--color--custom-rich-black);
 }
 
 /* Animated underline — expands from centre on hover */
-.entry-content p:not(.vpe-text-link) a::before,
-.single-post p:not(.vpe-text-link) a::before {
+.entry-content p:not(.vpe-text-link):not(.vpe-back-to-link) a::before,
+.single-post p:not(.vpe-text-link):not(.vpe-back-to-link) a::before {
     content: "";
     position: absolute;
     width: 0%;
@@ -1559,8 +1548,8 @@ Excludes .vpe-text-link paragraphs which have their own arrow-link style.
     transition: width 0.3s ease, left 0.3s ease;
 }
 
-.entry-content p:not(.vpe-text-link) a:hover::before,
-.single-post p:not(.vpe-text-link) a:hover::before {
+.entry-content p:not(.vpe-text-link):not(.vpe-back-to-link) a:hover::before,
+.single-post p:not(.vpe-text-link):not(.vpe-back-to-link) a:hover::before {
     width: 100%;
     left: 0;
 }
