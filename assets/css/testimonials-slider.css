@@ -48,6 +48,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: 3.25rem;
+	flex: 1;
 }
 
 .testimonials-slider__quote-icon {
@@ -71,6 +72,10 @@
 	font-size: 18px;
 	line-height: 1.45;
 	color: var(--wp--preset--color--rich-black);
+	display: -webkit-box;
+	-webkit-line-clamp: 10;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
 
 /* ── Stars ── */
@@ -78,6 +83,8 @@
 	display: flex;
 	gap: 4px;
 	align-items: center;
+	margin-top: auto;
+	padding-top: 1.5rem;
 }
 
 .testimonials-slider__star {
@@ -170,25 +177,6 @@
 
 .testimonials-slider__arrow svg {
 	display: block;
-}
-
-/* ── Quote clamp ── */
-.testimonials-slider__quote p {
-    display: -webkit-box;
-    -webkit-line-clamp: 10;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-/* ── Content flex fill ── */
-.testimonials-slider__content {
-    flex: 1;
-}
-
-/* ── Stars pushed to bottom ── */
-.testimonials-slider__stars {
-    margin-top: auto;
-    padding-top: 1.5rem;
 }
 
 /* ── Responsive ── */
