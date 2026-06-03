@@ -1515,6 +1515,55 @@ p.vpe-text-link {
 
 /* 
 ===================================================================================================
+VPE BACK-TO LINK — left-arrow link component
+===================================================================================================
+*/
+
+p.vpe-back-to-link {
+    width: auto !important;
+}
+
+.vpe-back-to-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--btn-font, 'Roboto', sans-serif);
+    font-size: var(--btn-font-size, 1rem);
+    font-weight: 500;
+    color: var(--wp--preset--color--slate);
+    text-decoration: none;
+    transition: color 0.2s ease, gap 0.2s ease;
+}
+
+.vpe-back-to-link::before {
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 22 22' width='20' height='20'%3E%3Cpath stroke='%2358595B' stroke-linecap='square' stroke-miterlimit='10' stroke-width='1.3125' d='M10.4844 17.1875 4.2969 11l6.1875-6.1875M5.1562 11h12.5469'/%3E%3C/svg%3E");
+    display: inline-block;
+    transition: transform 0.2s ease;
+    padding-top: 8px;
+}
+
+.vpe-back-to-link:hover {
+    color: var(--wp--preset--color--rich-black);
+    gap: 14px;
+}
+
+.vpe-back-to-link:hover::before {
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 22 22' width='20' height='20'%3E%3Cpath stroke='%23121313' stroke-linecap='square' stroke-miterlimit='10' stroke-width='1.3125' d='M10.4844 17.1875 4.2969 11l6.1875-6.1875M5.1562 11h12.5469'/%3E%3C/svg%3E");
+    transform: translateX(-3px);
+}
+
+/* 
+===================================================================================================
+HERO RATING — small selling text in homepage hero section
+===================================================================================================
+*/
+
+.uppercase.hero-rating {
+    font-size: 1rem;
+}
+
+/* 
+===================================================================================================
 CONTENT TEXT LINKS — inline links inside page/post body paragraphs
 Excludes .vpe-text-link, .vpe-back-to-link and .vpe-link paragraphs which have their own styles.
 ===================================================================================================

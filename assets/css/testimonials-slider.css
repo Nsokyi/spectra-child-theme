@@ -172,6 +172,25 @@
 	display: block;
 }
 
+/* ── Quote clamp ── */
+.testimonials-slider__quote p {
+    display: -webkit-box;
+    -webkit-line-clamp: 10;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ── Content flex fill ── */
+.testimonials-slider__content {
+    flex: 1;
+}
+
+/* ── Stars pushed to bottom ── */
+.testimonials-slider__stars {
+    margin-top: auto;
+    padding-top: 1.5rem;
+}
+
 /* ── Responsive ── */
 @media (max-width: 781px) {
 	.testimonials-slider__card {
