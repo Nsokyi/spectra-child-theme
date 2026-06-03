@@ -10,20 +10,14 @@
  * @var WP_Block $block      Block instance.
  */
 
-$auto_slide = !empty($attributes['autoSlide']);
-$auto_speed = !empty($attributes['autoSlideSpeed']) ? max(2, min(15, intval($attributes['autoSlideSpeed']))) : 5;
-$group_id   = !empty($attributes['testimonialGroup']) ? intval($attributes['testimonialGroup']) : 0;
+$auto_slide    = !empty($attributes['autoSlide']);
+$auto_speed    = !empty($attributes['autoSlideSpeed']) ? max(2, min(15, intval($attributes['autoSlideSpeed']))) : 5;
+$group_id      = !empty($attributes['testimonialGroup']) ? intval($attributes['testimonialGroup']) : 0;
+$order_ids     = !empty($attributes['testimonialOrder']) ? array_map('intval', $attributes['testimonialOrder']) : array();
 
-$query_args = array(
-    'post_type'      => 'testimonial',
-    'post_status'    => 'publish',
-    'posts_per_page' => -1,
-    'orderby'        => 'date',
-    'order'          => 'DESC',
-);
-
+$tax_query = array();
 if ($group_id) {
-    $query_args['tax_query'] = array(
+    $tax_query = array(
         array(
             'taxonomy' => 'testimonial_group',
             'field'    => 'term_id',
@@ -32,10 +26,49 @@ if ($group_id) {
     );
 }
 
-$testimonial_query = new WP_Query($query_args);
+$ordered_posts   = array();
+$remainder_posts = array();
 
-if (!$testimonial_query->have_posts()) {
+if (!empty($order_ids)) {
+    $ordered_query = new WP_Query(array(
+        'post_type'      => 'testimonial',
+        'post_status'    => 'publish',
+        'posts_per_page' => -1,
+        'post__in'       => $order_ids,
+        'orderby'        => 'post__in',
+        'tax_query'      => $tax_query ?: array(),
+    ));
+    $ordered_posts = $ordered_query->posts;
     wp_reset_postdata();
+
+    $remainder_args = array(
+        'post_type'      => 'testimonial',
+        'post_status'    => 'publish',
+        'posts_per_page' => -1,
+        'post__not_in'   => $order_ids,
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+        'tax_query'      => $tax_query ?: array(),
+    );
+    $remainder_query = new WP_Query($remainder_args);
+    $remainder_posts = $remainder_query->posts;
+    wp_reset_postdata();
+} else {
+    $default_query = new WP_Query(array(
+        'post_type'      => 'testimonial',
+        'post_status'    => 'publish',
+        'posts_per_page' => -1,
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+        'tax_query'      => $tax_query ?: array(),
+    ));
+    $remainder_posts = $default_query->posts;
+    wp_reset_postdata();
+}
+
+$all_posts = array_merge($ordered_posts, $remainder_posts);
+
+if (empty($all_posts)) {
     return;
 }
 
@@ -56,8 +89,8 @@ $wrapper_attributes = get_block_wrapper_attributes(array(
 
 <div <?php echo $wrapper_attributes; ?>>
     <div class="testimonials-slider__track">
-        <?php while ($testimonial_query->have_posts()) : $testimonial_query->the_post();
-            $post_id  = get_the_ID();
+        <?php foreach ($all_posts as $post) :
+            $post_id  = $post->ID;
             $quote    = carbon_get_post_meta($post_id, 'testimonial_quote');
             $stars    = carbon_get_post_meta($post_id, 'testimonial_rating');
             $name     = carbon_get_post_meta($post_id, 'testimonial_client_name');
@@ -117,7 +150,7 @@ $wrapper_attributes = get_block_wrapper_attributes(array(
                     </div>
                 </div>
             </div>
-        <?php endwhile; wp_reset_postdata(); ?>
+        <?php endforeach; ?>
     </div>
 
     <?php if ($card_count > 1) : ?>

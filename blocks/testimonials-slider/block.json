@@ -22,6 +22,11 @@
 		"autoSlideSpeed": {
 			"type": "number",
 			"default": 5
+		},
+		"testimonialOrder": {
+			"type": "array",
+			"items": { "type": "number" },
+			"default": []
 		}
 	},
 	"editorScript": "file:./editor.js",
