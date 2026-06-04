@@ -183,6 +183,11 @@ VIDEO HERO - HOMEPAGE STYLES
 	font-family: var(--wp--preset--font-family--roboto-mono);
 }
 
+/* ── Hero rating stars ── */
+.rating-star {
+    color: var(--wp--preset--color--custom-vpe-red);
+}
+
 /* ── Kicker Block Styles (Gutenberg style variants) ─────── */
 .is-style-kicker {
 	font-family: var(--wp--preset--font-family--roboto-mono, 'Roboto Mono', monospace);
@@ -198,6 +203,28 @@ VIDEO HERO - HOMEPAGE STYLES
 	text-transform: uppercase;
 	letter-spacing: 0.055em;
 	color: var(--wp--preset--color--steel);
+}
+
+/* ── Kicker with trailing line variant ── */
+.kicker.is-style-kicker.kicker-after-line {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.kicker.is-style-kicker.kicker-after-line:after {
+    content: "";
+    height: 1px;
+    background-color: rgba(149, 144, 144, 0.4);
+    flex-grow: 1;
+    margin-left: 8px;
+    margin-right: 8px;
+    min-width: 0;
+}
+
+/* ── Paragraph max-width utility ── */
+p.has-custom-9-font-size.wp-block-paragraph {
+    max-width: 75ch;
 }
 
 /* ── CTA button (primary — VPE Red) ── */
@@ -283,7 +310,21 @@ VIDEO HERO - HOMEPAGE STYLES
 	}
 }
 
-/* 
+/* ── Hero mobile override (max-height removal) ── */
+@media (max-width: 767px) {
+    .wp-block-uagb-container.page-hero.uagb-is-root-container,
+    .page-hero {
+        height: auto !important;
+        min-height: 100svh !important;
+        max-height: none !important;
+        overflow: visible !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+    }
+}
+
+/*
 ===================================================================================================
 BREADCRUMB NAVIGATION
 ===================================================================================================
