@@ -14,7 +14,7 @@
 	"attributes": {
 		"ctaText": {
 			"type": "string",
-			"default": "Get A Quote"
+			"default": "Get a quote"
 		},
 		"ctaUrl": {
 			"type": "string",
