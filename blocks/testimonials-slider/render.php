@@ -114,9 +114,20 @@ $wrapper_attributes = get_block_wrapper_attributes(array(
                         <?php echo $quote_svg; ?>
                     </div>
 
-                    <blockquote class="testimonials-slider__quote">
-                        <p><?php echo esc_html($quote); ?></p>
-                    </blockquote>
+                    <div class="testimonials-slider__quote-wrap">
+                        <blockquote class="testimonials-slider__quote" id="testimonial-quote-<?php echo esc_attr($post_id); ?>">
+                            <p><?php echo esc_html($quote); ?></p>
+                        </blockquote>
+                        <div class="testimonials-slider__fade" aria-hidden="true"></div>
+                    </div>
+
+                    <button class="testimonials-slider__toggle"
+                            type="button"
+                            aria-expanded="false"
+                            aria-controls="testimonial-quote-<?php echo esc_attr($post_id); ?>">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                        <span><?php esc_html_e('Read more', 'spectra-child'); ?></span>
+                    </button>
 
                     <div class="testimonials-slider__stars" role="img" aria-label="<?php echo esc_attr(sprintf(__('%d out of 5 stars', 'spectra-child'), $stars)); ?>">
                         <?php for ($i = 1; $i <= 5; $i++) : ?>

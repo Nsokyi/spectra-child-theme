@@ -11,6 +11,7 @@
 /* ── Track ── */
 .testimonials-slider__track {
 	display: flex;
+	align-items: flex-start;
 	gap: 40px;
 	padding-left: 0;
 	padding-right: 0;
@@ -47,7 +48,7 @@
 .testimonials-slider__content {
 	display: flex;
 	flex-direction: column;
-	gap: 3.25rem;
+	gap: 0;
 	flex: 1;
 }
 
@@ -60,10 +61,23 @@
 	display: block;
 }
 
+/* ── Quote Wrap (expandable region) ── */
+.testimonials-slider__quote-wrap {
+	position: relative;
+	margin-top: 1.5rem;
+}
+
 .testimonials-slider__quote {
 	margin: 0;
 	padding: 0;
 	border: none;
+	overflow: hidden;
+	max-height: var(--ts-collapsed-height, 160px);
+	transition: max-height 0.4s ease;
+}
+
+.testimonials-slider__quote.is-expanded {
+	max-height: var(--ts-expanded-height, 2000px);
 }
 
 .testimonials-slider__quote p {
@@ -71,11 +85,58 @@
 	font-family: 'Roboto', sans-serif;
 	font-size: 18px;
 	line-height: 1.45;
+	color: var(--wp--preset--color--charcoal);
+}
+
+/* ── Fade overlay ── */
+.testimonials-slider__fade {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 48px;
+	background: linear-gradient(to bottom, transparent, var(--wp--preset--color--warm-white));
+	pointer-events: none;
+	transition: opacity 0.25s ease;
+}
+
+.testimonials-slider__fade.is-hidden {
+	opacity: 0;
+}
+
+/* ── Read More / Read Less toggle ── */
+.testimonials-slider__toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 12px 0 0;
+	font-family: 'Roboto Mono', monospace;
+	font-size: 11px;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--steel);
+	transition: color 0.2s ease;
+}
+
+.testimonials-slider__toggle:hover {
 	color: var(--wp--preset--color--rich-black);
-	display: -webkit-box;
-	-webkit-line-clamp: 10;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
+}
+
+.testimonials-slider__toggle svg {
+	display: block;
+	transition: transform 0.3s ease;
+}
+
+.testimonials-slider__toggle.is-expanded svg {
+	transform: rotate(180deg);
+}
+
+.testimonials-slider__toggle.is-hidden {
+	visibility: hidden;
+	pointer-events: none;
 }
 
 /* ── Stars ── */
@@ -184,6 +245,7 @@
 	.testimonials-slider__card {
 		width: 380px;
 		padding: 24px 0;
+		--ts-collapsed-height: 140px;
 	}
 }
 
@@ -191,6 +253,7 @@
 	.testimonials-slider__card {
 		width: 300px;
 		padding: 20px 0;
+		--ts-collapsed-height: 120px;
 	}
 
 	.testimonials-slider__card::before {
@@ -201,6 +264,18 @@
 /* ── Reduced Motion ── */
 @media (prefers-reduced-motion: reduce) {
 	.testimonials-slider__track {
+		transition: none;
+	}
+
+	.testimonials-slider__quote {
+		transition: none;
+	}
+
+	.testimonials-slider__fade {
+		transition: none;
+	}
+
+	.testimonials-slider__toggle svg {
 		transition: none;
 	}
 }
