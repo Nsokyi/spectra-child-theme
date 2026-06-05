@@ -324,6 +324,10 @@ p.has-custom-9-font-size.wp-block-paragraph {
     }
 }
 
+p.hero-p {
+	max-width: 75ch;
+}
+
 /*
 ===================================================================================================
 BREADCRUMB NAVIGATION
@@ -1222,26 +1226,27 @@ Ensures buttons don't exceed 320px and maintain consistent sizing
     margin-right: 0 !important;
 }
 
-.my-team-card {
+.vpe-team-card {
     height: auto !important;
     border-radius: 8px;
     border: solid 1px var(--wp--preset--color--pale-gray);
     overflow: hidden;
 }
 
-.my-team-card .uagb-team__image-wrap {
+.vpe-team-card .uagb-team__image-wrap {
     overflow: hidden;
 }
 
-.my-team-card img {
+.vpe-team-card img {
     filter: grayscale(100%);
     transition: filter 0.6s ease, transform 0.6s ease !important;
 }
 
-.my-team-card:hover img {
+.vpe-team-card:hover img {
     filter: grayscale(0%);
     transform: scale(1.04);
 }
+
 
 /* ── Footer ────────────────────────────────────────────────── */
 .footer {
