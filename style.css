@@ -383,9 +383,14 @@ BREADCRUMB NAVIGATION
 	color: var(--wp--preset--color--charcoal);
 }
 
-/* Offset missing breadcrumb height on top-level pages to match child page hero spacing */
+/* Offset missing breadcrumb height on top-level pages to match child page hero spacing
+   Breadcrumb height = top padding + content (20px) + bottom padding */
+.is-top-level-page {
+	--vpe-breadcrumb-height: calc(clamp(1rem, 2vw, 1.75rem) * 2 + 1.225rem);
+}
+
 .is-top-level-page .page-hero {
-	margin-top: clamp(1rem, 2vw, 1.75rem);
+	margin-top: var(--vpe-breadcrumb-height);
 }
 
 /* 
