@@ -48,8 +48,7 @@ VIDEO HERO - HOMEPAGE STYLES
 */
 
 /* ── UAGB Hero Container (page hero blocks) ─────────────────── */
-.wp-block-uagb-container.page-hero.uagb-is-root-container {
-    padding-top: 10vh !important;
+.wp-block-uagb-container.hero.uagb-is-root-container {
     max-height: 1000px !important;
 }
 
@@ -310,18 +309,9 @@ p.has-custom-9-font-size.wp-block-paragraph {
 	}
 }
 
-/* ── Hero mobile override (max-height removal) ── */
-@media (max-width: 767px) {
-    .wp-block-uagb-container.page-hero.uagb-is-root-container,
-    .page-hero {
-        height: auto !important;
-        min-height: 100svh !important;
-        min-height: min(100svh, 1228px) !important;
-        overflow: visible !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: flex-start !important;
-    }
+/* Normal Pages */
+.wp-block-uagb-container.page-hero.uagb-is-root-container {
+    padding-top: 10vh !important;
 }
 
 p.hero-p {
