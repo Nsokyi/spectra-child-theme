@@ -5,7 +5,8 @@
  * Provides a semantic breadcrumb trail and auto-injects it after the
  * header template part via the render_block filter.
  *
- * Excluded on: front page and specified main pages (about, services, projects, contact).
+ * Excluded on: front page and all top-level pages (pages with no parent).
+ * Shown on: child pages, blog posts, archives, search results, and 404s.
  */
 
 if ( ! function_exists( 'vpe_breadcrumb' ) ) :
@@ -137,9 +138,10 @@ function vpe_inject_breadcrumb_after_header( $block_content, $block ) {
         return $block_content;
     }
 
-    // Skip main pages by slug.
-    $excluded_slugs = array( 'about', 'services', 'projects', 'contact' );
-    if ( is_page( $excluded_slugs ) ) {
+    // Skip breadcrumbs on top-level pages (no parent) to keep main marketing pages clean.
+    // Child pages, posts, and archives will still show breadcrumbs.
+    global $post;
+    if ( is_page() && isset( $post->post_parent ) && $post->post_parent == 0 ) {
         return $block_content;
     }
 
