@@ -1305,15 +1305,25 @@ Ensures buttons don't exceed 320px and maintain consistent sizing
     position: relative;
 }
 
-[data-tooltip]:after,
-[data-tooltip]:before {
+/* Apply glow via drop-shadow on parent to avoid inner arrow bleeding */
+[data-tooltip]::before {
     position: absolute;
     visibility: hidden;
     opacity: 0;
     transition: transform 200ms ease, opacity 200ms;
-    box-shadow: 0 0 10px var(--vpe-red-hover);
     z-index: 99;
     pointer-events: none;
+    filter: drop-shadow(0 0 10px var(--vpe-red-hover));
+}
+
+[data-tooltip]::after {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    transition: transform 200ms ease, opacity 200ms;
+    z-index: 99;
+    pointer-events: none;
+    filter: drop-shadow(0 0 10px var(--vpe-red-hover));
 }
 
 [data-tooltip]:before {
@@ -1337,61 +1347,60 @@ Ensures buttons don't exceed 320px and maintain consistent sizing
     content: '';
 }
 
-[data-tooltip][data-position="right"]:before {
+[data-tooltip][data-position="right"]::before {
     top: 50%;
     left: 100%;
     margin-left: 10px;
-    transform: translateY(-50%) translateX(0px);
+    transform: translate(0, -50%);
 }
 
-[data-tooltip][data-position="right"]:after {
+[data-tooltip][data-position="right"]::after {
     border-right-color: var(--wp--preset--color--rich-black);
     border-left: none;
     top: calc(50% - 6px);
     left: calc(100% + 4px);
-    transform: translateX(0px);
+    transform: translate(0, 0);
 }
 
-.noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]:after,
-.noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]:before {
+.noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]::after,
+.noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]::before {
     visibility: visible;
     opacity: 0.85;
-    transform: translateY(-50%) translateX(10px);
 }
 
-.noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]:after {
-    transform: translateX(10px);
+.noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]::before {
+    transform: translate(10px, -50%);
+}
+
+.noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]::after {
+    transform: translate(10px, 0);
 }
 
 /* At 1800px and below, switch tooltip to bottom position to prevent right-edge cutoff */
 @media (max-width: 1800px) {
     /* Override right-positioned tooltips to bottom-positioned */
-    [data-tooltip][data-position="right"]:before {
-        top: 100% !important;
-        left: -140% !important;
-        margin-left: 0 !important;
-        margin-top: 4px !important;
-        transform: translateX(-50%) translateY(0px) !important;
+    [data-tooltip][data-position="right"]::before {
+        top: 100%;
+        left: 50%;
+        margin-left: 0;
+        margin-top: 4px;
+        transform: translate(-50%, 0);
     }
 
-    [data-tooltip][data-position="right"]:after {
-        border-bottom-color: var(--wp--preset--color--rich-black) !important;
-        border-top: none !important;
-        border-right-color: transparent !important;
-        border-left: none !important;
-        top: calc(100% - 2px) !important;
-        left: 100% !important;
-        transform: translateX(-50%) translateY(0px) !important;
-        margin-left: -6px !important;
+    [data-tooltip][data-position="right"]::after {
+        border-bottom-color: var(--wp--preset--color--rich-black);
+        border-top: none;
+        border-right-color: transparent;
+        border-left: none;
+        top: calc(100% - 2px);
+        left: 50%;
+        transform: translate(-50%, 0);
+        margin-left: 0;
     }
 
-    .noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]:after,
-    .noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]:before {
-        transform: translateX(-50%) translateY(6px) !important;
-    }
-
-    .noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]:after {
-        transform: translateX(-50%) translateY(6px) !important;
+    .noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]::after,
+    .noahsportfolio-combined-link:hover [data-tooltip][data-position="right"]::before {
+        transform: translate(-50%, 6px);
     }
 }
 
