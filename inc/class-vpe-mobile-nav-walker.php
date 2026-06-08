@@ -3,15 +3,27 @@
  * Custom Nav Walker: VPE Mobile Navigation
  *
  * Outputs mobile drawer menu with accordion sub-menus.
- * Parent items with children get a <button> trigger with chevron.
+ * Parent items with children get a <button> trigger with chevron
+ * and a "View all" link inside the sub-menu for accessibility.
  */
 class VPE_Mobile_Nav_Walker extends Walker_Nav_Menu {
+
+    private $parent_url   = '';
+    private $parent_title = '';
 
     /**
      * Opens the sub-menu wrapper.
      */
     public function start_lvl( &$output, $depth = 0, $args = null ) {
         $output .= '<ul class="mobile-sub-menu" aria-hidden="true">';
+        // Add "View all" link at the top of sub-menu so parent page remains accessible
+        if ( $depth === 0 && $this->parent_url ) {
+            $lowercase_title = function_exists( 'mb_strtolower' ) ? mb_strtolower( $this->parent_title ) : strtolower( $this->parent_title );
+            $label = sprintf( __( 'Explore %s', 'spectra-child' ), $lowercase_title );
+            $output .= '<li><a href="' . esc_url( $this->parent_url ) . '" class="mobile-sub-view-all">' . esc_html( $label ) . '</a></li>';
+            $this->parent_url   = '';
+            $this->parent_title = '';
+        }
     }
 
     /**
@@ -29,8 +41,10 @@ class VPE_Mobile_Nav_Walker extends Walker_Nav_Menu {
         $classes = apply_filters( 'nav_menu_css_class', $classes, $item, $args, $depth );
         $has_children = in_array( 'menu-item-has-children', $classes, true );
 
-        // Top-level parent → accordion trigger
+        // Top-level parent → accordion trigger, stash URL for "View all" link
         if ( $depth === 0 && $has_children ) {
+            $this->parent_url   = $item->url;
+            $this->parent_title = $item->title;
             $output .= '<li class="mobile-has-sub">';
             $output .= '<button class="mobile-sub-trigger" aria-expanded="false">';
             $output .= esc_html( $item->title );

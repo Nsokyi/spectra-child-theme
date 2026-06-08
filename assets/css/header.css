@@ -494,6 +494,16 @@
 	color: var(--nav-text);
 }
 
+.mobile-sub-view-all {
+	font-weight: 600 !important;
+	color: var(--nav-text) !important;
+	border-bottom: 1px solid rgba(13, 13, 13, 0.12) !important;
+}
+
+.mobile-sub-view-all:hover {
+	color: var(--vpe-red, #B64A4A) !important;
+}
+
 .mobile-nav__cta {
 	display: flex;
 	align-items: center;

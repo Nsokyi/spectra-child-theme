@@ -28,7 +28,7 @@ class VPE_Nav_Walker extends Walker_Nav_Menu {
         $output .= '</ul>';
         if ( $depth === 0 && $this->parent_url ) {
             $lowercase_title = function_exists( 'mb_strtolower' ) ? mb_strtolower( $this->parent_title ) : strtolower( $this->parent_title );
-            $label = sprintf( __( 'View all %s', 'spectra-child' ), $lowercase_title );
+            $label = sprintf( __( 'Explore %s', 'spectra-child' ), $lowercase_title );
             $output .= '<a href="' . esc_url( $this->parent_url ) . '" class="dropdown-view-all vpe-text-link">' . esc_html( $label ) . '</a>';
             $this->parent_url   = '';
             $this->parent_title = '';
