@@ -383,6 +383,11 @@ BREADCRUMB NAVIGATION
 	color: var(--wp--preset--color--charcoal);
 }
 
+/* Offset missing breadcrumb height on top-level pages to match child page hero spacing */
+.is-top-level-page .page-hero {
+	margin-top: clamp(1rem, 2vw, 1.75rem);
+}
+
 /* 
 ===================================================================================================
 VIDEO PROJECT STYLES
