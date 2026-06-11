@@ -173,14 +173,17 @@ function spectra_child_render_video_project_testimonial($atts) {
         return '';
     }
 
-    $text = carbon_get_post_meta($post_id, 'testimonial_text');
+    $text   = carbon_get_post_meta($post_id, 'testimonial_text');
     if (!$text) {
         return '';
     }
 
     $author = carbon_get_post_meta($post_id, 'testimonial_author');
     $role   = carbon_get_post_meta($post_id, 'testimonial_author_role');
+    $org    = carbon_get_post_meta($post_id, 'testimonial_author_org');
     $rating = carbon_get_post_meta($post_id, 'testimonial_rating');
+
+    $quote_id = 'project-testimonial-quote-' . $post_id;
 
     $left  = '<div class="project-testimonial__meta">';
     $left .= '<span class="project-testimonial__kicker uppercase">// Client Feedback</span>';
@@ -190,14 +193,25 @@ function spectra_child_render_video_project_testimonial($atts) {
     if ($role) {
         $left .= '<span class="project-testimonial__role">' . esc_html($role) . '</span>';
     }
+    if ($org) {
+        $left .= '<span class="project-testimonial__org">' . esc_html($org) . '</span>';
+    }
     if ($rating && intval($rating) > 0) {
         $left .= '<span class="project-testimonial__stars" aria-label="' . esc_attr($rating) . ' out of 5 stars">' . str_repeat('&#9733;', intval($rating)) . '</span>';
     }
     $left .= '</div>';
 
-    $right = '<blockquote class="project-testimonial__quote"><p>&ldquo;' . esc_html($text) . '&rdquo;</p></blockquote>';
+    $toggle_svg = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
 
-    return '<div class="project-testimonial">' . $left . $right . '</div>';
+    $right  = '<div class="project-testimonial__quote-wrap">';
+    $right .= '<blockquote class="project-testimonial__quote" id="' . esc_attr($quote_id) . '"><p>&ldquo;' . esc_html($text) . '&rdquo;</p></blockquote>';
+    $right .= '<div class="project-testimonial__fade" aria-hidden="true"></div>';
+    $right .= '</div>';
+    $right .= '<button class="project-testimonial__toggle" type="button" aria-expanded="false" aria-controls="' . esc_attr($quote_id) . '">';
+    $right .= $toggle_svg . '<span>' . esc_html__('Read more', 'spectra-child') . '</span>';
+    $right .= '</button>';
+
+    return '<div class="project-testimonial">' . $left . '<div class="project-testimonial__right">' . $right . '</div></div>';
 }
 
 /**

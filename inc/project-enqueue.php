@@ -6,6 +6,26 @@
  * or on taxonomy archive pages for service/industry.
  */
 
+add_action('wp_enqueue_scripts', 'spectra_child_enqueue_project_single_assets');
+
+function spectra_child_enqueue_project_single_assets() {
+    if (!is_singular('video-project')) {
+        return;
+    }
+
+    $theme_uri = get_stylesheet_directory_uri();
+    $theme_dir = get_stylesheet_directory();
+    $js_path   = $theme_dir . '/assets/js/project-testimonial.js';
+
+    wp_enqueue_script(
+        'project-testimonial',
+        $theme_uri . '/assets/js/project-testimonial.js',
+        array(),
+        file_exists($js_path) ? filemtime($js_path) : null,
+        true
+    );
+}
+
 add_action('wp_enqueue_scripts', 'spectra_child_enqueue_project_grid_assets');
 
 function spectra_child_enqueue_project_grid_assets() {
