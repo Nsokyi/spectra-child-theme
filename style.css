@@ -786,10 +786,13 @@ body.single-video-project .project-sidebar-sticky {
 	color: var(--wp--preset--color--rich-black);
 }
 
-.project-testimonial__role {
+.project-testimonial__role,
+.project-testimonial__org {
 	font-family: var(--wp--preset--font-family--roboto-mono, 'Roboto Mono', monospace);
 	font-size: var(--wp--preset--font-size--x-small);
 	color: var(--wp--preset--color--steel);
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
 }
 
 .project-testimonial__stars {
@@ -800,24 +803,107 @@ body.single-video-project .project-sidebar-sticky {
 	margin-top: 1rem;
 }
 
+.project-testimonial__right {
+	display: flex;
+	flex-direction: column;
+}
+
+/* ── Quote wrap (expandable region) ── */
+.project-testimonial__quote-wrap {
+	position: relative;
+}
+
 .project-testimonial__quote {
 	margin: 0;
-	padding: 0 0 0 var(--wp--preset--spacing--medium);
+	padding: 0 0 0 var(--wp--preset--spacing--x-large);
 	border-left: 3px solid var(--wp--preset--color--charcoal);
+	overflow: hidden;
+	max-height: var(--pt-collapsed-height, 220px);
+	transition: max-height 0.4s ease;
+}
+
+.project-testimonial__quote.is-expanded {
+	max-height: var(--pt-expanded-height, 2000px);
 }
 
 .project-testimonial__quote p {
 	margin: 0;
-	font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+	font-size: clamp(1.25rem, 2.5vw, 1.25rem);
 	font-weight: 400;
 	line-height: 1.4;
 	color: var(--wp--preset--color--charcoal);
+}
+
+/* ── Fade overlay ── */
+.project-testimonial__fade {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 64px;
+	background: linear-gradient(to bottom, transparent, var(--wp--preset--color--warm-white));
+	pointer-events: none;
+	transition: opacity 0.25s ease;
+}
+
+.project-testimonial__fade.is-hidden {
+	opacity: 0;
+}
+
+/* ── Read More / Read Less toggle ── */
+.project-testimonial__toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 12px 0 0 var(--wp--preset--spacing--x-large);
+	font-family: 'Roboto Mono', monospace;
+	font-size: 11px;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--steel);
+	transition: color 0.2s ease;
+}
+
+.project-testimonial__toggle:hover {
+	color: var(--wp--preset--color--rich-black);
+}
+
+.project-testimonial__toggle svg {
+	display: block;
+	transition: transform 0.3s ease;
+}
+
+.project-testimonial__toggle.is-expanded svg {
+	transform: rotate(180deg);
+}
+
+.project-testimonial__toggle.is-hidden {
+	visibility: hidden;
+	pointer-events: none;
 }
 
 @media (max-width: 781px) {
 	.project-testimonial {
 		grid-template-columns: 1fr;
 		gap: var(--wp--preset--spacing--medium);
+	}
+	.project-testimonial__quote {
+		--pt-collapsed-height: 180px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.project-testimonial__quote {
+		transition: none;
+	}
+	.project-testimonial__fade {
+		transition: none;
+	}
+	.project-testimonial__toggle svg {
+		transition: none;
 	}
 }
 

@@ -127,8 +127,12 @@ function spectra_child_register_video_project_fields() {
                 ->set_attribute('placeholder', __('e.g., Sarah McAllister'))
                 ->set_width(50),
             
-            Field::make('text', 'testimonial_author_role', __('Author Role / Organisation'))
-                ->set_attribute('placeholder', __('e.g., Head of Communications, NHS Scotland'))
+            Field::make('text', 'testimonial_author_role', __('Job Title'))
+                ->set_attribute('placeholder', __('e.g., Head of Communications'))
+                ->set_width(50),
+            
+            Field::make('text', 'testimonial_author_org', __('Organisation'))
+                ->set_attribute('placeholder', __('e.g., NHS Scotland'))
                 ->set_width(50),
             
         ));
