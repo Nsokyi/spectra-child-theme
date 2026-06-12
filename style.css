@@ -318,6 +318,23 @@ p.hero-p {
 	max-width: 75ch;
 }
 
+/* Trust Strip In Hero Section  */
+
+.wp-block-uagb-container.vpe-projects-trust-strip {
+    border-left: none; 
+    position: relative;
+}
+
+.wp-block-uagb-container.vpe-projects-trust-strip::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+	background-color: #e0e0e0; /* slightly darker than custom 'pale gray' */
+	left: calc(clamp(2rem, 5vw, 5rem) * -1);
+}
+
 /*
 ===================================================================================================
 BREADCRUMB NAVIGATION
@@ -1360,7 +1377,7 @@ Ensures buttons don't exceed 320px and maintain consistent sizing
 
 .noahsportfolio-text {
     font-size: var(--wp--preset--font-size--x-small);
-    color: var(--wp--preset--color--steel);
+    color: var(--wp--preset--color--silver);
     transition: color 0.3s ease;
 }
 
@@ -1383,7 +1400,7 @@ Ensures buttons don't exceed 320px and maintain consistent sizing
 }
 
 .noahsportfolio-combined-link:hover .noahsportfolio-text {
-    color: var(--wp--preset--color--custom-slate);
+    color: var(--wp--preset--color--custom-silver);
 }
 
 /* Tooltip styles */
@@ -2051,7 +2068,7 @@ FOOTER — layout grid, button width, link colours
 .footer a:visited,
 .footer a.noahsportfolio-combined-link {
     transition: color 0.3s ease;
-    color: var(--wp--preset--color--steel) !important;
+    color: var(--wp--preset--color--silver) !important;
 }
 
 .footer a:hover {
