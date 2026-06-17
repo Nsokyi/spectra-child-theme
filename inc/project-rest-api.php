@@ -151,11 +151,11 @@ function spectra_child_format_project_for_rest($post_id) {
 
     return array(
         'id'         => $post_id,
-        'title'      => get_the_title($post_id),
+        'title'      => html_entity_decode( get_the_title( $post_id ), ENT_QUOTES, 'UTF-8' ),
         'permalink'  => get_permalink($post_id),
         'thumbnail'  => $thumbnail_url,
         'video_url'  => carbon_get_post_meta($post_id, 'video_url'),
-        'client'     => carbon_get_post_meta($post_id, 'client_name'),
+        'client'     => html_entity_decode( carbon_get_post_meta( $post_id, 'client_name' ), ENT_QUOTES, 'UTF-8' ),
         'featured'   => (bool) carbon_get_post_meta($post_id, 'featured_project'),
         'services'   => !is_wp_error($services) && $services ? array_map(function ($term) {
             return array('slug' => $term->slug, 'name' => $term->name);
