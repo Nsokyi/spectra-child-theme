@@ -50,6 +50,15 @@ $wrapper_attributes = get_block_wrapper_attributes( array(
             ?>
 
             <div class="site-nav__actions">
+                <?php
+                /*
+                 * CTA Button: label and URL are block attributes set via the
+                 * Inspector sidebar panel ("CTA Button" panel in the block editor).
+                 * Default fallback values live at the top of this file ($cta_text / $cta_url).
+                 * To change them sitewide, edit the block where it is placed or update
+                 * the defaults in blocks/site-header/render.php.
+                 */
+                ?>
                 <a href="<?php echo esc_url( $cta_url ); ?>" class="site-nav__cta"><?php echo esc_html( $cta_text ); ?></a>
                 <button class="site-nav__hamburger" id="hamburger-btn" aria-label="<?php esc_attr_e( 'Open menu', 'spectra-child' ); ?>" aria-expanded="false" aria-controls="mobile-drawer"><span class="bar bar--top"></span><span class="bar bar--mid"></span><span class="bar bar--bot"></span></button>
             </div>
@@ -74,6 +83,7 @@ $wrapper_attributes = get_block_wrapper_attributes( array(
             ) );
             ?>
 
+                <?php /* CTA Button (mobile) — see desktop CTA comment above for edit guidance. */ ?>
             <a href="<?php echo esc_url( $cta_url ); ?>" class="mobile-nav__cta"><?php echo esc_html( $cta_text ); ?></a>
         </div>
     </div>

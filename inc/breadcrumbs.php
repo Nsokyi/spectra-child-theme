@@ -38,7 +38,8 @@ function vpe_breadcrumb( $return = false ) {
 
     // --- Single Post (blog) ---
     } elseif ( is_singular( 'post' ) ) {
-        $blog_url = get_permalink( get_option( 'page_for_posts' ) );
+        $page_for_posts = (int) get_option( 'page_for_posts' );
+        $blog_url       = $page_for_posts ? get_permalink( $page_for_posts ) : home_url( '/' );
         if ( $blog_url ) {
             $items[] = '<li class="vpe-breadcrumb__item"><a href="' . esc_url( $blog_url ) . '">' . esc_html__( 'Blog', 'spectra-child' ) . '</a></li>';
         }
@@ -65,7 +66,8 @@ function vpe_breadcrumb( $return = false ) {
 
     // --- Category / Tag Archives ---
     } elseif ( is_category() || is_tag() ) {
-        $blog_url = get_permalink( get_option( 'page_for_posts' ) );
+        $page_for_posts = (int) get_option( 'page_for_posts' );
+        $blog_url       = $page_for_posts ? get_permalink( $page_for_posts ) : home_url( '/' );
         if ( $blog_url ) {
             $items[] = '<li class="vpe-breadcrumb__item"><a href="' . esc_url( $blog_url ) . '">' . esc_html__( 'Blog', 'spectra-child' ) . '</a></li>';
         }
@@ -106,6 +108,19 @@ function vpe_breadcrumb( $return = false ) {
 }
 
 endif;
+
+/**
+ * Workaround: UAGB (Spectra) v2.19.x crashes on Settings → Reading saves because
+ * UAGB_Admin_Helper is not yet loaded when reading_page() fires. This filter runs
+ * at priority 1 — before UAGB's __construct — and ensures page_for_posts is saved
+ * correctly so the breadcrumb Blog link resolves to the right URL.
+ *
+ * Safe to remove once the UAGB plugin is updated past the fix.
+ */
+add_filter( 'sanitize_option_page_for_posts', 'vpe_ensure_page_for_posts_saved', 1 );
+function vpe_ensure_page_for_posts_saved( $value ) {
+    return absint( $value );
+}
 
 /**
  * Register [vpe_breadcrumb] shortcode for manual placement.
