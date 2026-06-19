@@ -24,6 +24,32 @@ $orderby         = !empty($args['orderby']) && $args['orderby'] === 'menu_order'
 $services   = get_terms(array('taxonomy' => 'service', 'hide_empty' => true));
 $industries = get_terms(array('taxonomy' => 'industry', 'hide_empty' => true));
 
+// When an industry is pre-selected, determine which services are available for cross-filtering.
+$available_service_slugs = null;
+if ($current_term && isset($current_term['taxonomy']) && $current_term['taxonomy'] === 'industry' && !empty($current_term['slug'])) {
+    $industry_post_ids = get_posts(array(
+        'post_type'      => 'video-project',
+        'post_status'    => 'publish',
+        'posts_per_page' => -1,
+        'fields'         => 'ids',
+        'tax_query'      => array(
+            array(
+                'taxonomy' => 'industry',
+                'field'    => 'slug',
+                'terms'    => sanitize_title($current_term['slug']),
+            ),
+        ),
+    ));
+    if (!empty($industry_post_ids)) {
+        $available_terms = wp_get_object_terms($industry_post_ids, 'service', array('fields' => 'slugs'));
+        if (!is_wp_error($available_terms)) {
+            $available_service_slugs = array_values(array_unique($available_terms));
+        }
+    } else {
+        $available_service_slugs = array();
+    }
+}
+
 $order = ($orderby === 'menu_order') ? 'ASC' : 'DESC';
 
 $query_args = array(
@@ -102,8 +128,10 @@ $active_industry = $current_term && $current_term['taxonomy'] === 'industry' ? $
                         type="button">
                     <?php esc_html_e('All Services', 'spectra-child'); ?>
                 </button>
-                <?php foreach ($services as $term) : ?>
-                    <button class="project-filters__btn<?php echo $active_service === $term->slug ? ' is-active' : ''; ?>"
+                <?php foreach ($services as $term) :
+                    $is_unavailable = ($available_service_slugs !== null && !in_array($term->slug, $available_service_slugs, true));
+                ?>
+                    <button class="project-filters__btn<?php echo $active_service === $term->slug ? ' is-active' : ''; ?><?php echo $is_unavailable ? ' is-unavailable' : ''; ?>"
                             data-slug="<?php echo esc_attr($term->slug); ?>"
                             type="button">
                         <?php echo esc_html($term->name); ?>

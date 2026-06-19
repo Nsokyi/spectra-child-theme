@@ -118,6 +118,36 @@
 		}
 	}
 
+	// Show/hide service buttons based on available services for the selected industry.
+	function syncAvailableServices(availableSlugs) {
+		if (!secondaryFilter) return;
+
+		// If no industry is selected, show all service buttons.
+		if (!availableSlugs) {
+			secondaryFilter.querySelectorAll(".project-filters__btn").forEach(function (btn) {
+				btn.classList.remove("is-unavailable");
+			});
+			return;
+		}
+
+		secondaryFilter.querySelectorAll(".project-filters__btn").forEach(function (btn) {
+			var slug = btn.dataset.slug;
+			// Always keep "All Services" button visible.
+			if (slug === "") return;
+			if (availableSlugs.indexOf(slug) === -1) {
+				btn.classList.add("is-unavailable");
+			} else {
+				btn.classList.remove("is-unavailable");
+			}
+		});
+
+		// If the currently active service is no longer available, clear it.
+		if (state.service.length && availableSlugs.indexOf(state.service[0]) === -1) {
+			state.service = [];
+			syncButtons();
+		}
+	}
+
 	// Bind primary filter (industry) clicks — single-select.
 	var primaryFilter = wrap.querySelector(".project-filters--primary");
 	if (primaryFilter) {
@@ -250,6 +280,13 @@
 				} else if (!append) {
 					grid.innerHTML =
 						'<div class="project-grid__empty"><p>No projects found.</p></div>';
+				}
+
+				// Update available service buttons based on cross-filter data.
+				if (data.available_services) {
+					syncAvailableServices(data.available_services);
+				} else if (state.industry.length === 0) {
+					syncAvailableServices(null);
 				}
 
 				// Update load more button.

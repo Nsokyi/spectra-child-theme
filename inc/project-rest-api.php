@@ -134,6 +134,42 @@ function spectra_child_handle_project_filter_request($request) {
         'current_page' => $paged,
     );
 
+    // When filtering by industry, return which services are available for cross-filtering.
+    if (!empty($industry_slugs)) {
+        $industry_post_args = array(
+            'post_type'      => 'video-project',
+            'post_status'    => 'publish',
+            'posts_per_page' => -1,
+            'fields'         => 'ids',
+            'tax_query'      => array(
+                array(
+                    'taxonomy' => 'industry',
+                    'field'    => 'slug',
+                    'terms'    => array_map('sanitize_title', explode(',', $industry_slugs)),
+                    'operator' => 'IN',
+                ),
+            ),
+        );
+        if ($featured === '1') {
+            $industry_post_args['meta_query'] = array(
+                array(
+                    'key'     => '_featured_project',
+                    'value'   => 'yes',
+                    'compare' => '=',
+                ),
+            );
+        }
+        $industry_posts = get_posts($industry_post_args);
+        $available_services = array();
+        if (!empty($industry_posts)) {
+            $available_terms = wp_get_object_terms($industry_posts, 'service', array('fields' => 'slugs'));
+            if (!is_wp_error($available_terms)) {
+                $available_services = array_values(array_unique($available_terms));
+            }
+        }
+        $response['available_services'] = $available_services;
+    }
+
     set_transient($cache_key, $response, 12 * HOUR_IN_SECONDS);
 
     return rest_ensure_response($response);
