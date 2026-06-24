@@ -165,12 +165,12 @@
 .testimonials-slider__author {
 	display: flex;
 	align-items: flex-end;
-	gap: 23px;
+	gap: 24px;
 }
 
 .testimonials-slider__photo {
-	width: 63px;
-	height: 63px;
+	width: 64px;
+	height: 64px;
 	border-radius: 50%;
 	object-fit: cover;
 	filter: grayscale(100%);

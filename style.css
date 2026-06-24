@@ -142,7 +142,7 @@ VIDEO HERO - HOMEPAGE STYLES
 	flex-direction: row;
 	align-items: flex-start;
 	column-gap: 16px;
-	row-gap: 1.75rem;
+	row-gap: 1.5rem;
 
 	/* Mobile: sits at bottom-left with padding */
 	padding: clamp(1.5rem, 5vw, 4rem);
@@ -1546,7 +1546,7 @@ FAQ SECTION — kicker-style numbered items (// 01, // 02 …)
 /* Tablet and Desktop style (768px and up) */
 @media (min-width: 768px) {
     body .vpe-faq .uagb-faq-item::before {
-        padding-top: 26px; /* <--- Bumped up for larger screens */
+        padding-top: 28px; /* <--- Bumped up for larger screens */
     }
 }
 
