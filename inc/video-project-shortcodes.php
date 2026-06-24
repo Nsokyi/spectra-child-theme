@@ -240,9 +240,7 @@ function spectra_child_render_video_project_stills($atts) {
         $items .= '<figure class="project-stills__item" role="button" tabindex="0" data-full="' . esc_url($img_full) . '" data-thumb="' . esc_url($img_url) . '"><img src="' . esc_url($img_url) . '" alt="' . $alt . '" width="600" height="400" loading="lazy"><span class="project-stills__close" aria-label="' . esc_attr__('Close', 'spectra-child') . '">&times;</span></figure>';
     }
 
-    $script = '<script>document.addEventListener("click",function(e){var item=e.target.closest(".project-stills__item");if(!item)return;var grid=item.closest(".project-stills__grid");if(!grid)return;var isExpanded=item.classList.contains("is-expanded");function collapse(el){el.classList.add("is-collapsing");el.addEventListener("animationend",function handler(){el.classList.remove("is-expanded","is-collapsing");var img=el.querySelector("img");if(el.dataset.thumb)img.src=el.dataset.thumb;el.removeEventListener("animationend",handler);},{once:true});}grid.querySelectorAll(".project-stills__item.is-expanded").forEach(function(el){collapse(el);});if(!isExpanded){item.classList.add("is-expanded");var img=item.querySelector("img");if(item.dataset.full)img.src=item.dataset.full;item.scrollIntoView({behavior:"smooth",block:"nearest"});}});</script>';
-
-    return '<div class="project-stills wp-block-group"><h2 class="has-heading-color has-text-color">Production Stills</h2><div class="project-stills__grid">' . $items . '</div></div>' . $script;
+    return '<div class="project-stills wp-block-group"><h2 class="has-heading-color has-text-color">Production Stills</h2><div class="project-stills__grid">' . $items . '</div></div>';
 }
 
 /**

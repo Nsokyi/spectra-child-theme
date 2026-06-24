@@ -305,7 +305,6 @@
 				loading.hidden = true;
 			})
 			.catch(function (err) {
-				console.error("Project filter error:", err);
 				grid.classList.remove("is-loading");
 				loading.hidden = true;
 			});

@@ -15,13 +15,23 @@ function spectra_child_enqueue_project_single_assets() {
 
     $theme_uri = get_stylesheet_directory_uri();
     $theme_dir = get_stylesheet_directory();
-    $js_path   = $theme_dir . '/assets/js/project-testimonial.js';
+    
+    $testimonial_js_path = $theme_dir . '/assets/js/project-testimonial.js';
+    $stills_js_path      = $theme_dir . '/assets/js/project-stills.js';
 
     wp_enqueue_script(
         'project-testimonial',
         $theme_uri . '/assets/js/project-testimonial.js',
         array(),
-        file_exists($js_path) ? filemtime($js_path) : null,
+        file_exists($testimonial_js_path) ? filemtime($testimonial_js_path) : null,
+        true
+    );
+
+    wp_enqueue_script(
+        'project-stills',
+        $theme_uri . '/assets/js/project-stills.js',
+        array(),
+        file_exists($stills_js_path) ? filemtime($stills_js_path) : null,
         true
     );
 }
