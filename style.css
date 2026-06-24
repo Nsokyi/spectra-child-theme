@@ -898,7 +898,8 @@ body.single-video-project .project-sidebar-sticky {
 }
 
 .project-testimonial__toggle.is-hidden {
-	visibility: hidden;
+	/* visibility: hidden; */
+	display: none;
 	pointer-events: none;
 }
 

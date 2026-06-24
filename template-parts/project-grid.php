@@ -27,26 +27,37 @@ $industries = get_terms(array('taxonomy' => 'industry', 'hide_empty' => true));
 // When an industry is pre-selected, determine which services are available for cross-filtering.
 $available_service_slugs = null;
 if ($current_term && isset($current_term['taxonomy']) && $current_term['taxonomy'] === 'industry' && !empty($current_term['slug'])) {
-    $industry_post_ids = get_posts(array(
-        'post_type'      => 'video-project',
-        'post_status'    => 'publish',
-        'posts_per_page' => -1,
-        'fields'         => 'ids',
-        'tax_query'      => array(
-            array(
-                'taxonomy' => 'industry',
-                'field'    => 'slug',
-                'terms'    => sanitize_title($current_term['slug']),
-            ),
-        ),
-    ));
-    if (!empty($industry_post_ids)) {
-        $available_terms = wp_get_object_terms($industry_post_ids, 'service', array('fields' => 'slugs'));
-        if (!is_wp_error($available_terms)) {
-            $available_service_slugs = array_values(array_unique($available_terms));
-        }
+    $industry_slug = sanitize_title($current_term['slug']);
+    $cache_key     = 'vpe_avail_services_' . $industry_slug;
+    $cached        = get_transient($cache_key);
+
+    if (false !== $cached) {
+        $available_service_slugs = $cached;
     } else {
-        $available_service_slugs = array();
+        $industry_post_ids = get_posts(array(
+            'post_type'      => 'video-project',
+            'post_status'    => 'publish',
+            'posts_per_page' => -1,
+            'fields'         => 'ids',
+            'tax_query'      => array(
+                array(
+                    'taxonomy' => 'industry',
+                    'field'    => 'slug',
+                    'terms'    => $industry_slug,
+                ),
+            ),
+        ));
+        if (!empty($industry_post_ids)) {
+            $available_terms = wp_get_object_terms($industry_post_ids, 'service', array('fields' => 'slugs'));
+            if (!is_wp_error($available_terms)) {
+                $available_service_slugs = array_values(array_unique($available_terms));
+            } else {
+                $available_service_slugs = array();
+            }
+        } else {
+            $available_service_slugs = array();
+        }
+        set_transient($cache_key, $available_service_slugs, 12 * HOUR_IN_SECONDS);
     }
 }
 

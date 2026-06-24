@@ -126,23 +126,30 @@
 		if (!availableSlugs) {
 			secondaryFilter.querySelectorAll(".project-filters__btn").forEach(function (btn) {
 				btn.classList.remove("is-unavailable");
+				btn.disabled = false;
+				btn.removeAttribute("aria-disabled");
 			});
 			return;
 		}
 
 		secondaryFilter.querySelectorAll(".project-filters__btn").forEach(function (btn) {
 			var slug = btn.dataset.slug;
-			// Always keep "All Services" button visible.
-			if (slug === "") return;
-			if (availableSlugs.indexOf(slug) === -1) {
-				btn.classList.add("is-unavailable");
-			} else {
+			// Always keep "All Services" button visible and enabled.
+			if (slug === "") {
 				btn.classList.remove("is-unavailable");
+				btn.disabled = false;
+				btn.removeAttribute("aria-disabled");
+				return;
 			}
+			var unavailable = availableSlugs.indexOf(slug) === -1;
+			btn.classList.toggle("is-unavailable", unavailable);
+			btn.disabled = unavailable;
+			btn.setAttribute("aria-disabled", unavailable ? "true" : "false");
 		});
 
-		// If the currently active service is no longer available, clear it.
-		if (state.service.length && availableSlugs.indexOf(state.service[0]) === -1) {
+		// If the currently active service is no longer available, clear it —
+		// but never clear a service that was locked from the URL.
+		if (!serviceLockedFromURL && state.service.length && availableSlugs.indexOf(state.service[0]) === -1) {
 			state.service = [];
 			syncButtons();
 		}

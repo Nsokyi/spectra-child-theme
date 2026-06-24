@@ -65,7 +65,15 @@ function spectra_child_handle_project_filter_request($request) {
     $orderby        = ($orderby_param === 'menu_order') ? 'menu_order' : 'date';
     $order          = ($orderby === 'menu_order') ? 'ASC' : 'DESC';
 
-    $cache_key = 'project_filter_' . md5(wp_json_encode($request->get_params()));
+    $cache_key = 'project_filter_' . md5(wp_json_encode(array(
+        'service'  => $service_slugs,
+        'industry' => $industry_slugs,
+        'featured' => $featured,
+        'paged'    => $paged,
+        'per_page' => $per_page,
+        'orderby'  => $orderby,
+        'order'    => $order,
+    )));
     $cached    = get_transient($cache_key);
 
     if ($cached !== false) {
@@ -219,26 +227,31 @@ add_action('delete_industry', 'spectra_child_invalidate_project_filter_cache');
 function spectra_child_invalidate_project_filter_cache() {
     global $wpdb;
     $wpdb->query(
-        "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_project_filter_%' OR option_name LIKE '_transient_timeout_project_filter_%'"
+        "DELETE FROM {$wpdb->options}
+         WHERE option_name LIKE '_transient_project_filter_%'
+            OR option_name LIKE '_transient_timeout_project_filter_%'
+            OR option_name LIKE '_transient_vpe_avail_services_%'
+            OR option_name LIKE '_transient_timeout_vpe_avail_services_%'"
     );
 }
 
 
 
+function spectra_child_invalidate_project_filter_cache_on_save($post_id) {
+    if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) {
+        return;
+    }
+    spectra_child_invalidate_project_filter_cache();
+}
+
 function spectra_child_invalidate_project_filter_cache_on_delete($post_id) {
     if (get_post_type($post_id) === 'video-project') {
-        if (!current_user_can('edit_post', $post_id)) {
-            return;
-        }
         spectra_child_invalidate_project_filter_cache();
     }
 }
 
 function spectra_child_invalidate_project_filter_cache_on_cf_save($post_id) {
     if (get_post_type($post_id) === 'video-project') {
-        if (!current_user_can('edit_post', $post_id)) {
-            return;
-        }
         spectra_child_invalidate_project_filter_cache();
     }
 }
