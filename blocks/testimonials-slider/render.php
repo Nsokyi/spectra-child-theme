@@ -26,47 +26,68 @@ if ($group_id) {
     );
 }
 
-$ordered_posts   = array();
-$remainder_posts = array();
+$cache_key = 'vpe_testimonials_' . md5( wp_json_encode( array(
+    'group' => $group_id,
+    'order' => $order_ids,
+) ) );
 
-if (!empty($order_ids)) {
-    $ordered_query = new WP_Query(array(
-        'post_type'      => 'testimonial',
-        'post_status'    => 'publish',
-        'posts_per_page' => -1,
-        'post__in'       => $order_ids,
-        'orderby'        => 'post__in',
-        'tax_query'      => $tax_query ?: array(),
-    ));
-    $ordered_posts = $ordered_query->posts;
-    wp_reset_postdata();
+$cached_ids = get_transient( $cache_key );
 
-    $remainder_args = array(
-        'post_type'      => 'testimonial',
-        'post_status'    => 'publish',
-        'posts_per_page' => -1,
-        'post__not_in'   => $order_ids,
-        'orderby'        => 'date',
-        'order'          => 'DESC',
-        'tax_query'      => $tax_query ?: array(),
-    );
-    $remainder_query = new WP_Query($remainder_args);
-    $remainder_posts = $remainder_query->posts;
-    wp_reset_postdata();
-} else {
-    $default_query = new WP_Query(array(
-        'post_type'      => 'testimonial',
-        'post_status'    => 'publish',
-        'posts_per_page' => -1,
-        'orderby'        => 'date',
-        'order'          => 'DESC',
-        'tax_query'      => $tax_query ?: array(),
-    ));
-    $remainder_posts = $default_query->posts;
-    wp_reset_postdata();
+if ( false === $cached_ids ) {
+    $ordered_posts   = array();
+    $remainder_posts = array();
+
+    if ( ! empty( $order_ids ) ) {
+        $ordered_query = new WP_Query( array(
+            'post_type'      => 'testimonial',
+            'post_status'    => 'publish',
+            'posts_per_page' => -1,
+            'post__in'       => $order_ids,
+            'orderby'        => 'post__in',
+            'fields'         => 'ids',
+            'tax_query'      => $tax_query ?: array(),
+        ) );
+        $ordered_posts = $ordered_query->posts;
+
+        $remainder_query = new WP_Query( array(
+            'post_type'      => 'testimonial',
+            'post_status'    => 'publish',
+            'posts_per_page' => -1,
+            'post__not_in'   => $order_ids,
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+            'fields'         => 'ids',
+            'tax_query'      => $tax_query ?: array(),
+        ) );
+        $remainder_posts = $remainder_query->posts;
+    } else {
+        $default_query = new WP_Query( array(
+            'post_type'      => 'testimonial',
+            'post_status'    => 'publish',
+            'posts_per_page' => -1,
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+            'fields'         => 'ids',
+            'tax_query'      => $tax_query ?: array(),
+        ) );
+        $remainder_posts = $default_query->posts;
+    }
+
+    $cached_ids = array_merge( $ordered_posts, $remainder_posts );
+    set_transient( $cache_key, $cached_ids, 12 * HOUR_IN_SECONDS );
 }
 
-$all_posts = array_merge($ordered_posts, $remainder_posts);
+if ( empty( $cached_ids ) ) {
+    return;
+}
+
+$all_posts = get_posts( array(
+    'post_type'      => 'testimonial',
+    'post_status'    => 'publish',
+    'posts_per_page' => -1,
+    'post__in'       => $cached_ids,
+    'orderby'        => 'post__in',
+) );
 
 if (empty($all_posts)) {
     return;

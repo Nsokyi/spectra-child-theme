@@ -223,21 +223,74 @@ function spectra_child_invalidate_project_filter_cache() {
     );
 }
 
+
+
 function spectra_child_invalidate_project_filter_cache_on_delete($post_id) {
     if (get_post_type($post_id) === 'video-project') {
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
         spectra_child_invalidate_project_filter_cache();
     }
 }
 
 function spectra_child_invalidate_project_filter_cache_on_cf_save($post_id) {
     if (get_post_type($post_id) === 'video-project') {
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
         spectra_child_invalidate_project_filter_cache();
     }
 }
 
-function spectra_child_invalidate_project_filter_cache_on_save($post_id) {
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+/**
+ * Invalidate featured project transient when a video-project is saved/deleted.
+ */
+add_action( 'save_post_video-project', 'spectra_child_invalidate_featured_project_cache' );
+add_action( 'delete_post', 'spectra_child_invalidate_featured_project_cache' );
+add_action( 'wp_trash_post', 'spectra_child_invalidate_featured_project_cache' );
+add_action( 'carbon_fields_post_meta_container_saved', 'spectra_child_invalidate_featured_project_cache_on_cf_save' );
+
+function spectra_child_invalidate_featured_project_cache( $post_id = 0 ) {
+    if ( $post_id && get_post_type( $post_id ) !== 'video-project' ) {
         return;
     }
-    spectra_child_invalidate_project_filter_cache();
+    delete_transient( 'vpe_featured_project_id' );
+}
+
+function spectra_child_invalidate_featured_project_cache_on_cf_save( $post_id ) {
+    if ( get_post_type( $post_id ) === 'video-project' ) {
+        delete_transient( 'vpe_featured_project_id' );
+    }
+}
+
+/**
+ * Invalidate testimonials slider transients when a testimonial is saved/deleted
+ * or when the testimonial_group taxonomy changes.
+ */
+add_action( 'save_post_testimonial', 'spectra_child_invalidate_testimonials_cache' );
+add_action( 'delete_post', 'spectra_child_invalidate_testimonials_cache_on_delete' );
+add_action( 'wp_trash_post', 'spectra_child_invalidate_testimonials_cache_on_delete' );
+add_action( 'edited_testimonial_group', 'spectra_child_invalidate_testimonials_cache' );
+add_action( 'created_testimonial_group', 'spectra_child_invalidate_testimonials_cache' );
+add_action( 'delete_testimonial_group', 'spectra_child_invalidate_testimonials_cache' );
+add_action( 'carbon_fields_post_meta_container_saved', 'spectra_child_invalidate_testimonials_cache_on_cf_save' );
+
+function spectra_child_invalidate_testimonials_cache() {
+    global $wpdb;
+    $wpdb->query(
+        "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_vpe_testimonials_%' OR option_name LIKE '_transient_timeout_vpe_testimonials_%'"
+    );
+}
+
+function spectra_child_invalidate_testimonials_cache_on_delete( $post_id ) {
+    if ( get_post_type( $post_id ) === 'testimonial' ) {
+        spectra_child_invalidate_testimonials_cache();
+    }
+}
+
+function spectra_child_invalidate_testimonials_cache_on_cf_save( $post_id ) {
+    if ( get_post_type( $post_id ) === 'testimonial' ) {
+        spectra_child_invalidate_testimonials_cache();
+    }
 }
