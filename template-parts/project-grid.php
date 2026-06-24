@@ -97,7 +97,35 @@ if ($current_term) {
     }
 }
 
-$projects = new WP_Query($query_args);
+// Cache the grid query: store post IDs + max_num_pages keyed by query args.
+// On cache hit, re-fetch via fast post__in lookup and restore pagination metadata.
+$grid_cache_key = 'vpe_grid_' . md5(wp_json_encode($query_args));
+$cached_grid    = get_transient($grid_cache_key);
+
+if (false === $cached_grid) {
+    $pre_query   = new WP_Query(array_merge($query_args, array('fields' => 'ids')));
+    $cached_grid = array(
+        'ids'           => $pre_query->posts,
+        'max_num_pages' => (int) $pre_query->max_num_pages,
+    );
+    set_transient($grid_cache_key, $cached_grid, 12 * HOUR_IN_SECONDS);
+}
+
+if (!empty($cached_grid['ids'])) {
+    $projects = new WP_Query(array(
+        'post_type'           => 'video-project',
+        'post_status'         => 'publish',
+        'posts_per_page'      => $per_page,
+        'post__in'            => $cached_grid['ids'],
+        'orderby'             => 'post__in',
+        'ignore_sticky_posts' => true,
+        'no_found_rows'       => true,
+    ));
+    // Restore real pagination total (post__in lookup only knows about $per_page items).
+    $projects->max_num_pages = $cached_grid['max_num_pages'];
+} else {
+    $projects = new WP_Query(array('post__in' => array(0)));
+}
 
 $active_service  = $current_term && $current_term['taxonomy'] === 'service' ? $current_term['slug'] : '';
 $active_industry = $current_term && $current_term['taxonomy'] === 'industry' ? $current_term['slug'] : '';
