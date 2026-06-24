@@ -231,7 +231,9 @@ function spectra_child_invalidate_project_filter_cache() {
          WHERE option_name LIKE '_transient_project_filter_%'
             OR option_name LIKE '_transient_timeout_project_filter_%'
             OR option_name LIKE '_transient_vpe_avail_services_%'
-            OR option_name LIKE '_transient_timeout_vpe_avail_services_%'"
+            OR option_name LIKE '_transient_timeout_vpe_avail_services_%'
+            OR option_name LIKE '_transient_vpe_similar_%'
+            OR option_name LIKE '_transient_timeout_vpe_similar_%'"
     );
 }
 
@@ -239,6 +241,9 @@ function spectra_child_invalidate_project_filter_cache() {
 
 function spectra_child_invalidate_project_filter_cache_on_save($post_id) {
     if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) {
+        return;
+    }
+    if (get_post_type($post_id) !== 'video-project') {
         return;
     }
     spectra_child_invalidate_project_filter_cache();

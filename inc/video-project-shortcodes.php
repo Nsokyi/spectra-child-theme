@@ -280,13 +280,42 @@ function spectra_child_render_video_project_similar($atts) {
         );
     }
 
+    // Cache a deterministic candidate pool (up to 20 IDs), then randomize in PHP.
+    // This avoids MySQL ORDER BY RAND() (which forces a full table scan) while
+    // preserving per-request variety in the displayed 4 projects.
+    $cache_key      = 'vpe_similar_' . $post_id;
+    $candidate_ids  = get_transient($cache_key);
+
+    if (false === $candidate_ids) {
+        $pool_query = new WP_Query(array(
+            'post_type'      => 'video-project',
+            'post_status'    => 'publish',
+            'posts_per_page' => 20,
+            'post__not_in'   => array($post_id),
+            'tax_query'      => $tax_query,
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+            'fields'         => 'ids',
+        ));
+        $candidate_ids = $pool_query->posts;
+        set_transient($cache_key, $candidate_ids, 12 * HOUR_IN_SECONDS);
+    }
+
+    if (empty($candidate_ids)) {
+        return '';
+    }
+
+    // Randomize from the cached pool and take up to 4.
+    shuffle($candidate_ids);
+    $display_ids = array_slice($candidate_ids, 0, 4);
+
     $similar = new WP_Query(array(
         'post_type'      => 'video-project',
         'post_status'    => 'publish',
         'posts_per_page' => 4,
-        'post__not_in'   => array($post_id),
-        'tax_query'      => $tax_query,
-        'orderby'        => 'rand',
+        'post__in'       => $display_ids,
+        'orderby'        => 'post__in',
+        'ignore_sticky_posts' => true,
     ));
 
     if (!$similar->have_posts()) {
