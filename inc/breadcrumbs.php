@@ -136,7 +136,7 @@ add_filter( 'body_class', 'vpe_add_top_level_body_class' );
 function vpe_add_top_level_body_class( $classes ) {
     if ( is_page() && ! is_front_page() ) {
         global $post;
-        if ( isset( $post->post_parent ) && $post->post_parent == 0 ) {
+        if ( $post && isset( $post->post_parent ) && $post->post_parent == 0 ) {
             $classes[] = 'is-top-level-page';
         }
     }
@@ -170,7 +170,7 @@ function vpe_inject_breadcrumb_after_header( $block_content, $block ) {
     // Skip breadcrumbs on top-level pages (no parent) to keep main marketing pages clean.
     // Child pages, posts, and archives will still show breadcrumbs.
     global $post;
-    if ( is_page() && isset( $post->post_parent ) && $post->post_parent == 0 ) {
+    if ( is_page() && $post && isset( $post->post_parent ) && $post->post_parent == 0 ) {
         return $block_content;
     }
 
