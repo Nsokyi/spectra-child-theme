@@ -22,7 +22,6 @@ require_once __DIR__ . '/inc/site-header-block.php';
 require_once __DIR__ . '/inc/block-styles.php';
 require_once __DIR__ . '/inc/redirects.php';
 require_once __DIR__ . '/inc/breadcrumbs.php';
-require_once __DIR__ . '/inc/font-preload.php';
 
 // Enqueue parent and child theme styles
 function spectra_child_enqueue_parent_styles() {
