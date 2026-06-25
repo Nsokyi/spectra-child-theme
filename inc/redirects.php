@@ -14,8 +14,16 @@
  */
 add_action('template_redirect', 'spectra_child_legacy_taxonomy_redirects');
 function spectra_child_legacy_taxonomy_redirects() {
-	if ( preg_match( '#^/service/([^/]+)/?$#', $_SERVER['REQUEST_URI'], $matches ) ) {
-		wp_redirect( home_url( '/portfolio/' . $matches[1] . '/' ), 301 );
-		exit;
-	}
+    $request_uri = isset($_SERVER['REQUEST_URI']) ? sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI'])) : '';
+    
+    if ( preg_match( '#^/service/([^/]+)/?$#', $request_uri, $matches ) ) {
+        wp_redirect( home_url( '/portfolio/' . sanitize_title($matches[1]) . '/' ), 301 );
+        exit;
+    }
 }
+
+
+
+
+
+
