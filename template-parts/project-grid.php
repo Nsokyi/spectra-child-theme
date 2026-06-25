@@ -21,8 +21,23 @@ $show_load_more  = isset($args['show_load_more']) ? (bool) $args['show_load_more
 $columns         = !empty($args['columns']) ? intval($args['columns']) : 3;
 $orderby         = !empty($args['orderby']) && $args['orderby'] === 'menu_order' ? 'menu_order' : 'date';
 
-$services   = get_terms(array('taxonomy' => 'service', 'hide_empty' => true));
-$industries = get_terms(array('taxonomy' => 'industry', 'hide_empty' => true));
+$services = get_transient('vpe_terms_service');
+if (false === $services) {
+    $services = get_terms(array('taxonomy' => 'service', 'hide_empty' => true));
+    if (is_wp_error($services)) {
+        $services = array();
+    }
+    set_transient('vpe_terms_service', $services, 12 * HOUR_IN_SECONDS);
+}
+
+$industries = get_transient('vpe_terms_industry');
+if (false === $industries) {
+    $industries = get_terms(array('taxonomy' => 'industry', 'hide_empty' => true));
+    if (is_wp_error($industries)) {
+        $industries = array();
+    }
+    set_transient('vpe_terms_industry', $industries, 12 * HOUR_IN_SECONDS);
+}
 
 // When an industry is pre-selected, determine which services are available for cross-filtering.
 $available_service_slugs = null;

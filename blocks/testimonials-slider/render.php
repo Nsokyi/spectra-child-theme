@@ -31,9 +31,9 @@ $cache_key = 'vpe_testimonials_' . md5( wp_json_encode( array(
     'order' => $order_ids,
 ) ) );
 
-$cached_ids = get_transient( $cache_key );
+$cards = get_transient( $cache_key );
 
-if ( false === $cached_ids ) {
+if ( false === $cards ) {
     $ordered_posts   = array();
     $remainder_posts = array();
 
@@ -73,23 +73,42 @@ if ( false === $cached_ids ) {
         $remainder_posts = $default_query->posts;
     }
 
-    $cached_ids = array_merge( $ordered_posts, $remainder_posts );
-    set_transient( $cache_key, $cached_ids, 12 * HOUR_IN_SECONDS );
+    $ordered_ids = array_merge( $ordered_posts, $remainder_posts );
+
+    $cards = array();
+    if ( ! empty( $ordered_ids ) ) {
+        // Prime the post + meta caches once for all IDs.
+        $hydrated = get_posts( array(
+            'post_type'      => 'testimonial',
+            'post_status'    => 'publish',
+            'posts_per_page' => -1,
+            'post__in'       => $ordered_ids,
+            'orderby'        => 'post__in',
+            'no_found_rows'  => true,
+        ) );
+
+        foreach ( $hydrated as $post ) {
+            $pid   = $post->ID;
+            $quote = carbon_get_post_meta( $pid, 'testimonial_quote' );
+            if ( ! $quote ) {
+                continue;
+            }
+            $cards[] = array(
+                'id'      => $pid,
+                'quote'   => $quote,
+                'stars'   => carbon_get_post_meta( $pid, 'testimonial_rating' ),
+                'name'    => carbon_get_post_meta( $pid, 'testimonial_client_name' ),
+                'job'     => carbon_get_post_meta( $pid, 'testimonial_job_title' ),
+                'company' => carbon_get_post_meta( $pid, 'testimonial_company' ),
+                'photo'   => carbon_get_post_meta( $pid, 'testimonial_client_photo' ),
+            );
+        }
+    }
+
+    set_transient( $cache_key, $cards, 12 * HOUR_IN_SECONDS );
 }
 
-if ( empty( $cached_ids ) ) {
-    return;
-}
-
-$all_posts = get_posts( array(
-    'post_type'      => 'testimonial',
-    'post_status'    => 'publish',
-    'posts_per_page' => -1,
-    'post__in'       => $cached_ids,
-    'orderby'        => 'post__in',
-) );
-
-if (empty($all_posts)) {
+if ( empty( $cards ) ) {
     return;
 }
 
@@ -110,16 +129,15 @@ $wrapper_attributes = get_block_wrapper_attributes(array(
 
 <div <?php echo $wrapper_attributes; ?>>
     <div class="testimonials-slider__track">
-        <?php foreach ($all_posts as $post) :
-            $post_id  = $post->ID;
-            $quote    = carbon_get_post_meta($post_id, 'testimonial_quote');
-            $stars    = carbon_get_post_meta($post_id, 'testimonial_rating');
-            $name     = carbon_get_post_meta($post_id, 'testimonial_client_name');
-            $job      = carbon_get_post_meta($post_id, 'testimonial_job_title');
-            $company  = carbon_get_post_meta($post_id, 'testimonial_company');
-            $photo    = carbon_get_post_meta($post_id, 'testimonial_client_photo');
+        <?php foreach ($cards as $card) :
+            $post_id = $card['id'];
+            $quote   = $card['quote'];
+            $stars   = $card['stars'];
+            $name    = $card['name'];
+            $job     = $card['job'];
+            $company = $card['company'];
+            $photo   = $card['photo'];
 
-            if (!$quote) continue;
             if (!$name) {
                 $name = __('Anonymous', 'spectra-child');
             }

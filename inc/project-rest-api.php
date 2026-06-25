@@ -235,7 +235,9 @@ function spectra_child_invalidate_project_filter_cache() {
             OR option_name LIKE '_transient_vpe_similar_%'
             OR option_name LIKE '_transient_timeout_vpe_similar_%'
             OR option_name LIKE '_transient_vpe_grid_%'
-            OR option_name LIKE '_transient_timeout_vpe_grid_%'"
+            OR option_name LIKE '_transient_timeout_vpe_grid_%'
+            OR option_name LIKE '_transient_vpe_terms_%'
+            OR option_name LIKE '_transient_timeout_vpe_terms_%'"
     );
 }
 
