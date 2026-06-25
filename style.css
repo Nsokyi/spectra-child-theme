@@ -171,7 +171,7 @@ VIDEO HERO - HOMEPAGE STYLES
 	line-height: 1.5;
 	color: var(--wp--preset--color--warm-white);
 	max-width: 52ch;
-	font-weight: 300;
+	font-weight: 400;
 }
 
 .uppercase {
@@ -1031,7 +1031,7 @@ TRUST STRIP STYLES
 .trust-heading h2 {
 	/* font-size: clamp(1.8rem, 5vw, 7rem); */
 	font-size: clamp(1.8rem, 0.7368rem + 2.7vw, 7rem) !important;
-	font-weight: 900;
+	font-weight: 800;
 	color: var(--wp--preset--color--ghost-white);
 	margin: 0;
 	line-height: 1.1;
